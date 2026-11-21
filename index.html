@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Alocador Inteligente SABE 2026 • Canarana-BA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Toast de Notificação -->
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden max-w-[92vw] w-max px-4 py-3 rounded-2xl shadow-xl text-sm font-semibold text-white bg-slate-900 transition-all"></div>
+
+  <!-- Cabeçalho -->
+  <header class="bg-gradient-to-r from-slate-900 via-slate-800 to-orange-900 text-white shadow-lg sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="bg-orange-500 text-white text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full">SABE 2026</span>
+          <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🛡️ Motor Anti-Conflito Ativo</span>
+          <span class="text-slate-300 text-xs font-medium">Canarana-BA</span>
+        </div>
+        <h1 class="text-lg sm:text-xl font-extrabold tracking-tight mt-1">Alocador Inteligente de Aplicadores</h1>
+      </div>
+
+      <div class="flex items-center gap-2 flex-wrap">
+        <button type="button" id="btnExportCsv"
+          class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/15 transition flex items-center gap-1.5">
+          <span>📥 Exportar Planilha (CSV)</span>
+        </button>
+        <button type="button" id="btnResetDemo"
+          class="px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 text-xs font-bold border border-rose-400/20 transition">
+          ↺ Restaurar Original
+        </button>
+      </div>
+    </div>
+
+    <!-- Navegação por Abas -->
+    <div class="max-w-6xl mx-auto px-4 pb-2 overflow-x-auto no-scrollbar">
+      <nav class="flex gap-2 min-w-max" role="tablist">
+        <button type="button" data-tab="demos"
+          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-orange-500 text-white shadow-sm">
+          🎯 Demonstrações Multi-Aplicação (<span id="badgeDemoCount">24</span>)
+        </button>
+        <button type="button" data-tab="vacancies"
+          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
+          🚨 Vagas PCD em Aberto (<span id="badgeVacancyCount">16</span>)
+        </button>
+        <button type="button" data-tab="simulator"
+          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
+          🧪 Simulador "Pode ou Não Pode?"
+        </button>
+        <button type="button" data-tab="schools"
+          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
+          🏫 Cronograma por Escola (53 Turmas)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Painel de Resumo / Regras -->
+  <section class="max-w-6xl w-full mx-auto px-4 pt-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-3.5 sm:p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-extrabold shrink-0 text-base">🛡️</div>
+        <div class="text-xs text-slate-600 leading-relaxed">
+          <p class="font-bold text-slate-900">Regra de Ouro do Motor (Zero Erros):</p>
+          <p>
+            • <strong class="text-rose-700">2º Ano do EF (2 dias seguidos no mesmo turno):</strong> bloqueia automaticamente os <strong>2 dias consecutivos</strong> (<span class="font-semibold">23 e 24/11</span> ou <span class="font-semibold">25 e 26/11</span>) naquele turno, tanto para aplicador regular quanto para aplicador PCD.<br class="hidden sm:inline" />
+            • <strong class="text-emerald-700">Multi-Aplicação Permitida:</strong> mesma escola em turnos opostos (Manhã + Tarde), dias diferentes, ou escolas distintas em turnos opostos (com alerta logístico de deslocamento).
+          </p>
+        </div>
+      </div>
+
+      <!-- KPIs Rápidos -->
+      <div class="grid grid-cols-4 gap-2 shrink-0">
+        <div class="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-center">
+          <p class="text-[10px] font-bold uppercase text-slate-400">Turmas</p>
+          <p class="text-sm sm:text-base font-extrabold text-slate-900" id="kpiTotalClasses">53</p>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl px-2.5 py-2 text-center">
+          <p class="text-[10px] font-bold uppercase text-emerald-600">Conflitos</p>
+          <p class="text-sm sm:text-base font-extrabold text-emerald-700" id="kpiConflicts">0</p>
+        </div>
+        <div class="bg-amber-50 border border-amber-200 rounded-xl px-2.5 py-2 text-center">
+          <p class="text-[10px] font-bold uppercase text-amber-600">Vagas PCD</p>
+          <p class="text-sm sm:text-base font-extrabold text-amber-700" id="kpiOpenPcd">16</p>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-xl px-2.5 py-2 text-center">
+          <p class="text-[10px] font-bold uppercase text-blue-600">Multi-Prova</p>
+          <p class="text-sm sm:text-base font-extrabold text-blue-700" id="kpiMultiApp">22</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conteúdo Dinâmico das Abas -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-4 pb-12">
+
+    <!-- ABA 1: DEMONSTRAÇÕES MULTI-APLICAÇÃO -->
+    <div id="tab-demos" class="tab-panel space-y-4 animate-fade-in">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+        <div class="relative flex-1">
+          <input id="demoSearchInput" type="text" placeholder="Filtrar aplicador por nome, escola ou povoado..."
+            class="w-full pl-3.5 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white" />
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <button type="button" data-demofilter="all" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white">Todos (28)</button>
+          <button type="button" data-demofilter="2ano" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-rose-50">🔒 Com 2º Ano (Bloqueio 2 dias)</button>
+          <button type="button" data-demofilter="canAddMore" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50">➕ Podem Assumir + Vagas</button>
+        </div>
+      </div>
+
+      <div id="demosContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </div>
+
+    <!-- ABA 2: VAGAS PCD EM ABERTO -->
+    <div id="tab-vacancies" class="tab-panel hidden space-y-4 animate-fade-in">
+      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-900 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <p class="font-extrabold text-sm text-amber-950">Vagas de Aplicador Extra (PCD) Sem Preenchimento na Planilha</p>
+          <p class="mt-0.5 leading-relaxed">Para cada turma abaixo, o motor listou automaticamente apenas os aplicadores <strong>100% livres</strong> naquele(s) dia(s) e turno — respeitando o bloqueio de 2 dias seguidos do 2º Ano.</p>
+        </div>
+        <button type="button" id="btnAutoFillBest"
+          class="shrink-0 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-sm transition">
+          ⚡ Preencher Todas Automaticamente (Sem Conflito)
+        </button>
+      </div>
+
+      <div id="vacanciesContainer" class="space-y-3"></div>
+    </div>
+
+    <!-- ABA 3: SIMULADOR PODE OU NÃO PODE -->
+    <div id="tab-simulator" class="tab-panel hidden space-y-4 animate-fade-in">
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
+        <div>
+          <h2 class="text-base font-extrabold text-slate-900">Simulador Instantâneo: "Esse aplicador pode assumir essa turma?"</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Escolha qualquer aplicador e qualquer turma da planilha de Canarana-BA para verificar conflitos de turno, trava do 2º Ano (2 dias seguidos) e deslocamento.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="simApplicatorSelect" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">1. Selecione o Aplicador(a)</label>
+            <select id="simApplicatorSelect" class="w-full p-3 rounded-xl border border-slate-300 bg-slate-50 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"></select>
+          </div>
+          <div>
+            <label for="simClassSelect" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">2. Selecione a Escola / Turma Desejada</label>
+            <select id="simClassSelect" class="w-full p-3 rounded-xl border border-slate-300 bg-slate-50 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"></select>
+          </div>
+        </div>
+
+        <div id="simResultBox" class="rounded-2xl border-2 p-4 sm:p-5 transition-all"></div>
+      </div>
+    </div>
+
+    <!-- ABA 4: CRONOGRAMA POR ESCOLA -->
+    <div id="tab-schools" class="tab-panel hidden space-y-4 animate-fade-in">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+        <input id="schoolSearchInput" type="text" placeholder="Buscar escola, povoado, turma ou aplicador..."
+          class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white" />
+        <select id="schoolDateFilter" class="px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700">
+          <option value="all">Todas as Datas (23 a 26/11)</option>
+          <option value="23/11">Dia 23/11/2026 (2º Ano)</option>
+          <option value="24/11">Dia 24/11/2026 (2º, 5º e 9º Ano)</option>
+          <option value="25/11">Dia 25/11/2026 (2º, 5º e 9º Ano)</option>
+          <option value="26/11">Dia 26/11/2026 (2º Ano)</option>
+        </select>
+      </div>
+
+      <div id="schoolsContainer" class="space-y-4"></div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: Alocar / Trocar Aplicador na Turma -->
+  <div id="allocModal" class="fixed inset-0 z-40 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto space-y-4">
+      <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
+        <div>
+          <span id="allocModalBadge" class="inline-block text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800"></span>
+          <h3 id="allocModalTitle" class="text-base sm:text-lg font-extrabold text-slate-900 mt-1"></h3>
+          <p id="allocModalSub" class="text-xs text-slate-500 mt-0.5"></p>
+        </div>
+        <button type="button" id="btnCloseAllocModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">✕</button>
+      </div>
+
+      <div id="allocCandidatesList" class="space-y-2"></div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. DADOS COMPLETOS EXTRAÍDOS DA PLANILHA OFICIAL DE CANARANA-BA (53 TURMAS)
+    // =========================================================================
+    var TIME_SLOTS = [
+      { key: "23/11|Matutino", short: "23M", label: "23/11 Manhã" },
+      { key: "23/11|Vespertino", short: "23V", label: "23/11 Tarde" },
+      { key: "24/11|Matutino", short: "24M", label: "24/11 Manhã" },
+      { key: "24/11|Vespertino", short: "24V", label: "24/11 Tarde" },
+      { key: "25/11|Matutino", short: "25M", label: "25/11 Manhã" },
+      { key: "25/11|Vespertino", short: "25V", label: "25/11 Tarde" },
+      { key: "26/11|Matutino", short: "26M", label: "26/11 Manhã" },
+      { key: "26/11|Vespertino", short: "26V", label: "26/11 Tarde" }
+    ];
+
+    var APPLICATORS_MASTER = [
+      { id: "alexsandra", name: "Alexsandra R. de Araújo", phone: "(74) 99968-5786", role: "Titular" },
+      { id: "alexia", name: "Alexia Lorrana Marques de Araújo", phone: "(74) 99940-1534", role: "Titular" },
+      { id: "amanda", name: "Amanda Santos", phone: "(74) 99952-2831", role: "Titular" },
+      { id: "anacarla", name: "Ana Carla Martins", phone: "(74) 99972-3580", role: "Titular" },
+      { id: "beatriz", name: "Beatriz Izabel Basso", phone: "(74) 99937-1463", role: "Titular" },
+      { id: "cariely", name: "Cariely A. Reis", phone: "(74) 99939-1785", role: "Titular" },
+      { id: "deylane", name: "Deylane N. dos Anjos", phone: "(74) 99923-6705", role: "Titular" },
+      { id: "fabiola", name: "Fabíola Pereira da Silva", phone: "(74) 99807-7309", role: "Titular" },
+      { id: "fabiones", name: "Fabiones José dos S. Filho", phone: "(74) 99923-8360", role: "Titular" },
+      { id: "gabriela", name: "Gabriela Lorrande de Miranda", phone: "(75) 99851-5598", role: "Titular" },
+      { id: "gleice", name: "Gleice O. Torres", phone: "(74) 99975-4769", role: "Titular" },
+      { id: "katia", name: "Katia Cilene Rosa", phone: "(74) 99933-1769", role: "Titular" },
+      { id: "lara", name: "Lara Flávia Martins", phone: "(74) 99920-6881", role: "Titular" },
+      { id: "larissa_m", name: "Larissa Miranda de Souza", phone: "(74) 99975-0624", role: "Titular" },
+      { id: "leda", name: "Leda de Cássia Seixas", phone: "(74) 99973-0099", role: "Titular" },
+      { id: "luarla", name: "Luarla Ribeiro Cardoso", phone: "(74) 99912-4032", role: "Titular" },
+      { id: "jeane", name: "Maria Jeane Novais", phone: "(74) 99957-9393", role: "Titular" },
+      { id: "marlucia", name: "Marlúcia Cândida de Sousa", phone: "(74) 99801-4361", role: "Titular" },
+      { id: "mirian", name: "Mirian B. de Oliveira", phone: "(11) 97439-1497", role: "Titular" },
+      { id: "raphaela", name: "Raphaela Oliveira Novaes", phone: "(71) 99988-6423", role: "Titular" },
+      { id: "sandy", name: "Sandy Silva Moraes", phone: "(74) 99814-0376", role: "Titular" },
+      { id: "sthefany", name: "Sthefany de Jesus Souza", phone: "(74) 99938-3837", role: "Titular" },
+      { id: "thuane", name: "Thuane Matos Nascimento", phone: "(74) 99977-6761", role: "Titular" },
+      { id: "vaneuza", name: "Vaneuza Ferreira Borges", phone: "(74) 99902-1146", role: "Titular" },
+      // Aplicadores adicionais de Canarana (Lista Polo 02) prontos para cobrir vagas PCD
+      { id: "cleilton", name: "Cleilton da Silva dos Santos", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" },
+      { id: "inara", name: "Inara do Nascimento Souza", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" },
+      { id: "ludymila", name: "Ludymila Bastos de Jesus", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" },
+      { id: "rosa_claudia", name: "Rosa Cláudia Pereira dos Santos", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" }
+    ];
+
+    var INITIAL_CLASSES = [
+      // 1. Escola José Brito dos Anjos
+      { id: 1, school: "Escola José Brito dos Anjos", inep: "29060109", locality: "Povoado Lagoa do Zeca", distance: "12 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "alexsandra", pcdCount: 1, pcdApps: ["gabriela"], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 2, school: "Escola José Brito dos Anjos", inep: "29060109", locality: "Povoado Lagoa do Zeca", distance: "12 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 24, regApp: "sandy", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 3, school: "Escola José Brito dos Anjos", inep: "29060109", locality: "Povoado Lagoa do Zeca", distance: "12 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 14, regApp: "alexsandra", pcdCount: 1, pcdApps: ["sandy"], dates: ["24/11"], needsExtraPcd: true },
+
+      // 2. Escola Isaias Lemos
+      { id: 4, school: "Escola Isaias Lemos", inep: "29060265", locality: "Povoado Mato Verde", distance: "18 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "cariely", pcdCount: 1, pcdApps: ["anacarla"], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 5, school: "Escola Isaias Lemos", inep: "29060265", locality: "Povoado Mato Verde", distance: "18 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 14, regApp: "fabiones", pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 6, school: "Escola Isaias Lemos", inep: "29060265", locality: "Povoado Mato Verde", distance: "18 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 13, regApp: "fabiones", pcdCount: 1, pcdApps: ["marlucia"], dates: ["24/11"], needsExtraPcd: true },
+
+      // 3. Escola Valnei José Pereira
+      { id: 7, school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "luarla", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 8, school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 15, regApp: "fabiola", pcdCount: 2, pcdApps: ["thuane"], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 9, school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 16, regApp: "gleice", pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 10, school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 15, regApp: "larissa_m", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 11, school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 23, regApp: "larissa_m", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      // 4. Escola Rogério Cardoso
+      { id: 12, school: "Escola Rogério Cardoso", inep: "29060630", locality: "Povoado Planalto", distance: "20 Km", grade: "5º Ano A", is2ndYear: false, shift: "Vespertino", students: 10, regApp: "lara", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      // 5. Escola de 1º Grau José Francisco Nunes
+      { id: 13, school: "Escola José Francisco Nunes", inep: "29060117", locality: "Povoado Baixa do Vigário", distance: "18 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 13, regApp: "deylane", pcdCount: 1, pcdApps: ["beatriz"], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 14, school: "Escola José Francisco Nunes", inep: "29060117", locality: "Povoado Baixa do Vigário", distance: "18 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 16, regApp: "katia", pcdCount: 2, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 15, school: "Escola José Francisco Nunes", inep: "29060117", locality: "Povoado Baixa do Vigário", distance: "18 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 15, regApp: "katia", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      // 6. Escola Catão Dourado
+      { id: 16, school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano A", is2ndYear: false, shift: "Matutino", students: 29, regApp: "mirian", pcdCount: 1, pcdApps: ["jeane"], dates: ["24/11"], needsExtraPcd: true },
+      { id: 17, school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano B", is2ndYear: false, shift: "Matutino", students: 27, regApp: "raphaela", pcdCount: 3, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 18, school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: 21, regApp: "mirian", pcdCount: 5, pcdApps: ["jeane"], dates: ["24/11"], needsExtraPcd: true },
+      { id: 19, school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano D", is2ndYear: false, shift: "Vespertino", students: 21, regApp: "raphaela", pcdCount: 2, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+
+      // 7. Escola Olímpio José Pereira
+      { id: 20, school: "Escola Olímpio José Pereira", inep: "29060613", locality: "Povoado Queimada de João Martins", distance: "25 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 13, regApp: "amanda", pcdCount: 2, pcdApps: ["alexia"], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 21, school: "Escola Olímpio José Pereira", inep: "29060613", locality: "Povoado Queimada de João Martins", distance: "25 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 15, regApp: "lara", pcdCount: 2, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+
+      // 8. Escola Faustiniano Lopes Ribeiro
+      { id: 22, school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano A", is2ndYear: false, shift: "Matutino", students: 28, regApp: "gleice", pcdCount: 5, pcdApps: ["thuane"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 23, school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano B", is2ndYear: false, shift: "Matutino", students: 28, regApp: "jeane", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 24, school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: 22, regApp: "gleice", pcdCount: 1, pcdApps: ["thuane"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 25, school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano D", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "alexia", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 26, school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano E", is2ndYear: false, shift: "Vespertino", students: 23, regApp: "jeane", pcdCount: 4, pcdApps: ["sthefany"], dates: ["25/11"], needsExtraPcd: true },
+
+      // 9. Centro Educacional Otávio Mangabeira
+      { id: 27, school: "C.E. Otávio Mangabeira", inep: "29060478", locality: "Povoado Lagoa Velha", distance: "25 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "raphaela", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 28, school: "C.E. Otávio Mangabeira", inep: "29060478", locality: "Povoado Lagoa Velha", distance: "25 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 16, regApp: "larissa_m", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 29, school: "C.E. Otávio Mangabeira", inep: "29060478", locality: "Povoado Lagoa Velha", distance: "25 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 24, regApp: "raphaela", pcdCount: 1, pcdApps: ["larissa_m"], dates: ["25/11"], needsExtraPcd: true },
+
+      // 10. Escola de 1º e 2º Grau Miguel José Alves
+      { id: 30, school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 15, regApp: "katia", pcdCount: 0, pcdApps: ["vaneuza"], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 31, school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 16, regApp: "beatriz", pcdCount: 1, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: true },
+      { id: 32, school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 15, regApp: "mirian", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 33, school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 12, regApp: "anacarla", pcdCount: 1, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 34, school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 29, regApp: "mirian", pcdCount: 8, pcdApps: ["katia", "beatriz"], dates: ["25/11"], needsExtraPcd: true },
+
+      // 11. Grupo Escolar Félix de Sá
+      { id: 35, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 21, regApp: "leda", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 36, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 19, regApp: "alexsandra", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 37, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "2º Ano C", is2ndYear: true, shift: "Vespertino", students: 19, regApp: "alexsandra", pcdCount: 2, pcdApps: ["anacarla"], dates: ["25/11", "26/11"], needsExtraPcd: true },
+      { id: 38, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 22, regApp: "lara", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 39, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 20, regApp: "fabiola", pcdCount: 1, pcdApps: ["gabriela"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 40, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "5º Ano C", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "lara", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+
+      // 12. Escola Casinha Feliz
+      { id: 41, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 21, regApp: "cariely", pcdCount: 0, pcdApps: ["sthefany"], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 42, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 19, regApp: "sandy", pcdCount: 1, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: true },
+      { id: 43, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano C", is2ndYear: true, shift: "Matutino", students: 16, regApp: "deylane", pcdCount: 1, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: true },
+      { id: 44, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano D", is2ndYear: true, shift: "Vespertino", students: 16, regApp: "cariely", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 45, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano E", is2ndYear: true, shift: "Vespertino", students: 15, regApp: "sandy", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 46, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano F", is2ndYear: true, shift: "Vespertino", students: 16, regApp: "marlucia", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 47, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano G", is2ndYear: true, shift: "Vespertino", students: 17, regApp: "deylane", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+
+      // 13. Grupo Escolar José Martins Filho
+      { id: 48, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 25, regApp: "amanda", pcdCount: 2, pcdApps: ["alexia"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 49, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 26, regApp: "fabiones", pcdCount: 1, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 50, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano C", is2ndYear: false, shift: "Matutino", students: 20, regApp: "luarla", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 51, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano D", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "amanda", pcdCount: 1, pcdApps: ["leda"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 52, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano E", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "luarla", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 53, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano F", is2ndYear: false, shift: "Vespertino", students: 17, regApp: "fabiones", pcdCount: 1, pcdApps: [], dates: ["25/11"], needsExtraPcd: true }
+    ];
+
+    var STORAGE_KEY = "sabe2026_canarana_alloc_state_v1";
+    var classesState = [];
+    var currentTab = "demos";
+    var demoFilter = "all";
+    var toastTimer = null;
+
+    function cloneInitialClasses() {
+      return JSON.parse(JSON.stringify(INITIAL_CLASSES));
+    }
+
+    function showToast(msg) {
+      var el = document.getElementById("toast");
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.remove("hidden");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () {
+        el.classList.add("hidden");
+      }, 3200);
+    }
+
+    function getAppById(id) {
+      for (var i = 0; i < APPLICATORS_MASTER.length; i++) {
+        if (APPLICATORS_MASTER[i].id === id) return APPLICATORS_MASTER[i];
+      }
+      return null;
+    }
+
+    // =========================================================================
+    // 2. MOTOR MATEMÁTICO ANTI-CONFLITO ("ELE NÃO ERRA!")
+    // =========================================================================
+    function getRequiredSlotsForClass(cls) {
+      // Para 2º Ano, garante sempre os 2 dias consecutivos no turno
+      var dates = cls.dates.slice();
+      if (cls.is2ndYear && dates.length === 1) {
+        if (dates[0] === "23/11") dates = ["23/11", "24/11"];
+        if (dates[0] === "25/11") dates = ["25/11", "26/11"];
+      }
+      return dates.map(function (d) {
+        return d + "|" + cls.shift;
+      });
+    }
+
+    function getApplicatorSchedule(appId, excludeClassId) {
+      var assignments = [];
+      var occupiedSlots = {};
+
+      classesState.forEach(function (cls) {
+        if (excludeClassId && cls.id === excludeClassId) return;
+        var role = null;
+        if (cls.regApp === appId) role = "Aplicador Regular";
+        else if (cls.pcdApps && cls.pcdApps.indexOf(appId) !== -1) role = "Aplicador PCD";
+
+        if (role) {
+          var slots = getRequiredSlotsForClass(cls);
+          assignments.push({
+            cls: cls,
+            role: role,
+            slots: slots
+          });
+          slots.forEach(function (s) {
+            if (!occupiedSlots[s]) occupiedSlots[s] = [];
+            occupiedSlots[s].push({ cls: cls, role: role });
+          });
+        }
+      });
+
+      return {
+        assignments: assignments,
+        occupiedSlots: occupiedSlots
+      };
+    }
+
+    function evaluateAssignment(appId, targetClass, excludeCurrentIfSame) {
+      var app = getAppById(appId);
+      if (!app) return { allowed: false, reason: "Aplicador inválido." };
+
+      var sched = getApplicatorSchedule(appId, excludeCurrentIfSame ? targetClass.id : null);
+      var neededSlots = getRequiredSlotsForClass(targetClass);
+
+      // 1. Verifica sobreposição exata de Data + Turno (inclui bloqueio de 2 dias do 2º Ano)
+      var conflicts = [];
+      neededSlots.forEach(function (slot) {
+        if (sched.occupiedSlots[slot]) {
+          sched.occupiedSlots[slot].forEach(function (hit) {
+            conflicts.push({ slot: slot, cls: hit.cls, role: hit.role });
+          });
+        }
+      });
+
+      if (conflicts.length > 0) {
+        var first = conflicts[0];
+        var is2ndLock = first.cls.is2ndYear || targetClass.is2ndYear;
+        var slotReadable = first.slot.replace("|", " • ");
+        var detail = is2ndLock
+          ? "BLOQUEIO 2º ANO EF (2 dias seguidos): " + app.name + " já está comprometido(a) em " + first.cls.school + " (" + first.cls.grade + " • " + first.cls.shift + ", dias " + first.cls.dates.join(" e ") + ") como " + first.role + ". Choque em " + slotReadable + "."
+          : "CHOQUE DE TURNO: " + app.name + " já atua em " + first.cls.school + " (" + first.cls.grade + ") no turno " + slotReadable + ".";
+        return {
+          allowed: false,
+          category: "blocked",
+          badge: is2ndLock ? "⛔ Bloqueado (Trava 2º Ano)" : "⛔ Choque de Turno",
+          reason: detail
+        };
+      }
+
+      // 2. Se não há conflito, classifica a qualidade logística da multi-aplicação
+      var sameSchoolSameDay = false;
+      var diffSchoolSameDay = false;
+      var sameSchoolOtherDay = false;
+      var otherLocalityName = "";
+
+      sched.assignments.forEach(function (a) {
+        var sharesDate = a.cls.dates.some(function (d) {
+          return targetClass.dates.indexOf(d) !== -1;
+        });
+        if (sharesDate) {
+          if (a.cls.inep === targetClass.inep) sameSchoolSameDay = true;
+          else {
+            diffSchoolSameDay = true;
+            otherLocalityName = a.cls.school + " (" + a.cls.locality + ")";
+          }
+        } else if (a.cls.inep === targetClass.inep) {
+          sameSchoolOtherDay = true;
+        }
+      });
+
+      if (sched.assignments.length === 0) {
+        return {
+          allowed: true,
+          category: "free",
+          priority: 2,
+          badge: "🟢 100% Livre (Reserva)",
+          reason: app.name + " não possui nenhuma alocação ainda e está livre nos dias " + targetClass.dates.join(" e ") + " (" + targetClass.shift + ")."
+        };
+      }
+
+      if (sameSchoolSameDay) {
+        return {
+          allowed: true,
+          category: "ideal_same_school",
+          priority: 1,
+          badge: "⭐ Ideal • Mesma Escola (Turno Oposto)",
+          reason: "Excelente! " + app.name + " já estará na " + targetClass.school + " no mesmo dia em turno oposto (zero deslocamento no intervalo)."
+        };
+      }
+
+      if (diffSchoolSameDay) {
+        return {
+          allowed: true,
+          category: "same_day_travel",
+          priority: 4,
+          badge: "🟡 Mesmo Dia • Turno Oposto (Com Deslocamento)",
+          reason: "Permitido (turnos opostos sem conflito), mas exige deslocamento entre " + otherLocalityName + " e " + targetClass.school + " (" + targetClass.locality + ") no intervalo entre turnos."
+        };
+      }
+
+      if (sameSchoolOtherDay) {
+        return {
+          allowed: true,
+          category: "other_day_same_school",
+          priority: 2,
+          badge: "🟢 Outro Dia • Mesma Escola",
+          reason: "Sem conflito! " + app.name + " já conhece a " + targetClass.school + " e está totalmente livre em " + targetClass.dates.join(" e ") + " (" + targetClass.shift + ")."
+        };
+      }
+
+      return {
+        allowed: true,
+        category: "other_day",
+        priority: 3,
+        badge: "🟢 Outro Dia • Livre no Turno",
+        reason: "Sem conflito! " + app.name + " está totalmente livre em " + targetClass.dates.join(" e ") + " (" + targetClass.shift + ")."
+      };
+    }
+
+    function getOpenPcdClasses() {
+      return classesState.filter(function (c) {
+        return c.needsExtraPcd && (!c.pcdApps || c.pcdApps.length === 0);
+      });
+    }
+
+    function countGlobalConflicts() {
+      var count = 0;
+      APPLICATORS_MASTER.forEach(function (app) {
+        var sched = getApplicatorSchedule(app.id, null);
+        Object.keys(sched.occupiedSlots).forEach(function (slot) {
+          if (sched.occupiedSlots[slot].length > 1) count++;
+        });
+      });
+      return count;
+    }
+
+    // =========================================================================
+    // 3. RENDERIZAÇÃO DA ABA 1: DEMONSTRAÇÕES MULTI-APLICAÇÃO
+    // =========================================================================
+    function renderDemosTab() {
+      var container = document.getElementById("demosContainer");
+      if (!container) return;
+
+      var query = (document.getElementById("demoSearchInput").value || "").toLowerCase().trim();
+      var openPcd = getOpenPcdClasses();
+      var multiCount = 0;
+
+      var cardsHtml = [];
+
+      APPLICATORS_MASTER.forEach(function (app) {
+        var sched = getApplicatorSchedule(app.id, null);
+        if (sched.assignments.length >= 2) multiCount++;
+
+        var has2ndYear = sched.assignments.some(function (a) { return a.cls.is2ndYear; });
+
+        // Descobre todas as vagas PCD abertas onde este aplicador PODE entrar sem conflito
+        var validOpportunities = [];
+        openPcd.forEach(function (vCls) {
+          var check = evaluateAssignment(app.id, vCls, false);
+          if (check.allowed) {
+            validOpportunities.push({ cls: vCls, check: check });
+          }
+        });
+        validOpportunities.sort(function (a, b) { return a.check.priority - b.check.priority; });
+
+        // Filtros da aba
+        if (demoFilter === "2ano" && !has2ndYear) return;
+        if (demoFilter === "canAddMore" && validOpportunities.length === 0) return;
+
+        if (query) {
+          var hay = (app.name + " " + app.phone + " " + sched.assignments.map(function (a) {
+            return a.cls.school + " " + a.cls.locality + " " + a.cls.grade;
+          }).join(" ")).toLowerCase();
+          if (hay.indexOf(query) === -1) return;
+        }
+
+        // Linha do tempo visual dos 8 turnos (23M a 26V)
+        var timelineHtml = TIME_SLOTS.map(function (ts) {
+          var hits = sched.occupiedSlots[ts.key] || [];
+          if (hits.length === 0) {
+            return '<div class="rounded-lg border border-emerald-200 bg-emerald-50/70 px-1.5 py-1 text-center">' +
+              '<p class="text-[10px] font-extrabold text-emerald-800">' + ts.short + '</p>' +
+              '<p class="text-[9px] font-semibold text-emerald-600">Livre</p>' +
+              '</div>';
+          }
+          var hit = hits[0];
+          var is2 = hit.cls.is2ndYear;
+          return '<div title="' + hit.cls.school + ' • ' + hit.cls.grade + '" class="rounded-lg border ' +
+            (is2 ? 'border-rose-300 bg-rose-100/90' : 'border-slate-300 bg-slate-800 text-white') +
+            ' px-1.5 py-1 text-center">' +
+            '<p class="text-[10px] font-extrabold ' + (is2 ? 'text-rose-900' : 'text-white') + '">' + ts.short + '</p>' +
+            '<p class="text-[9px] font-bold ' + (is2 ? 'text-rose-700' : 'text-orange-300') + '">' + (is2 ? '2º 🔒' : hit.cls.grade.split(' ')[0]) + '</p>' +
+            '</div>';
+        }).join("");
+
+        // Lista de alocações atuais
+        var currentListHtml = sched.assignments.length === 0
+          ? '<p class="text-xs text-slate-500 italic bg-slate-50 rounded-xl p-2.5 border border-slate-200">Nenhuma turma atribuída ainda (100% disponível para cobrir vagas PCD).</p>'
+          : sched.assignments.map(function (a) {
+              return '<div class="flex items-start justify-between gap-2 text-xs bg-slate-50 rounded-xl p-2.5 border border-slate-200/80">' +
+                '<div>' +
+                '<p class="font-bold text-slate-900">' + a.cls.school + ' <span class="text-slate-500 font-medium">(' + a.cls.locality + ')</span></p>' +
+                '<p class="text-[11px] text-slate-600 mt-0.5"><strong>' + a.cls.grade + '</strong> • ' + a.cls.shift + ' • Dias: <strong>' + a.cls.dates.join(' e ') + '</strong></p>' +
+                '</div>' +
+                '<span class="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-extrabold ' +
+                (a.cls.is2ndYear ? 'bg-rose-100 text-rose-800' : 'bg-blue-100 text-blue-800') + '">' +
+                (a.cls.is2ndYear ? '2º Ano (2 dias)' : a.role.replace('Aplicador ', '')) +
+                '</span>' +
+                '</div>';
+            }).join("");
+
+        // Demonstração de onde PODE entrar ainda
+        var oppHtml = validOpportunities.length === 0
+          ? '<p class="text-[11px] text-slate-400">Todas as vagas compatíveis já estão preenchidas ou seus turnos coincidem.</p>'
+          : '<div class="space-y-1.5 max-h-44 overflow-y-auto pr-1">' +
+            validOpportunities.slice(0, 6).map(function (op) {
+              return '<div class="flex items-center justify-between gap-2 bg-emerald-50/60 border border-emerald-200/80 rounded-xl px-2.5 py-2 text-[11px]">' +
+                '<div class="min-w-0">' +
+                '<p class="font-bold text-slate-900 truncate">' + op.cls.school + ' • ' + op.cls.grade + '</p>' +
+                '<p class="text-[10px] text-emerald-800 font-semibold truncate">' + op.check.badge + ' • ' + op.cls.dates.join(' e ') + ' (' + op.cls.shift + ')</p>' +
+                '</div>' +
+                '<button type="button" data-quickassign="' + op.cls.id + '|' + app.id + '" class="shrink-0 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[10px] transition">+ Alocar</button>' +
+                '</div>';
+            }).join("") +
+            (validOpportunities.length > 6 ? '<p class="text-[10px] text-center text-slate-500 font-semibold pt-1">+ ' + (validOpportunities.length - 6) + ' outras possibilidades compatíveis</p>' : '') +
+            '</div>';
+
+        var card = '<article class="bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 flex flex-col justify-between gap-3">' +
+          '<div class="space-y-3">' +
+          '<div class="flex items-start justify-between gap-2">' +
+          '<div>' +
+          '<h3 class="font-extrabold text-sm sm:text-base text-slate-900">' + app.name + '</h3>' +
+          '<p class="text-[11px] text-slate-500">' + app.phone + '</p>' +
+          '</div>' +
+          '<div class="flex flex-col items-end gap-1">' +
+          '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ' +
+          (sched.assignments.length > 1 ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-700') + '">' +
+          sched.assignments.length + (sched.assignments.length === 1 ? ' prova atual' : ' provas atuais') +
+          '</span>' +
+          (has2ndYear ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700">🔒 Trava 2º Ano Ativa</span>' : '') +
+          '</div>' +
+          '</div>' +
+
+          '<div>' +
+          '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Mapa de Turnos (23/11 a 26/11)</p>' +
+          '<div class="grid grid-cols-8 gap-1">' + timelineHtml + '</div>' +
+          '</div>' +
+
+          '<div>' +
+          '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Alocações Confirmadas na Planilha</p>' +
+          '<div class="space-y-1.5">' + currentListHtml + '</div>' +
+          '</div>' +
+          '</div>' +
+
+          '<div class="pt-2 border-t border-slate-100">' +
+          '<p class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 mb-1.5">✅ Onde ainda PODE aplicar sem conflito (' + validOpportunities.length + ' vagas):</p>' +
+          oppHtml +
+          '</div>' +
+          '</article>';
+
+        cardsHtml.push(card);
+      });
+
+      document.getElementById("kpiMultiApp").textContent = multiCount;
+      container.innerHTML = cardsHtml.length > 0
+        ? cardsHtml.join("")
+        : '<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">Nenhum aplicador encontrado com esse filtro.</div>';
+    }
+
+    // =========================================================================
+    // 4. RENDERIZAÇÃO DA ABA 2: VAGAS PCD EM ABERTO
+    // =========================================================================
+    function renderVacanciesTab() {
+      var container = document.getElementById("vacanciesContainer");
+      if (!container) return;
+
+      var openPcd = getOpenPcdClasses();
+      document.getElementById("badgeVacancyCount").textContent = openPcd.length;
+      document.getElementById("kpiOpenPcd").textContent = openPcd.length;
+
+      if (openPcd.length === 0) {
+        container.innerHTML = '<div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-8 text-center space-y-2">' +
+          '<p class="text-lg font-extrabold text-emerald-900">🎉 Todas as vagas de Aplicador Extra (PCD) foram preenchidas sem conflitos!</p>' +
+          '<p class="text-xs text-emerald-700">Você já pode clicar em "Exportar Planilha (CSV)" no topo para baixar o cronograma completo.</p>' +
+          '</div>';
+        return;
+      }
+
+      container.innerHTML = openPcd.map(function (cls) {
+        var candidates = [];
+        APPLICATORS_MASTER.forEach(function (app) {
+          var res = evaluateAssignment(app.id, cls, false);
+          if (res.allowed) candidates.push({ app: app, res: res });
+        });
+        candidates.sort(function (a, b) { return a.res.priority - b.res.priority; });
+
+        var badgesHtml = candidates.slice(0, 8).map(function (c) {
+          var colorCls = c.res.priority === 1
+            ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+            : c.res.priority <= 3
+              ? "bg-slate-800 hover:bg-slate-900 text-white"
+              : "bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300";
+
+          return '<button type="button" data-quickassign="' + cls.id + '|' + c.app.id + '" class="px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ' + colorCls + '">' +
+            '<span>+ ' + c.app.name + '</span>' +
+            '<span class="text-[10px] opacity-80">(' + (c.res.priority === 1 ? 'Mesma Escola' : c.res.priority === 2 ? 'Livre' : c.res.priority === 3 ? 'Outro Dia' : 'Desloc.') + ')</span>' +
+            '</button>';
+        }).join("");
+
+        return '<div class="bg-white rounded-2xl border border-amber-200 shadow-2xs p-4 space-y-3">' +
+          '<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">' +
+          '<div>' +
+          '<div class="flex flex-wrap items-center gap-2">' +
+          '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-900">⚠️ Vaga PCD Aberta (' + cls.pcdCount + ' aluno' + (cls.pcdCount > 1 ? 's' : '') + ' PCD)</span>' +
+          '<span class="text-xs font-bold text-slate-500">' + cls.locality + ' (' + cls.distance + ')</span>' +
+          '</div>' +
+          '<h3 class="text-base font-extrabold text-slate-900 mt-1">' + cls.school + ' • ' + cls.grade + '</h3>' +
+          '<p class="text-xs text-slate-600">Data: <strong>' + cls.dates.join(' e ') + '/11/2026</strong> • Turno: <strong>' + cls.shift + '</strong> • Aplicador Regular da Sala: <strong>' + (getAppById(cls.regApp) ? getAppById(cls.regApp).name : '-') + '</strong></p>' +
+          '</div>' +
+          '<button type="button" data-openmodal="' + cls.id + '|pcd" class="shrink-0 px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-extrabold text-slate-800">' +
+          'Ver Todos os ' + candidates.length + ' Elegíveis' +
+          '</button>' +
+          '</div>' +
+
+          '<div class="pt-2 border-t border-slate-100">' +
+          '<p class="text-[11px] font-bold text-slate-500 mb-2">Clique para alocar instantaneamente (apenas candidatos 100% livres no turno):</p>' +
+          '<div class="flex flex-wrap gap-2">' + badgesHtml + '</div>' +
+          '</div>' +
+          '</div>';
+      }).join("");
+    }
+
+    // =========================================================================
+    // 5. RENDERIZAÇÃO DA ABA 3: SIMULADOR "PODE OU NÃO PODE?"
+    // =========================================================================
+    function initSimulatorSelects() {
+      var appSel = document.getElementById("simApplicatorSelect");
+      var clsSel = document.getElementById("simClassSelect");
+      if (!appSel || !clsSel) return;
+
+      appSel.innerHTML = APPLICATORS_MASTER.map(function (a) {
+        return '<option value="' + a.id + '">' + a.name + ' (' + a.phone + ')</option>';
+      }).join("");
+
+      clsSel.innerHTML = classesState.map(function (c) {
+        return '<option value="' + c.id + '">' + c.school + ' — ' + c.grade + ' (' + c.dates.join(' e ') + ' • ' + c.shift + ')</option>';
+      }).join("");
+
+      // Pré-seleciona um caso clássico de bloqueio de 2º Ano para demonstração imediata
+      appSel.value = "gabriela";
+      clsSel.value = "5"; // Escola Isaias Lemos 5º Ano A Matutino 24/11 (conflito com 2º Ano 23 e 24/11!)
+      renderSimulatorResult();
+    }
+
+    function renderSimulatorResult() {
+      var appId = document.getElementById("simApplicatorSelect").value;
+      var clsId = Number(document.getElementById("simClassSelect").value);
+      var box = document.getElementById("simResultBox");
+      if (!box) return;
+
+      var targetCls = null;
+      for (var i = 0; i < classesState.length; i++) {
+        if (classesState[i].id === clsId) {
+          targetCls = classesState[i];
+          break;
+        }
+      }
+      if (!targetCls) return;
+
+      var result = evaluateAssignment(appId, targetCls, false);
+      var sched = getApplicatorSchedule(appId, null);
+
+      var scheduleSummary = sched.assignments.length === 0
+        ? "Nenhuma turma alocada ainda."
+        : sched.assignments.map(function (a) {
+            return "• " + a.cls.school + " — " + a.cls.grade + " (" + a.cls.dates.join(" e ") + " • " + a.cls.shift + ") [" + a.role + "]";
+          }).join("<br>");
+
+      if (!result.allowed) {
+        box.className = "rounded-2xl border-2 border-rose-300 bg-rose-50 p-4 sm:p-5 space-y-3";
+        box.innerHTML = '<div class="flex items-center gap-2.5">' +
+          '<span class="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center font-extrabold text-base">⛔</span>' +
+          '<div>' +
+          '<p class="text-sm sm:text-base font-extrabold text-rose-900">' + result.badge + '</p>' +
+          '<p class="text-xs font-semibold text-rose-800 mt-0.5">' + result.reason + '</p>' +
+          '</div>' +
+          '</div>' +
+          '<div class="bg-white/80 rounded-xl p-3 border border-rose-200 text-xs text-slate-700">' +
+          '<p class="font-bold text-slate-900 mb-1">Agenda atual deste aplicador:</p>' +
+          '<p class="leading-relaxed">' + scheduleSummary + '</p>' +
+          '</div>';
+      } else {
+        box.className = "rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-4 sm:p-5 space-y-3";
+        box.innerHTML = '<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">' +
+          '<div class="flex items-start gap-2.5">' +
+          '<span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-extrabold text-base shrink-0">✅</span>' +
+          '<div>' +
+          '<p class="text-sm sm:text-base font-extrabold text-emerald-900">' + result.badge + '</p>' +
+          '<p class="text-xs font-semibold text-emerald-800 mt-0.5">' + result.reason + '</p>' +
+          '</div>' +
+          '</div>' +
+          '<button type="button" data-quickassign="' + targetCls.id + '|' + appId + '" class="shrink-0 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-sm">' +
+          'Alocar Nesta Turma Agora' +
+          '</button>' +
+          '</div>' +
+          '<div class="bg-white/80 rounded-xl p-3 border border-emerald-200 text-xs text-slate-700">' +
+          '<p class="font-bold text-slate-900 mb-1">Agenda atual deste aplicador:</p>' +
+          '<p class="leading-relaxed">' + scheduleSummary + '</p>' +
+          '</div>';
+      }
+    }
+
+    // =========================================================================
+    // 6. RENDERIZAÇÃO DA ABA 4: CRONOGRAMA POR ESCOLA
+    // =========================================================================
+    function renderSchoolsTab() {
+      var container = document.getElementById("schoolsContainer");
+      if (!container) return;
+
+      var query = (document.getElementById("schoolSearchInput").value || "").toLowerCase().trim();
+      var dateFilter = document.getElementById("schoolDateFilter").value;
+
+      // Agrupa por escola mantendo a ordem original
+      var schoolGroups = [];
+      var map = {};
+      classesState.forEach(function (cls) {
+        if (dateFilter !== "all" && cls.dates.indexOf(dateFilter) === -1) return;
+        if (query) {
+          var regName = getAppById(cls.regApp) ? getAppById(cls.regApp).name : "";
+          var pcdNames = (cls.pcdApps || []).map(function (id) { return getAppById(id) ? getAppById(id).name : ""; }).join(" ");
+          var hay = (cls.school + " " + cls.locality + " " + cls.grade + " " + regName + " " + pcdNames).toLowerCase();
+          if (hay.indexOf(query) === -1) return;
+        }
+        if (!map[cls.school]) {
+          map[cls.school] = {
+            school: cls.school,
+            inep: cls.inep,
+            locality: cls.locality,
+            distance: cls.distance,
+            items: []
+          };
+          schoolGroups.push(map[cls.school]);
+        }
+        map[cls.school].items.push(cls);
+      });
+
+      container.innerHTML = schoolGroups.map(function (grp) {
+        var rowsHtml = grp.items.map(function (cls) {
+          var regObj = getAppById(cls.regApp);
+          var pcdObjs = (cls.pcdApps || []).map(getAppById).filter(Boolean);
+          var isMissingPcd = cls.needsExtraPcd && pcdObjs.length === 0;
+
+          return '<div class="p-3.5 border-t border-slate-100 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 ' + (isMissingPcd ? 'bg-amber-50/40' : '') + '">' +
+            '<div class="space-y-1">' +
+            '<div class="flex flex-wrap items-center gap-2">' +
+            '<span class="font-extrabold text-sm text-slate-900">' + cls.grade + '</span>' +
+            '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold ' + (cls.shift === 'Matutino' ? 'bg-sky-100 text-sky-800' : 'bg-indigo-100 text-indigo-800') + '">' + cls.shift + '</span>' +
+            '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold ' + (cls.is2ndYear ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-700') + '">' + cls.dates.join(' e ') + '/11</span>' +
+            '<span class="text-[11px] text-slate-500">' + cls.students + ' estudantes' + (cls.pcdCount > 0 ? ' • <strong>' + cls.pcdCount + ' PCD</strong>' : '') + '</span>' +
+            '</div>' +
+
+            '<div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">' +
+            '<p class="text-slate-700">Aplicador(a): <strong class="text-slate-900">' + (regObj ? regObj.name : 'Não definido') + '</strong></p>' +
+            (cls.needsExtraPcd || pcdObjs.length > 0
+              ? '<p class="' + (isMissingPcd ? 'text-amber-800 font-bold' : 'text-emerald-800') + '">Apoio PCD: <strong>' + (pcdObjs.length > 0 ? pcdObjs.map(function (p) { return p.name; }).join(' + ') : '⚠️ VAGA EM ABERTO') + '</strong></p>'
+              : '<p class="text-slate-400">Sem aplicador extra PCD</p>') +
+            '</div>' +
+            '</div>' +
+
+            '<div class="flex items-center gap-2 shrink-0">' +
+            '<button type="button" data-openmodal="' + cls.id + '|reg" class="px-2.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-[11px] font-bold text-slate-700">Trocar Regular</button>' +
+            '<button type="button" data-openmodal="' + cls.id + '|pcd" class="px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold ' +
+            (isMissingPcd ? 'bg-amber-500 hover:bg-amber-600 text-white' : 'border border-slate-200 hover:bg-slate-50 text-slate-700') + '">' +
+            (isMissingPcd ? '+ Alocar PCD' : 'Apoio PCD') +
+            '</button>' +
+            '</div>' +
+            '</div>';
+        }).join("");
+
+        return '<div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">' +
+          '<div class="bg-slate-50 px-4 py-3 flex flex-wrap items-center justify-between gap-2">' +
+          '<div>' +
+          '<h3 class="font-extrabold text-sm sm:text-base text-slate-900">' + grp.school + ' <span class="text-xs font-medium text-slate-400">INEP ' + grp.inep + '</span></h3>' +
+          '<p class="text-xs text-slate-600">' + grp.locality + ' • Distância: <strong>' + grp.distance + '</strong></p>' +
+          '</div>' +
+          '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-white border border-slate-200 text-slate-700">' + grp.items.length + ' turma(s)</span>' +
+          '</div>' +
+          '<div>' + rowsHtml + '</div>' +
+          '</div>';
+      }).join("");
+    }
+
+    // =========================================================================
+    // 7. MODAL DE ALOCAÇÃO MANUAL COM VALIDAÇÃO ANTI-CONFLITO
+    // =========================================================================
+    function openAllocModal(classId, targetType) {
+      var cls = null;
+      for (var i = 0; i < classesState.length; i++) {
+        if (classesState[i].id === classId) {
+          cls = classesState[i];
+          break;
+        }
+      }
+      if (!cls) return;
+
+      document.getElementById("allocModalBadge").textContent = targetType === "pcd" ? "Apoio Estudante PCD" : "Aplicador Regular da Sala";
+      document.getElementById("allocModalTitle").textContent = cls.school + " • " + cls.grade;
+      document.getElementById("allocModalSub").textContent = cls.locality + " • Dias: " + cls.dates.join(" e ") + "/11 • Turno: " + cls.shift;
+
+      var evaluated = APPLICATORS_MASTER.map(function (app) {
+        return {
+          app: app,
+          res: evaluateAssignment(app.id, cls, true)
+        };
+      });
+
+      evaluated.sort(function (a, b) {
+        if (a.res.allowed !== b.res.allowed) return a.res.allowed ? -1 : 1;
+        return (a.res.priority || 99) - (b.res.priority || 99);
+      });
+
+      var listEl = document.getElementById("allocCandidatesList");
+      listEl.innerHTML = evaluated.map(function (item) {
+        if (!item.res.allowed) {
+          return '<div class="p-3 rounded-xl border border-rose-200 bg-rose-50/70 opacity-85">' +
+            '<div class="flex items-center justify-between gap-2">' +
+            '<p class="font-bold text-xs text-rose-950">' + item.app.name + '</p>' +
+            '<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-rose-200 text-rose-900">' + item.res.badge + '</span>' +
+            '</div>' +
+            '<p class="text-[11px] text-rose-800 mt-1">' + item.res.reason + '</p>' +
+            '</div>';
+        }
+
+        return '<div class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/50 flex items-center justify-between gap-3">' +
+          '<div class="min-w-0">' +
+          '<p class="font-extrabold text-xs text-slate-900">' + item.app.name + '</p>' +
+          '<p class="text-[10px] font-bold text-emerald-700 mt-0.5">' + item.res.badge + '</p>' +
+          '<p class="text-[11px] text-slate-600 mt-0.5">' + item.res.reason + '</p>' +
+          '</div>' +
+          '<button type="button" data-confirmalloc="' + cls.id + '|' + targetType + '|' + item.app.id + '" class="shrink-0 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs">' +
+          'Selecionar' +
+          '</button>' +
+          '</div>';
+      }).join("");
+
+      document.getElementById("allocModal").classList.remove("hidden");
+    }
+
+    function applyAllocation(classId, targetType, appId) {
+      var cls = null;
+      for (var i = 0; i < classesState.length; i++) {
+        if (classesState[i].id === classId) {
+          cls = classesState[i];
+          break;
+        }
+      }
+      if (!cls) return;
+
+      var check = evaluateAssignment(appId, cls, true);
+      if (!check.allowed) {
+        showToast("⛔ Bloqueado: " + check.reason);
+        return;
+      }
+
+      if (targetType === "reg") {
+        cls.regApp = appId;
+      } else {
+        if (!cls.pcdApps) cls.pcdApps = [];
+        if (cls.pcdApps.indexOf(appId) === -1) {
+          cls.pcdApps.push(appId);
+        }
+      }
+
+      saveState();
+      refreshAll();
+      document.getElementById("allocModal").classList.add("hidden");
+      var appObj = getAppById(appId);
+      showToast("✅ " + (appObj ? appObj.name : "Aplicador") + " alocado(a) em " + cls.school + " (" + cls.grade + ")!");
+    }
+
+    function autoFillAllVacancies() {
+      var openPcd = getOpenPcdClasses();
+      var filled = 0;
+
+      openPcd.forEach(function (cls) {
+        var candidates = [];
+        APPLICATORS_MASTER.forEach(function (app) {
+          var res = evaluateAssignment(app.id, cls, false);
+          if (res.allowed) {
+            // Evita sobrecarregar quem já tem 4 turmas
+            var load = getApplicatorSchedule(app.id, null).assignments.length;
+            if (load < 4) {
+              candidates.push({ app: app, score: res.priority * 10 + load });
+            }
+          }
+        });
+        candidates.sort(function (a, b) { return a.score - b.score; });
+        if (candidates.length > 0) {
+          cls.pcdApps = [candidates[0].app.id];
+          filled++;
+        }
+      });
+
+      saveState();
+      refreshAll();
+      showToast("⚡ " + filled + " vaga(s) PCD preenchida(s) automaticamente com zero conflitos!");
+    }
+
+    function exportScheduleCsv() {
+      var lines = ["Escola;INEP;Localidade;Distancia;Turma;Turno;Data;Estudantes;Aplicador_Regular;Estudantes_PCD;Aplicador_PCD"];
+      classesState.forEach(function (c) {
+        var reg = getAppById(c.regApp);
+        var pcds = (c.pcdApps || []).map(getAppById).filter(Boolean).map(function (p) { return p.name + " (" + p.phone + ")"; }).join(" / ");
+        lines.push([
+          c.school,
+          c.inep,
+          c.locality,
+          c.distance,
+          c.grade,
+          c.shift,
+          c.dates.join(" e ") + "/11/2026",
+          c.students,
+          reg ? reg.name + " (" + reg.phone + ")" : "",
+          c.pcdCount,
+          pcds
+        ].join(";"));
+      });
+
+      var blob = new Blob(["\uFEFF" + lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "Cronograma_Alocado_SABE_2026_Canarana.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("📥 Planilha CSV exportada com sucesso!");
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(classesState));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function loadState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          classesState = JSON.parse(raw);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      classesState = cloneInitialClasses();
+    }
+
+    function refreshAll() {
+      document.getElementById("kpiTotalClasses").textContent = classesState.length;
+      document.getElementById("kpiConflicts").textContent = countGlobalConflicts();
+      renderDemosTab();
+      renderVacanciesTab();
+      renderSchoolsTab();
+      renderSimulatorResult();
+    }
+
+    function bindEvents() {
+      // Navegação entre abas
+      document.querySelectorAll(".tab-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          currentTab = btn.getAttribute("data-tab");
+          document.querySelectorAll(".tab-btn").forEach(function (b) {
+            var active = b.getAttribute("data-tab") === currentTab;
+            b.className = active
+              ? "tab-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-orange-500 text-white shadow-sm"
+              : "tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20";
+          });
+          document.querySelectorAll(".tab-panel").forEach(function (p) {
+            p.classList.add("hidden");
+          });
+          var targetPanel = document.getElementById("tab-" + currentTab);
+          if (targetPanel) targetPanel.classList.remove("hidden");
+        });
+      });
+
+      // Filtros da Aba Demonstrações
+      document.querySelectorAll(".demo-filter-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          demoFilter = btn.getAttribute("data-demofilter");
+          document.querySelectorAll(".demo-filter-btn").forEach(function (b) {
+            var active = b.getAttribute("data-demofilter") === demoFilter;
+            b.className = active
+              ? "demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white"
+              : "demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200";
+          });
+          renderDemosTab();
+        });
+      });
+
+      document.getElementById("demoSearchInput").addEventListener("input", renderDemosTab);
+      document.getElementById("schoolSearchInput").addEventListener("input", renderSchoolsTab);
+      document.getElementById("schoolDateFilter").addEventListener("change", renderSchoolsTab);
+      document.getElementById("simApplicatorSelect").addEventListener("change", renderSimulatorResult);
+      document.getElementById("simClassSelect").addEventListener("change", renderSimulatorResult);
+
+      document.getElementById("btnAutoFillBest").addEventListener("click", autoFillAllVacancies);
+      document.getElementById("btnExportCsv").addEventListener("click", exportScheduleCsv);
+      document.getElementById("btnResetDemo").addEventListener("click", function () {
+        classesState = cloneInitialClasses();
+        saveState();
+        refreshAll();
+        showToast("↺ Planilha restaurada para o estado original do documento.");
+      });
+
+      document.getElementById("btnCloseAllocModal").addEventListener("click", function () {
+        document.getElementById("allocModal").classList.add("hidden");
+      });
+
+      // Delegação global para botões dinâmicos
+      document.body.addEventListener("click", function (e) {
+        var quickBtn = e.target.closest("[data-quickassign]");
+        if (quickBtn) {
+          var parts = quickBtn.getAttribute("data-quickassign").split("|");
+          applyAllocation(Number(parts[0]), "pcd", parts[1]);
+          return;
+        }
+
+        var modalBtn = e.target.closest("[data-openmodal]");
+        if (modalBtn) {
+          var mParts = modalBtn.getAttribute("data-openmodal").split("|");
+          openAllocModal(Number(mParts[0]), mParts[1]);
+          return;
+        }
+
+        var confirmBtn = e.target.closest("[data-confirmalloc]");
+        if (confirmBtn) {
+          var cParts = confirmBtn.getAttribute("data-confirmalloc").split("|");
+          applyAllocation(Number(cParts[0]), cParts[1], cParts[2]);
+        }
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+      loadState();
+      initSimulatorSelects();
+      bindEvents();
+      refreshAll();
+    });
+  </script>
+</body>
+</html>
