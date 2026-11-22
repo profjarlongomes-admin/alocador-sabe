@@ -1680,4 +1680,271 @@
     }
 
     function refreshAll() {
-// ... existing code ... -->
+      var filteredClasses = getFilteredClassesByMunicipality();
+      var kpiTotal = document.getElementById("kpiTotalClasses");
+      var badgeSchoolCount = document.getElementById("badgeSchoolClassesCount");
+      var kpiConflicts = document.getElementById("kpiConflicts");
+
+      if (kpiTotal) kpiTotal.textContent = filteredClasses.length;
+      if (badgeSchoolCount) badgeSchoolCount.textContent = filteredClasses.length;
+      if (kpiConflicts) kpiConflicts.textContent = countGlobalConflicts();
+
+      renderDemosTab();
+      renderVacanciesTab();
+      initSimulatorSelects();
+      renderSchoolsTab();
+    }
+
+    function switchTab(tabName) {
+      currentTab = tabName;
+      document.querySelectorAll(".tab-btn").forEach(function (btn) {
+        var active = btn.getAttribute("data-tab") === tabName;
+        btn.className = active
+          ? "tab-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-orange-500 text-white shadow-sm"
+          : "tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20";
+      });
+      document.querySelectorAll(".tab-panel").forEach(function (panel) {
+        if (panel.id === "tab-" + tabName) panel.classList.remove("hidden");
+        else panel.classList.add("hidden");
+      });
+    }
+
+    function normalizeCompareName(str) {
+      return String(str || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function bindAllEvents() {
+      // Troca de abas principais
+      document.querySelectorAll(".tab-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          switchTab(btn.getAttribute("data-tab"));
+        });
+      });
+
+      // Filtro por município
+      document.querySelectorAll(".muni-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setMunicipalityFilter(btn.getAttribute("data-muni"));
+          refreshAll();
+        });
+      });
+
+      // Busca e subfiltros da aba Demonstrações
+      var demoSearch = document.getElementById("demoSearchInput");
+      if (demoSearch) {
+        demoSearch.addEventListener("input", renderDemosTab);
+      }
+      document.querySelectorAll(".demo-filter-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          demoFilter = btn.getAttribute("data-demofilter") || "all";
+          document.querySelectorAll(".demo-filter-btn").forEach(function (b) {
+            var active = b.getAttribute("data-demofilter") === demoFilter;
+            b.className = active
+              ? "demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white"
+              : "demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200";
+          });
+          renderDemosTab();
+        });
+      });
+
+      // Preenchimento automático da aba Vagas em Aberto
+      var btnAutoFill = document.getElementById("btnAutoFillBest");
+      if (btnAutoFill) {
+        btnAutoFill.addEventListener("click", function () {
+          autoFillAllVacancies(currentMunicipality, false);
+        });
+      }
+
+      // Simulador Pode ou Não Pode
+      var simApp = document.getElementById("simApplicatorSelect");
+      var simCls = document.getElementById("simClassSelect");
+      if (simApp) simApp.addEventListener("change", renderSimulatorResult);
+      if (simCls) simCls.addEventListener("change", renderSimulatorResult);
+
+      // Busca e filtro de data da aba Cronograma por Escola
+      var schSearch = document.getElementById("schoolSearchInput");
+      var schDate = document.getElementById("schoolDateFilter");
+      if (schSearch) schSearch.addEventListener("input", renderSchoolsTab);
+      if (schDate) schDate.addEventListener("change", renderSchoolsTab);
+
+      // Modal 1: Alocar / Trocar Aplicador
+      var btnCloseAlloc = document.getElementById("btnCloseAllocModal");
+      if (btnCloseAlloc) {
+        btnCloseAlloc.addEventListener("click", function () {
+          document.getElementById("allocModal").classList.add("hidden");
+        });
+      }
+
+      // Modal 2: Adicionar Aplicadores (Individual ou Lote)
+      var btnOpenNewApp = document.getElementById("btnOpenNewAppModal");
+      var btnCloseNewApp = document.getElementById("btnCloseNewAppModal");
+      var newAppForm = document.getElementById("newAppForm");
+
+      if (btnOpenNewApp) {
+        btnOpenNewApp.addEventListener("click", function () {
+          if (currentMunicipality !== "all") {
+            var muniSel = document.getElementById("newAppMuni");
+            if (muniSel) muniSel.value = currentMunicipality;
+          }
+          document.getElementById("newAppModal").classList.remove("hidden");
+        });
+      }
+      if (btnCloseNewApp) {
+        btnCloseNewApp.addEventListener("click", function () {
+          document.getElementById("newAppModal").classList.add("hidden");
+        });
+      }
+      if (newAppForm) {
+        newAppForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var muni = document.getElementById("newAppMuni").value;
+          var rawText = document.getElementById("newAppNamesList").value || "";
+          var obsPhone = (document.getElementById("newAppPhone").value || "").trim();
+          var autoAlloc = document.getElementById("chkAutoAllocateBatch").checked;
+
+          var lines = rawText.split(/\r?\n/);
+          var addedCount = 0;
+          var skippedCount = 0;
+
+          lines.forEach(function (line, idx) {
+            var cleanName = line.replace(/^\s*\d+\s*[-–—.)]\s*/, "").trim();
+            if (!cleanName) return;
+
+            var normNew = normalizeCompareName(cleanName);
+            var exists = APPLICATORS_MASTER.some(function (existing) {
+              return (existing.municipality || "Canarana") === muni &&
+                normalizeCompareName(existing.name) === normNew;
+            });
+
+            if (exists) {
+              skippedCount++;
+              return;
+            }
+
+            customApplicators.push({
+              id: "custom_" + Date.now() + "_" + idx,
+              municipality: muni,
+              name: cleanName,
+              phone: obsPhone || ("Equipe " + muni),
+              role: "Equipe " + muni
+            });
+            addedCount++;
+          });
+
+          rebuildApplicatorsList();
+          saveState();
+
+          var filledCount = 0;
+          if (autoAlloc) {
+            filledCount = autoFillAllVacancies(muni, true);
+          }
+
+          setMunicipalityFilter(muni);
+          refreshAll();
+          document.getElementById("newAppNamesList").value = "";
+          document.getElementById("newAppModal").classList.add("hidden");
+
+          var msg = "✅ " + addedCount + " aplicador(es) adicionado(s) em " + muni;
+          if (skippedCount > 0) msg += " (" + skippedCount + " já existia)";
+          if (autoAlloc) msg += " • " + filledCount + " vaga(s) alocada(s) sem erros!";
+          showToast(msg);
+        });
+      }
+
+      // Modal 3: Lista Oficial por Cidade (WhatsApp / Impressão PDF)
+      var btnOpenReport = document.getElementById("btnOpenReportModal");
+      var btnCloseReport = document.getElementById("btnCloseReportModal");
+      var reportMuniSel = document.getElementById("reportMuniSelect");
+      var btnCopyWa = document.getElementById("btnCopyWhatsAppReport");
+      var btnPrintRep = document.getElementById("btnPrintReport");
+
+      if (btnOpenReport) {
+        btnOpenReport.addEventListener("click", function () {
+          var sel = document.getElementById("reportMuniSelect");
+          if (sel) sel.value = currentMunicipality;
+          renderOfficialReportModal();
+          document.getElementById("reportModal").classList.remove("hidden");
+        });
+      }
+      if (btnCloseReport) {
+        btnCloseReport.addEventListener("click", function () {
+          document.getElementById("reportModal").classList.add("hidden");
+        });
+      }
+      if (reportMuniSel) {
+        reportMuniSel.addEventListener("change", renderOfficialReportModal);
+      }
+      if (btnCopyWa) {
+        btnCopyWa.addEventListener("click", copyWhatsAppOfficialList);
+      }
+      if (btnPrintRep) {
+        btnPrintRep.addEventListener("click", function () {
+          window.print();
+        });
+      }
+
+      // Exportar CSV e Restaurar Dados Originais
+      var btnCsv = document.getElementById("btnExportCsv");
+      if (btnCsv) btnCsv.addEventListener("click", exportScheduleCsv);
+
+      var btnReset = document.getElementById("btnResetDemo");
+      if (btnReset) {
+        btnReset.addEventListener("click", function () {
+          classesState = cloneInitialClasses();
+          customApplicators = [];
+          rebuildApplicatorsList();
+          saveState();
+          refreshAll();
+          showToast("↺ Dados restaurados para a configuração original do Polo Irecê 02!");
+        });
+      }
+
+      // Delegação global para botões dinâmicos (Alocar Rápido, Abrir Modal, Confirmar Escolha)
+      document.addEventListener("click", function (e) {
+        var quickBtn = e.target.closest("[data-quickassign]");
+        if (quickBtn) {
+          var partsQ = quickBtn.getAttribute("data-quickassign").split("|");
+          if (partsQ.length === 3) {
+            applyAllocation(Number(partsQ[0]), partsQ[1], partsQ[2]);
+          }
+          return;
+        }
+
+        var modalBtn = e.target.closest("[data-openmodal]");
+        if (modalBtn) {
+          var partsM = modalBtn.getAttribute("data-openmodal").split("|");
+          if (partsM.length === 2) {
+            openAllocModal(Number(partsM[0]), partsM[1]);
+          }
+          return;
+        }
+
+        var confirmBtn = e.target.closest("[data-confirmalloc]");
+        if (confirmBtn) {
+          var partsC = confirmBtn.getAttribute("data-confirmalloc").split("|");
+          if (partsC.length === 3) {
+            applyAllocation(Number(partsC[0]), partsC[1], partsC[2]);
+          }
+        }
+      });
+    }
+
+    function init() {
+      loadState();
+      bindAllEvents();
+      refreshAll();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
