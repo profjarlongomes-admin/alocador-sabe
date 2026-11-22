@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Alocador Inteligente SABE 2026 • Canarana-BA</title>
+  <title>Alocador Inteligente SABE 2026 • Polo Irecê 02</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,33 +27,61 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #printableReportArea, #printableReportArea * {
+        visibility: visible !important;
+      }
+      #printableReportArea {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
 
   <!-- Toast de Notificação -->
-  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden max-w-[92vw] w-max px-4 py-3 rounded-2xl shadow-xl text-sm font-semibold text-white bg-slate-900 transition-all"></div>
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden max-w-[92vw] w-max px-4 py-3 rounded-2xl shadow-xl text-sm font-semibold text-white bg-slate-900 transition-all no-print"></div>
 
   <!-- Cabeçalho -->
-  <header class="bg-gradient-to-r from-slate-900 via-slate-800 to-orange-900 text-white shadow-lg sticky top-0 z-30">
+  <header class="bg-gradient-to-r from-slate-900 via-slate-800 to-orange-900 text-white shadow-lg sticky top-0 z-30 no-print">
     <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
         <div class="flex flex-wrap items-center gap-2">
           <span class="bg-orange-500 text-white text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full">SABE 2026</span>
           <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🛡️ Motor Anti-Conflito Ativo</span>
-          <span class="text-slate-300 text-xs font-medium">Canarana-BA</span>
+          <span class="text-slate-300 text-xs font-medium">Polo Irecê 02 • Canarana, Lapão, Irecê, P. Dutra e Uibaí</span>
         </div>
         <h1 class="text-lg sm:text-xl font-extrabold tracking-tight mt-1">Alocador Inteligente de Aplicadores</h1>
       </div>
 
       <div class="flex items-center gap-2 flex-wrap">
+        <button type="button" id="btnOpenNewAppModal"
+          class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5">
+          <span>➕ Adicionar Aplicadores</span>
+        </button>
+        <button type="button" id="btnOpenReportModal"
+          class="px-3 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5">
+          <span>📄 Lista Oficial por Cidade</span>
+        </button>
         <button type="button" id="btnExportCsv"
           class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/15 transition flex items-center gap-1.5">
-          <span>📥 Exportar Planilha (CSV)</span>
+          <span>📥 Exportar CSV</span>
         </button>
         <button type="button" id="btnResetDemo"
           class="px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 text-xs font-bold border border-rose-400/20 transition">
-          ↺ Restaurar Original
+          ↺ Restaurar
         </button>
       </div>
     </div>
@@ -63,11 +91,11 @@
       <nav class="flex gap-2 min-w-max" role="tablist">
         <button type="button" data-tab="demos"
           class="tab-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-orange-500 text-white shadow-sm">
-          🎯 Demonstrações Multi-Aplicação (<span id="badgeDemoCount">24</span>)
+          🎯 Demonstrações Multi-Aplicação (<span id="badgeDemoCount">81</span>)
         </button>
         <button type="button" data-tab="vacancies"
           class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
-          🚨 Vagas PCD em Aberto (<span id="badgeVacancyCount">16</span>)
+          🚨 Vagas em Aberto (<span id="badgeVacancyCount">55</span>)
         </button>
         <button type="button" data-tab="simulator"
           class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
@@ -75,14 +103,25 @@
         </button>
         <button type="button" data-tab="schools"
           class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
-          🏫 Cronograma por Escola (53 Turmas)
+          🏫 Cronograma por Escola (<span id="badgeSchoolClassesCount">152</span> Turmas)
         </button>
       </nav>
     </div>
   </header>
 
   <!-- Painel de Resumo / Regras -->
-  <section class="max-w-6xl w-full mx-auto px-4 pt-4">
+  <section class="max-w-6xl w-full mx-auto px-4 pt-4 space-y-3 no-print">
+    <!-- Seletor de Municípios do Polo Irecê 02 -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs p-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
+      <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 px-2 shrink-0">Município:</span>
+      <button type="button" data-muni="all" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-extrabold bg-orange-600 text-white transition">Todos (Polo 02 • 152)</button>
+      <button type="button" data-muni="Canarana" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Canarana <span class="opacity-75">(53)</span></button>
+      <button type="button" data-muni="Presidente Dutra" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Presidente Dutra <span class="opacity-75">(18)</span></button>
+      <button type="button" data-muni="Lapão" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Lapão <span class="opacity-75">(51)</span></button>
+      <button type="button" data-muni="Uibaí" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Uibaí <span class="opacity-75">(20)</span></button>
+      <button type="button" data-muni="Irecê" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Irecê <span class="opacity-75">(10)</span></button>
+    </div>
+
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-3.5 sm:p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
       <div class="flex items-start gap-3">
         <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-extrabold shrink-0 text-base">🛡️</div>
@@ -99,36 +138,36 @@
       <div class="grid grid-cols-4 gap-2 shrink-0">
         <div class="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-center">
           <p class="text-[10px] font-bold uppercase text-slate-400">Turmas</p>
-          <p class="text-sm sm:text-base font-extrabold text-slate-900" id="kpiTotalClasses">53</p>
+          <p class="text-sm sm:text-base font-extrabold text-slate-900" id="kpiTotalClasses">152</p>
         </div>
         <div class="bg-emerald-50 border border-emerald-200 rounded-xl px-2.5 py-2 text-center">
           <p class="text-[10px] font-bold uppercase text-emerald-600">Conflitos</p>
           <p class="text-sm sm:text-base font-extrabold text-emerald-700" id="kpiConflicts">0</p>
         </div>
         <div class="bg-amber-50 border border-amber-200 rounded-xl px-2.5 py-2 text-center">
-          <p class="text-[10px] font-bold uppercase text-amber-600">Vagas PCD</p>
-          <p class="text-sm sm:text-base font-extrabold text-amber-700" id="kpiOpenPcd">16</p>
+          <p class="text-[10px] font-bold uppercase text-amber-600">Vagas Abertas</p>
+          <p class="text-sm sm:text-base font-extrabold text-amber-700" id="kpiOpenPcd">55</p>
         </div>
         <div class="bg-blue-50 border border-blue-200 rounded-xl px-2.5 py-2 text-center">
           <p class="text-[10px] font-bold uppercase text-blue-600">Multi-Prova</p>
-          <p class="text-sm sm:text-base font-extrabold text-blue-700" id="kpiMultiApp">22</p>
+          <p class="text-sm sm:text-base font-extrabold text-blue-700" id="kpiMultiApp">43</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Conteúdo Dinâmico das Abas -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-4 pb-12">
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-4 pb-12 no-print">
 
     <!-- ABA 1: DEMONSTRAÇÕES MULTI-APLICAÇÃO -->
     <div id="tab-demos" class="tab-panel space-y-4 animate-fade-in">
       <div class="bg-white rounded-2xl border border-slate-200 p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
         <div class="relative flex-1">
-          <input id="demoSearchInput" type="text" placeholder="Filtrar aplicador por nome, escola ou povoado..."
+          <input id="demoSearchInput" type="text" placeholder="Filtrar aplicador por nome, município, escola ou povoado..."
             class="w-full pl-3.5 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white" />
         </div>
         <div class="flex gap-2 flex-wrap">
-          <button type="button" data-demofilter="all" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white">Todos (28)</button>
+          <button type="button" data-demofilter="all" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white">Todos (<span id="demoFilterAllCount">81</span>)</button>
           <button type="button" data-demofilter="2ano" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-rose-50">🔒 Com 2º Ano (Bloqueio 2 dias)</button>
           <button type="button" data-demofilter="canAddMore" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50">➕ Podem Assumir + Vagas</button>
         </div>
@@ -137,12 +176,12 @@
       <div id="demosContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
     </div>
 
-    <!-- ABA 2: VAGAS PCD EM ABERTO -->
+    <!-- ABA 2: VAGAS EM ABERTO (REGULAR + PCD) -->
     <div id="tab-vacancies" class="tab-panel hidden space-y-4 animate-fade-in">
       <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-900 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <p class="font-extrabold text-sm text-amber-950">Vagas de Aplicador Extra (PCD) Sem Preenchimento na Planilha</p>
-          <p class="mt-0.5 leading-relaxed">Para cada turma abaixo, o motor listou automaticamente apenas os aplicadores <strong>100% livres</strong> naquele(s) dia(s) e turno — respeitando o bloqueio de 2 dias seguidos do 2º Ano.</p>
+          <p class="font-extrabold text-sm text-amber-950">Vagas de Aplicador Regular ou Extra (PCD) em Aberto nas Planilhas</p>
+          <p class="mt-0.5 leading-relaxed">Para cada turma abaixo, o motor prioriza aplicadores do mesmo município que estejam <strong>100% livres</strong> naquele(s) dia(s) e turno — respeitando o bloqueio de 2 dias seguidos do 2º Ano e turno Integral.</p>
         </div>
         <button type="button" id="btnAutoFillBest"
           class="shrink-0 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-sm transition">
@@ -158,7 +197,7 @@
       <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
         <div>
           <h2 class="text-base font-extrabold text-slate-900">Simulador Instantâneo: "Esse aplicador pode assumir essa turma?"</h2>
-          <p class="text-xs text-slate-500 mt-0.5">Escolha qualquer aplicador e qualquer turma da planilha de Canarana-BA para verificar conflitos de turno, trava do 2º Ano (2 dias seguidos) e deslocamento.</p>
+          <p class="text-xs text-slate-500 mt-0.5">Escolha qualquer aplicador e qualquer turma do Polo Irecê 02 para verificar conflitos de turno, trava do 2º Ano (2 dias seguidos) e deslocamento.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -179,12 +218,12 @@
     <!-- ABA 4: CRONOGRAMA POR ESCOLA -->
     <div id="tab-schools" class="tab-panel hidden space-y-4 animate-fade-in">
       <div class="bg-white rounded-2xl border border-slate-200 p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-        <input id="schoolSearchInput" type="text" placeholder="Buscar escola, povoado, turma ou aplicador..."
+        <input id="schoolSearchInput" type="text" placeholder="Buscar escola, município, povoado, turma ou aplicador..."
           class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white" />
         <select id="schoolDateFilter" class="px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700">
           <option value="all">Todas as Datas (23 a 26/11)</option>
-          <option value="23/11">Dia 23/11/2026 (2º Ano)</option>
-          <option value="24/11">Dia 24/11/2026 (2º, 5º e 9º Ano)</option>
+          <option value="23/11">Dia 23/11/2026 (1º Dia / 2º Ano)</option>
+          <option value="24/11">Dia 24/11/2026 (2º Dia / 2º, 5º, 9º e 3ª Série)</option>
           <option value="25/11">Dia 25/11/2026 (2º, 5º e 9º Ano)</option>
           <option value="26/11">Dia 26/11/2026 (2º Ano)</option>
         </select>
@@ -195,8 +234,8 @@
 
   </main>
 
-  <!-- MODAL: Alocar / Trocar Aplicador na Turma -->
-  <div id="allocModal" class="fixed inset-0 z-40 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+  <!-- MODAL 1: Alocar / Trocar Aplicador na Turma -->
+  <div id="allocModal" class="fixed inset-0 z-40 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl p-5 sm:p-6 max-h-[90vh] overflow-y-auto space-y-4">
       <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
         <div>
@@ -211,9 +250,113 @@
     </div>
   </div>
 
+  <!-- MODAL 2: Cadastrar Aplicadores (Individual ou em Lote) -->
+  <div id="newAppModal" class="fixed inset-0 z-40 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 no-print">
+    <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl p-5 sm:p-6 space-y-4 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
+        <div>
+          <span class="inline-block text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">➕ Cadastro Rápido em Lote • Polo Irecê 02</span>
+          <h3 class="text-base sm:text-lg font-extrabold text-slate-900 mt-1">Adicionar Aplicadores (1 ou Vários de Uma Vez)</h3>
+          <p class="text-xs text-slate-500 mt-0.5">Cole uma lista (um nome por linha) e deixe o Alocador distribuir automaticamente sem conflitos.</p>
+        </div>
+        <button type="button" id="btnCloseNewAppModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">✕</button>
+      </div>
+
+      <form id="newAppForm" class="space-y-3">
+        <div>
+          <label for="newAppMuni" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">1. Município de Atuação *</label>
+          <select id="newAppMuni" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <option value="Uibaí">Uibaí</option>
+            <option value="Irecê">Irecê</option>
+            <option value="Canarana">Canarana</option>
+            <option value="Presidente Dutra">Presidente Dutra</option>
+            <option value="Lapão">Lapão</option>
+          </select>
+        </div>
+        <div>
+          <label for="newAppNamesList" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">2. Nome(s) dos Aplicadores (1 por linha) *</label>
+          <textarea id="newAppNamesList" rows="5" required placeholder="Cole a lista aqui, por exemplo:&#10;1 - Jilvanice Fernandes de Souza&#10;2 - Rebeca Bastos Rosa Liborio&#10;3 - Emily Dourado Machado&#10;4 - Leila Marta Nunes Bastos&#10;5 - Larissa Lima Mendes"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 leading-relaxed"></textarea>
+          <p class="text-[11px] text-slate-500 mt-1">Numerações como <code class="bg-slate-100 px-1 rounded">1 -</code> e nomes já cadastrados no mesmo município são tratados automaticamente.</p>
+        </div>
+        <div>
+          <label for="newAppPhone" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Observação / Origem (Opcional)</label>
+          <input id="newAppPhone" type="text" placeholder="Ex: Equipe Municipal Uibaí"
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500" />
+        </div>
+        <label class="flex items-start gap-2.5 p-3 rounded-xl border border-emerald-200 bg-emerald-50/80 cursor-pointer">
+          <input id="chkAutoAllocateBatch" type="checkbox" checked class="mt-0.5 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+          <span class="text-xs text-emerald-950 leading-snug">
+            <strong>⚡ Alocar automaticamente nas escolas/turmas livres deste município agora</strong><br />
+            <span class="text-[11px] text-emerald-800">Distribui a equipe nos turnos disponíveis (incluindo dobras Manhã + Tarde) sem nenhum conflito.</span>
+          </span>
+        </label>
+        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-sm transition">
+          Salvar e Alocar Sem Erros
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: LISTA OFICIAL DE ESCOLAS POR CIDADE (COM APLICADORES ALOCADOS) -->
+  <div id="reportModal" class="fixed inset-0 z-40 hidden bg-slate-900/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-5xl rounded-t-3xl sm:rounded-3xl shadow-2xl p-5 sm:p-6 max-h-[92vh] overflow-y-auto space-y-4">
+      
+      <!-- Barra de Controle do Relatório -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-slate-200 pb-4 no-print">
+        <div>
+          <span class="inline-block text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-orange-100 text-orange-800">📄 Relatório Consolidado • Polo Irecê 02</span>
+          <h3 class="text-lg font-extrabold text-slate-900 mt-1">Lista Oficial das Escolas por Cidade (Com Aplicadores Alocados)</h3>
+          <p class="text-xs text-slate-500">Filtre pelo município desejado para imprimir/salvar em PDF ou copiar a relação pronta para o WhatsApp.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <select id="reportMuniSelect" class="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <option value="all">Todos os 5 Municípios (Polo 02)</option>
+            <option value="Canarana">Canarana-BA</option>
+            <option value="Presidente Dutra">Presidente Dutra-BA</option>
+            <option value="Lapão">Lapão-BA</option>
+            <option value="Uibaí">Uibaí-BA</option>
+            <option value="Irecê">Irecê-BA (Polo 02)</option>
+          </select>
+
+          <button type="button" id="btnCopyWhatsAppReport"
+            class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5">
+            <span>📋 Copiar p/ WhatsApp</span>
+          </button>
+
+          <button type="button" id="btnPrintReport"
+            class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5">
+            <span>🖨️ Imprimir / PDF</span>
+          </button>
+
+          <button type="button" id="btnCloseReportModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 font-bold">✕</button>
+        </div>
+      </div>
+
+      <!-- Área Imprimível da Lista Oficial -->
+      <div id="printableReportArea" class="space-y-5">
+        <div class="border-b-2 border-slate-800 pb-3 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
+          <div>
+            <p class="text-[11px] font-extrabold uppercase tracking-wider text-orange-700">Sistema de Avaliação Baiano de Educação • SABE 2026</p>
+            <h2 id="reportDocTitle" class="text-lg font-extrabold text-slate-900">Relação Oficial de Escolas e Aplicadores Alocados — Polo Irecê 02</h2>
+            <p id="reportDocSubtitle" class="text-xs text-slate-600 mt-0.5"></p>
+          </div>
+          <div class="text-left sm:text-right text-[11px] text-slate-500">
+            <p class="font-bold text-slate-700">Coordenação de Polo: Jarlon Gomes Souza</p>
+            <p id="reportTimestamp"></p>
+          </div>
+        </div>
+
+        <div id="reportContentContainer" class="space-y-5"></div>
+      </div>
+
+    </div>
+  </div>
+
   <script>
     // =========================================================================
-    // 1. DADOS COMPLETOS EXTRAÍDOS DA PLANILHA OFICIAL DE CANARANA-BA (53 TURMAS)
+    // 1. DADOS CONSOLIDADOS DO POLO IRECÊ 02 (5 MUNICÍPIOS • 152 TURMAS)
     // =========================================================================
     var TIME_SLOTS = [
       { key: "23/11|Matutino", short: "23M", label: "23/11 Manhã" },
@@ -226,124 +369,330 @@
       { key: "26/11|Vespertino", short: "26V", label: "26/11 Tarde" }
     ];
 
-    var APPLICATORS_MASTER = [
-      { id: "alexsandra", name: "Alexsandra R. de Araújo", phone: "(74) 99968-5786", role: "Titular" },
-      { id: "alexia", name: "Alexia Lorrana Marques de Araújo", phone: "(74) 99940-1534", role: "Titular" },
-      { id: "amanda", name: "Amanda Santos", phone: "(74) 99952-2831", role: "Titular" },
-      { id: "anacarla", name: "Ana Carla Martins", phone: "(74) 99972-3580", role: "Titular" },
-      { id: "beatriz", name: "Beatriz Izabel Basso", phone: "(74) 99937-1463", role: "Titular" },
-      { id: "cariely", name: "Cariely A. Reis", phone: "(74) 99939-1785", role: "Titular" },
-      { id: "deylane", name: "Deylane N. dos Anjos", phone: "(74) 99923-6705", role: "Titular" },
-      { id: "fabiola", name: "Fabíola Pereira da Silva", phone: "(74) 99807-7309", role: "Titular" },
-      { id: "fabiones", name: "Fabiones José dos S. Filho", phone: "(74) 99923-8360", role: "Titular" },
-      { id: "gabriela", name: "Gabriela Lorrande de Miranda", phone: "(75) 99851-5598", role: "Titular" },
-      { id: "gleice", name: "Gleice O. Torres", phone: "(74) 99975-4769", role: "Titular" },
-      { id: "katia", name: "Katia Cilene Rosa", phone: "(74) 99933-1769", role: "Titular" },
-      { id: "lara", name: "Lara Flávia Martins", phone: "(74) 99920-6881", role: "Titular" },
-      { id: "larissa_m", name: "Larissa Miranda de Souza", phone: "(74) 99975-0624", role: "Titular" },
-      { id: "leda", name: "Leda de Cássia Seixas", phone: "(74) 99973-0099", role: "Titular" },
-      { id: "luarla", name: "Luarla Ribeiro Cardoso", phone: "(74) 99912-4032", role: "Titular" },
-      { id: "jeane", name: "Maria Jeane Novais", phone: "(74) 99957-9393", role: "Titular" },
-      { id: "marlucia", name: "Marlúcia Cândida de Sousa", phone: "(74) 99801-4361", role: "Titular" },
-      { id: "mirian", name: "Mirian B. de Oliveira", phone: "(11) 97439-1497", role: "Titular" },
-      { id: "raphaela", name: "Raphaela Oliveira Novaes", phone: "(71) 99988-6423", role: "Titular" },
-      { id: "sandy", name: "Sandy Silva Moraes", phone: "(74) 99814-0376", role: "Titular" },
-      { id: "sthefany", name: "Sthefany de Jesus Souza", phone: "(74) 99938-3837", role: "Titular" },
-      { id: "thuane", name: "Thuane Matos Nascimento", phone: "(74) 99977-6761", role: "Titular" },
-      { id: "vaneuza", name: "Vaneuza Ferreira Borges", phone: "(74) 99902-1146", role: "Titular" },
-      // Aplicadores adicionais de Canarana (Lista Polo 02) prontos para cobrir vagas PCD
-      { id: "cleilton", name: "Cleilton da Silva dos Santos", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" },
-      { id: "inara", name: "Inara do Nascimento Souza", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" },
-      { id: "ludymila", name: "Ludymila Bastos de Jesus", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" },
-      { id: "rosa_claudia", name: "Rosa Cláudia Pereira dos Santos", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" }
+    var BASE_APPLICATORS = [
+      // === CANARANA-BA (24 titulares + 4 reservas) ===
+      { id: "alexsandra", municipality: "Canarana", name: "Alexsandra R. de Araújo", phone: "(74) 99968-5786", role: "Titular" },
+      { id: "alexia", municipality: "Canarana", name: "Alexia Lorrana Marques de Araújo", phone: "(74) 99940-1534", role: "Titular" },
+      { id: "amanda", municipality: "Canarana", name: "Amanda Santos", phone: "(74) 99952-2831", role: "Titular" },
+      { id: "anacarla", municipality: "Canarana", name: "Ana Carla Martins", phone: "(74) 99972-3580", role: "Titular" },
+      { id: "beatriz", municipality: "Canarana", name: "Beatriz Izabel Basso", phone: "(74) 99937-1463", role: "Titular" },
+      { id: "cariely", municipality: "Canarana", name: "Cariely A. Reis", phone: "(74) 99939-1785", role: "Titular" },
+      { id: "deylane", municipality: "Canarana", name: "Deylane N. dos Anjos", phone: "(74) 99923-6705", role: "Titular" },
+      { id: "fabiola", municipality: "Canarana", name: "Fabíola Pereira da Silva", phone: "(74) 99807-7309", role: "Titular" },
+      { id: "fabiones", municipality: "Canarana", name: "Fabiones José dos S. Filho", phone: "(74) 99923-8360", role: "Titular" },
+      { id: "gabriela", municipality: "Canarana", name: "Gabriela Lorrande de Miranda", phone: "(75) 99851-5598", role: "Titular" },
+      { id: "gleice", municipality: "Canarana", name: "Gleice O. Torres", phone: "(74) 99975-4769", role: "Titular" },
+      { id: "katia", municipality: "Canarana", name: "Katia Cilene Rosa", phone: "(74) 99933-1769", role: "Titular" },
+      { id: "lara", municipality: "Canarana", name: "Lara Flávia Martins", phone: "(74) 99920-6881", role: "Titular" },
+      { id: "larissa_m", municipality: "Canarana", name: "Larissa Miranda de Souza", phone: "(74) 99975-0624", role: "Titular" },
+      { id: "leda", municipality: "Canarana", name: "Leda de Cássia Seixas", phone: "(74) 99973-0099", role: "Titular" },
+      { id: "luarla", municipality: "Canarana", name: "Luarla Ribeiro Cardoso", phone: "(74) 99912-4032", role: "Titular" },
+      { id: "jeane", municipality: "Canarana", name: "Maria Jeane Novais", phone: "(74) 99957-9393", role: "Titular" },
+      { id: "marlucia", municipality: "Canarana", name: "Marlúcia Cândida de Sousa", phone: "(74) 99801-4361", role: "Titular" },
+      { id: "mirian", municipality: "Canarana", name: "Mirian B. de Oliveira", phone: "(11) 97439-1497", role: "Titular" },
+      { id: "raphaela", municipality: "Canarana", name: "Raphaela Oliveira Novaes", phone: "(71) 99988-6423", role: "Titular" },
+      { id: "sandy", municipality: "Canarana", name: "Sandy Silva Moraes", phone: "(74) 99814-0376", role: "Titular" },
+      { id: "sthefany", municipality: "Canarana", name: "Sthefany de Jesus Souza", phone: "(74) 99938-3837", role: "Titular" },
+      { id: "thuane", municipality: "Canarana", name: "Thuane Matos Nascimento", phone: "(74) 99977-6761", role: "Titular" },
+      { id: "vaneuza", municipality: "Canarana", name: "Vaneuza Ferreira Borges", phone: "(74) 99902-1146", role: "Titular" },
+      { id: "cleilton", municipality: "Canarana", name: "Cleilton da Silva dos Santos", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" },
+      { id: "inara", municipality: "Canarana", name: "Inara do Nascimento Souza", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" },
+      { id: "ludymila", municipality: "Canarana", name: "Ludymila Bastos de Jesus", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" },
+      { id: "rosa_claudia", municipality: "Canarana", name: "Rosa Cláudia Pereira dos Santos", phone: "Lista Polo 02 • Canarana", role: "Reserva Canarana" },
+
+      // === PRESIDENTE DUTRA-BA (6 escalados na terça 24/11 + 9 da equipe Polo 02 P. Dutra) ===
+      { id: "raniele", municipality: "Presidente Dutra", name: "Raniele Alves Rocha", phone: "Equipe Presidente Dutra", role: "Titular" },
+      { id: "jhonatan", municipality: "Presidente Dutra", name: "Jhonatan Silva Souza", phone: "Equipe Presidente Dutra", role: "Titular" },
+      { id: "cassilandia_pd", municipality: "Presidente Dutra", name: "Cassilândia Machado Matos Alecrim", phone: "Equipe Presidente Dutra", role: "Titular" },
+      { id: "geane_carla", municipality: "Presidente Dutra", name: "Geane Carla Aparecida Ferreira Porto", phone: "Equipe Presidente Dutra", role: "Titular" },
+      { id: "suzana", municipality: "Presidente Dutra", name: "Suzana Mendes da Silva", phone: "Equipe Presidente Dutra", role: "Titular" },
+      { id: "maria_claudia", municipality: "Presidente Dutra", name: "Maria Claudia Silva Cabral", phone: "Equipe Presidente Dutra", role: "Titular" },
+      { id: "bruna_emanuela", municipality: "Presidente Dutra", name: "Bruna Emanuela de Souza Rocha", phone: "Lista Polo 02 • P. Dutra", role: "Reserva P. Dutra" },
+      { id: "estefane_pd", municipality: "Presidente Dutra", name: "Estéfane Cambuí Vargas", phone: "Lista Polo 02 • P. Dutra", role: "Reserva P. Dutra" },
+      { id: "fabiana_pd", municipality: "Presidente Dutra", name: "Fabiana Cruz da Silva", phone: "Lista Polo 02 • P. Dutra", role: "Reserva P. Dutra" },
+      { id: "irani_pd", municipality: "Presidente Dutra", name: "Irani Dias Alves Machado", phone: "Lista Polo 02 • P. Dutra", role: "Reserva P. Dutra" },
+      { id: "lany_pd", municipality: "Presidente Dutra", name: "Lany Cristina Mendes Souza", phone: "Lista Polo 02 • P. Dutra", role: "Reserva P. Dutra" },
+      { id: "lindinei_pd", municipality: "Presidente Dutra", name: "Lindinei Oliveira Duarte", phone: "Lista Polo 02 • P. Dutra", role: "Reserva P. Dutra" },
+      { id: "milena_pd", municipality: "Presidente Dutra", name: "Milena Abade da Silva", phone: "Lista Polo 02 • P. Dutra", role: "Reserva P. Dutra" },
+      { id: "noeli_pd", municipality: "Presidente Dutra", name: "Noeli Ribeiro Cambuí", phone: "Lista Polo 02 • P. Dutra", role: "Reserva P. Dutra" },
+      { id: "sirleia_pd", municipality: "Presidente Dutra", name: "Sirléia Ferreira Machado", phone: "Lista Polo 02 • P. Dutra", role: "Reserva P. Dutra" },
+
+      // === LAPÃO-BA (17 escalados nos dias 1 e 2 + 11 da equipe Polo 02 Lapão) ===
+      { id: "rosileny_lapao", municipality: "Lapão", name: "Rosileny Dourado Pereira Costa (Roselany/Rose)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "rodrigo_lapao", municipality: "Lapão", name: "Rodrigo (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "vanessa_lapao", municipality: "Lapão", name: "Vanessa (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "iani_lapao", municipality: "Lapão", name: "Iani (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "marina_lapao", municipality: "Lapão", name: "Marina (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "jude_clara_lapao", municipality: "Lapão", name: "Jude Clara (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "natieli_lapao", municipality: "Lapão", name: "Natieli Pires Santos (Natiele)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "joao_antonio_lapao", municipality: "Lapão", name: "João Antônio (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "gerlane_lapao", municipality: "Lapão", name: "Gerlane (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "gilmaria_lapao", municipality: "Lapão", name: "Gilmaria Menezes (Gilmária)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "fred_lapao", municipality: "Lapão", name: "Frederico Souza de Castro Júnior (Fred)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "jader_lapao", municipality: "Lapão", name: "Jader Porto de Souza (Jader)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "isabela_lapao", municipality: "Lapão", name: "Isabela Carolina M. Dourado (Isabela)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "mariane_lapao", municipality: "Lapão", name: "Mariane (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "tais_lapao", municipality: "Lapão", name: "Taís (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "joara_lapao", municipality: "Lapão", name: "Joara (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "jessica_lapao", municipality: "Lapão", name: "Jessica / Jéssica (Equipe Lapão)", phone: "Equipe Lapão", role: "Titular" },
+      { id: "ana_caroline_lapao", municipality: "Lapão", name: "Ana Caroline dos Santos Brito", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+      { id: "jaciara_lapao", municipality: "Lapão", name: "Jaciara da Cruz Torres", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+      { id: "kemily_lapao", municipality: "Lapão", name: "Kemily Alcântara Barreto", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+      { id: "larissa_lapao", municipality: "Lapão", name: "Larissa (Equipe Lapão)", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+      { id: "magnolia_lapao", municipality: "Lapão", name: "Magnólia Martins Silva", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+      { id: "maiara_lapao", municipality: "Lapão", name: "Maiara Lima Pereira", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+      { id: "maria_rosilene_lapao", municipality: "Lapão", name: "Maria Rosilene Galdino de Lima", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+      { id: "mariana_ferreira_lapao", municipality: "Lapão", name: "Mariana Ferreira Lima", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+      { id: "mauridete_lapao", municipality: "Lapão", name: "Mauridete Sodré", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+      { id: "raissa_lapao", municipality: "Lapão", name: "Raissa da Silva Leite", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+      { id: "regina_lapao", municipality: "Lapão", name: "Regina (Equipe Lapão)", phone: "Lista Polo 02 • Lapão", role: "Reserva Lapão" },
+
+      // === UIBAÍ-BA ===
+      { id: "jilvanice_uibai", municipality: "Uibaí", name: "Jilvanice Fernandes de Souza", phone: "Lista Polo 02 • Uibaí", role: "Equipe Uibaí" },
+
+      // === IRECÊ-BA (POLO IRECÊ 02) ===
+      { id: "caua_irece", municipality: "Irecê", name: "Cauã Barros de Oliveira", phone: "Lista Polo 02 • Irecê", role: "Equipe Irecê" },
+      { id: "kemily_irece", municipality: "Irecê", name: "Kemily Alcântara Barreto", phone: "Lista Polo 02 • Irecê", role: "Equipe Irecê" },
+      { id: "maria_rosilene_irece", municipality: "Irecê", name: "Maria Rosilene Galdino de Lima", phone: "Lista Polo 02 • Irecê", role: "Equipe Irecê" },
+      { id: "ana_caroline_irece", municipality: "Irecê", name: "Ana Caroline dos Santos Brito", phone: "Lista Polo 02 • Irecê", role: "Equipe Irecê" },
+      { id: "jaciara_irece", municipality: "Irecê", name: "Jaciara da Cruz Torres", phone: "Lista Polo 02 • Irecê", role: "Equipe Irecê" },
+      { id: "maiara_irece", municipality: "Irecê", name: "Maiara Lima Pereira", phone: "Lista Polo 02 • Irecê", role: "Equipe Irecê" },
+      { id: "mariana_ferreira_irece", municipality: "Irecê", name: "Mariana Ferreira Lima", phone: "Lista Polo 02 • Irecê", role: "Equipe Irecê" },
+      { id: "mauridete_irece", municipality: "Irecê", name: "Mauridete Sodré", phone: "Lista Polo 02 • Irecê", role: "Equipe Irecê" },
+      { id: "regina_irece", municipality: "Irecê", name: "Regina (Equipe Irecê)", phone: "Lista Polo 02 • Irecê", role: "Equipe Irecê" }
     ];
+
+    var APPLICATORS_MASTER = BASE_APPLICATORS.slice();
 
     var INITIAL_CLASSES = [
-      // 1. Escola José Brito dos Anjos
-      { id: 1, school: "Escola José Brito dos Anjos", inep: "29060109", locality: "Povoado Lagoa do Zeca", distance: "12 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "alexsandra", pcdCount: 1, pcdApps: ["gabriela"], dates: ["23/11", "24/11"], needsExtraPcd: true },
-      { id: 2, school: "Escola José Brito dos Anjos", inep: "29060109", locality: "Povoado Lagoa do Zeca", distance: "12 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 24, regApp: "sandy", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 3, school: "Escola José Brito dos Anjos", inep: "29060109", locality: "Povoado Lagoa do Zeca", distance: "12 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 14, regApp: "alexsandra", pcdCount: 1, pcdApps: ["sandy"], dates: ["24/11"], needsExtraPcd: true },
+      // =========================================================================
+      // CANARANA-BA (53 TURMAS)
+      // =========================================================================
+      { id: 1, municipality: "Canarana", school: "Escola José Brito dos Anjos", inep: "29060109", locality: "Povoado Lagoa do Zeca", distance: "12 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "alexsandra", pcdCount: 1, pcdApps: ["gabriela"], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 2, municipality: "Canarana", school: "Escola José Brito dos Anjos", inep: "29060109", locality: "Povoado Lagoa do Zeca", distance: "12 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 24, regApp: "sandy", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 3, municipality: "Canarana", school: "Escola José Brito dos Anjos", inep: "29060109", locality: "Povoado Lagoa do Zeca", distance: "12 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 14, regApp: "alexsandra", pcdCount: 1, pcdApps: ["sandy"], dates: ["24/11"], needsExtraPcd: true },
 
-      // 2. Escola Isaias Lemos
-      { id: 4, school: "Escola Isaias Lemos", inep: "29060265", locality: "Povoado Mato Verde", distance: "18 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "cariely", pcdCount: 1, pcdApps: ["anacarla"], dates: ["23/11", "24/11"], needsExtraPcd: true },
-      { id: 5, school: "Escola Isaias Lemos", inep: "29060265", locality: "Povoado Mato Verde", distance: "18 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 14, regApp: "fabiones", pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 6, school: "Escola Isaias Lemos", inep: "29060265", locality: "Povoado Mato Verde", distance: "18 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 13, regApp: "fabiones", pcdCount: 1, pcdApps: ["marlucia"], dates: ["24/11"], needsExtraPcd: true },
+      { id: 4, municipality: "Canarana", school: "Escola Isaias Lemos", inep: "29060265", locality: "Povoado Mato Verde", distance: "18 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "cariely", pcdCount: 1, pcdApps: ["anacarla"], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 5, municipality: "Canarana", school: "Escola Isaias Lemos", inep: "29060265", locality: "Povoado Mato Verde", distance: "18 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 14, regApp: "fabiones", pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 6, municipality: "Canarana", school: "Escola Isaias Lemos", inep: "29060265", locality: "Povoado Mato Verde", distance: "18 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 13, regApp: "fabiones", pcdCount: 1, pcdApps: ["marlucia"], dates: ["24/11"], needsExtraPcd: true },
 
-      // 3. Escola Valnei José Pereira
-      { id: 7, school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "luarla", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
-      { id: 8, school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 15, regApp: "fabiola", pcdCount: 2, pcdApps: ["thuane"], dates: ["23/11", "24/11"], needsExtraPcd: true },
-      { id: 9, school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 16, regApp: "gleice", pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 10, school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 15, regApp: "larissa_m", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 11, school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 23, regApp: "larissa_m", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 7, municipality: "Canarana", school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "luarla", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 8, municipality: "Canarana", school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 15, regApp: "fabiola", pcdCount: 2, pcdApps: ["thuane"], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 9, municipality: "Canarana", school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 16, regApp: "gleice", pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 10, municipality: "Canarana", school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 15, regApp: "larissa_m", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 11, municipality: "Canarana", school: "Escola Valnei José Pereira", inep: "29060419", locality: "Povoado Capivara", distance: "16 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 23, regApp: "larissa_m", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
 
-      // 4. Escola Rogério Cardoso
-      { id: 12, school: "Escola Rogério Cardoso", inep: "29060630", locality: "Povoado Planalto", distance: "20 Km", grade: "5º Ano A", is2ndYear: false, shift: "Vespertino", students: 10, regApp: "lara", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 12, municipality: "Canarana", school: "Escola Rogério Cardoso", inep: "29060630", locality: "Povoado Planalto", distance: "20 Km", grade: "5º Ano A", is2ndYear: false, shift: "Vespertino", students: 10, regApp: "lara", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
 
-      // 5. Escola de 1º Grau José Francisco Nunes
-      { id: 13, school: "Escola José Francisco Nunes", inep: "29060117", locality: "Povoado Baixa do Vigário", distance: "18 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 13, regApp: "deylane", pcdCount: 1, pcdApps: ["beatriz"], dates: ["23/11", "24/11"], needsExtraPcd: true },
-      { id: 14, school: "Escola José Francisco Nunes", inep: "29060117", locality: "Povoado Baixa do Vigário", distance: "18 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 16, regApp: "katia", pcdCount: 2, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 15, school: "Escola José Francisco Nunes", inep: "29060117", locality: "Povoado Baixa do Vigário", distance: "18 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 15, regApp: "katia", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 13, municipality: "Canarana", school: "Escola José Francisco Nunes", inep: "29060117", locality: "Povoado Baixa do Vigário", distance: "18 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 13, regApp: "deylane", pcdCount: 1, pcdApps: ["beatriz"], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 14, municipality: "Canarana", school: "Escola José Francisco Nunes", inep: "29060117", locality: "Povoado Baixa do Vigário", distance: "18 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 16, regApp: "katia", pcdCount: 2, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 15, municipality: "Canarana", school: "Escola José Francisco Nunes", inep: "29060117", locality: "Povoado Baixa do Vigário", distance: "18 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 15, regApp: "katia", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
 
-      // 6. Escola Catão Dourado
-      { id: 16, school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano A", is2ndYear: false, shift: "Matutino", students: 29, regApp: "mirian", pcdCount: 1, pcdApps: ["jeane"], dates: ["24/11"], needsExtraPcd: true },
-      { id: 17, school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano B", is2ndYear: false, shift: "Matutino", students: 27, regApp: "raphaela", pcdCount: 3, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 18, school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: 21, regApp: "mirian", pcdCount: 5, pcdApps: ["jeane"], dates: ["24/11"], needsExtraPcd: true },
-      { id: 19, school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano D", is2ndYear: false, shift: "Vespertino", students: 21, regApp: "raphaela", pcdCount: 2, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 16, municipality: "Canarana", school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano A", is2ndYear: false, shift: "Matutino", students: 29, regApp: "mirian", pcdCount: 1, pcdApps: ["jeane"], dates: ["24/11"], needsExtraPcd: true },
+      { id: 17, municipality: "Canarana", school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano B", is2ndYear: false, shift: "Matutino", students: 27, regApp: "raphaela", pcdCount: 3, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 18, municipality: "Canarana", school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: 21, regApp: "mirian", pcdCount: 5, pcdApps: ["jeane"], dates: ["24/11"], needsExtraPcd: true },
+      { id: 19, municipality: "Canarana", school: "Escola Catão Dourado", inep: "29060494", locality: "Salobro Distrito", distance: "21 Km", grade: "9º Ano D", is2ndYear: false, shift: "Vespertino", students: 21, regApp: "raphaela", pcdCount: 2, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
 
-      // 7. Escola Olímpio José Pereira
-      { id: 20, school: "Escola Olímpio José Pereira", inep: "29060613", locality: "Povoado Queimada de João Martins", distance: "25 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 13, regApp: "amanda", pcdCount: 2, pcdApps: ["alexia"], dates: ["23/11", "24/11"], needsExtraPcd: true },
-      { id: 21, school: "Escola Olímpio José Pereira", inep: "29060613", locality: "Povoado Queimada de João Martins", distance: "25 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 15, regApp: "lara", pcdCount: 2, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 20, municipality: "Canarana", school: "Escola Olímpio José Pereira", inep: "29060613", locality: "Povoado Queimada de João Martins", distance: "25 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 13, regApp: "amanda", pcdCount: 2, pcdApps: ["alexia"], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 21, municipality: "Canarana", school: "Escola Olímpio José Pereira", inep: "29060613", locality: "Povoado Queimada de João Martins", distance: "25 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 15, regApp: "lara", pcdCount: 2, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
 
-      // 8. Escola Faustiniano Lopes Ribeiro
-      { id: 22, school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano A", is2ndYear: false, shift: "Matutino", students: 28, regApp: "gleice", pcdCount: 5, pcdApps: ["thuane"], dates: ["25/11"], needsExtraPcd: true },
-      { id: 23, school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano B", is2ndYear: false, shift: "Matutino", students: 28, regApp: "jeane", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
-      { id: 24, school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: 22, regApp: "gleice", pcdCount: 1, pcdApps: ["thuane"], dates: ["25/11"], needsExtraPcd: true },
-      { id: 25, school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano D", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "alexia", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
-      { id: 26, school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano E", is2ndYear: false, shift: "Vespertino", students: 23, regApp: "jeane", pcdCount: 4, pcdApps: ["sthefany"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 22, municipality: "Canarana", school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano A", is2ndYear: false, shift: "Matutino", students: 28, regApp: "gleice", pcdCount: 5, pcdApps: ["thuane"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 23, municipality: "Canarana", school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano B", is2ndYear: false, shift: "Matutino", students: 28, regApp: "jeane", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 24, municipality: "Canarana", school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: 22, regApp: "gleice", pcdCount: 1, pcdApps: ["thuane"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 25, municipality: "Canarana", school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano D", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "alexia", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 26, municipality: "Canarana", school: "Escola Faustiniano Lopes Ribeiro", inep: "2906024", locality: "Canarana-BA SEDE", distance: "Sede", grade: "9º Ano E", is2ndYear: false, shift: "Vespertino", students: 23, regApp: "jeane", pcdCount: 4, pcdApps: ["sthefany"], dates: ["25/11"], needsExtraPcd: true },
 
-      // 9. Centro Educacional Otávio Mangabeira
-      { id: 27, school: "C.E. Otávio Mangabeira", inep: "29060478", locality: "Povoado Lagoa Velha", distance: "25 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "raphaela", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
-      { id: 28, school: "C.E. Otávio Mangabeira", inep: "29060478", locality: "Povoado Lagoa Velha", distance: "25 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 16, regApp: "larissa_m", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
-      { id: 29, school: "C.E. Otávio Mangabeira", inep: "29060478", locality: "Povoado Lagoa Velha", distance: "25 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 24, regApp: "raphaela", pcdCount: 1, pcdApps: ["larissa_m"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 27, municipality: "Canarana", school: "C.E. Otávio Mangabeira", inep: "29060478", locality: "Povoado Lagoa Velha", distance: "25 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 17, regApp: "raphaela", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 28, municipality: "Canarana", school: "C.E. Otávio Mangabeira", inep: "29060478", locality: "Povoado Lagoa Velha", distance: "25 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 16, regApp: "larissa_m", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 29, municipality: "Canarana", school: "C.E. Otávio Mangabeira", inep: "29060478", locality: "Povoado Lagoa Velha", distance: "25 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 24, regApp: "raphaela", pcdCount: 1, pcdApps: ["larissa_m"], dates: ["25/11"], needsExtraPcd: true },
 
-      // 10. Escola de 1º e 2º Grau Miguel José Alves
-      { id: 30, school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 15, regApp: "katia", pcdCount: 0, pcdApps: ["vaneuza"], dates: ["25/11", "26/11"], needsExtraPcd: false },
-      { id: 31, school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 16, regApp: "beatriz", pcdCount: 1, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: true },
-      { id: 32, school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 15, regApp: "mirian", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
-      { id: 33, school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 12, regApp: "anacarla", pcdCount: 1, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
-      { id: 34, school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 29, regApp: "mirian", pcdCount: 8, pcdApps: ["katia", "beatriz"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 30, municipality: "Canarana", school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 15, regApp: "katia", pcdCount: 0, pcdApps: ["vaneuza"], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 31, municipality: "Canarana", school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 16, regApp: "beatriz", pcdCount: 1, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: true },
+      { id: 32, municipality: "Canarana", school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 15, regApp: "mirian", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 33, municipality: "Canarana", school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 12, regApp: "anacarla", pcdCount: 1, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 34, municipality: "Canarana", school: "Escola Miguel José Alves", inep: "29060540", locality: "Povoado Umburana", distance: "35 Km", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: 29, regApp: "mirian", pcdCount: 8, pcdApps: ["katia", "beatriz"], dates: ["25/11"], needsExtraPcd: true },
 
-      // 11. Grupo Escolar Félix de Sá
-      { id: 35, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 21, regApp: "leda", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
-      { id: 36, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 19, regApp: "alexsandra", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
-      { id: 37, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "2º Ano C", is2ndYear: true, shift: "Vespertino", students: 19, regApp: "alexsandra", pcdCount: 2, pcdApps: ["anacarla"], dates: ["25/11", "26/11"], needsExtraPcd: true },
-      { id: 38, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 22, regApp: "lara", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
-      { id: 39, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 20, regApp: "fabiola", pcdCount: 1, pcdApps: ["gabriela"], dates: ["25/11"], needsExtraPcd: true },
-      { id: 40, school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "5º Ano C", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "lara", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 35, municipality: "Canarana", school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 21, regApp: "leda", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 36, municipality: "Canarana", school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 19, regApp: "alexsandra", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 37, municipality: "Canarana", school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "2º Ano C", is2ndYear: true, shift: "Vespertino", students: 19, regApp: "alexsandra", pcdCount: 2, pcdApps: ["anacarla"], dates: ["25/11", "26/11"], needsExtraPcd: true },
+      { id: 38, municipality: "Canarana", school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 22, regApp: "lara", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 39, municipality: "Canarana", school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 20, regApp: "fabiola", pcdCount: 1, pcdApps: ["gabriela"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 40, municipality: "Canarana", school: "Grupo Escolar Félix de Sá", inep: "29060672", locality: "Salobro Distrito", distance: "21 Km", grade: "5º Ano C", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "lara", pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
 
-      // 12. Escola Casinha Feliz
-      { id: 41, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 21, regApp: "cariely", pcdCount: 0, pcdApps: ["sthefany"], dates: ["25/11", "26/11"], needsExtraPcd: false },
-      { id: 42, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 19, regApp: "sandy", pcdCount: 1, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: true },
-      { id: 43, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano C", is2ndYear: true, shift: "Matutino", students: 16, regApp: "deylane", pcdCount: 1, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: true },
-      { id: 44, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano D", is2ndYear: true, shift: "Vespertino", students: 16, regApp: "cariely", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
-      { id: 45, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano E", is2ndYear: true, shift: "Vespertino", students: 15, regApp: "sandy", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
-      { id: 46, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano F", is2ndYear: true, shift: "Vespertino", students: 16, regApp: "marlucia", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
-      { id: 47, school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano G", is2ndYear: true, shift: "Vespertino", students: 17, regApp: "deylane", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 41, municipality: "Canarana", school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: 21, regApp: "cariely", pcdCount: 0, pcdApps: ["sthefany"], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 42, municipality: "Canarana", school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: 19, regApp: "sandy", pcdCount: 1, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: true },
+      { id: 43, municipality: "Canarana", school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano C", is2ndYear: true, shift: "Matutino", students: 16, regApp: "deylane", pcdCount: 1, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: true },
+      { id: 44, municipality: "Canarana", school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano D", is2ndYear: true, shift: "Vespertino", students: 16, regApp: "cariely", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 45, municipality: "Canarana", school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano E", is2ndYear: true, shift: "Vespertino", students: 15, regApp: "sandy", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 46, municipality: "Canarana", school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano F", is2ndYear: true, shift: "Vespertino", students: 16, regApp: "marlucia", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
+      { id: 47, municipality: "Canarana", school: "Escola Casinha Feliz", inep: "29477530", locality: "Canarana-BA SEDE", distance: "Sede", grade: "2º Ano G", is2ndYear: true, shift: "Vespertino", students: 17, regApp: "deylane", pcdCount: 0, pcdApps: [], dates: ["25/11", "26/11"], needsExtraPcd: false },
 
-      // 13. Grupo Escolar José Martins Filho
-      { id: 48, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 25, regApp: "amanda", pcdCount: 2, pcdApps: ["alexia"], dates: ["25/11"], needsExtraPcd: true },
-      { id: 49, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 26, regApp: "fabiones", pcdCount: 1, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
-      { id: 50, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano C", is2ndYear: false, shift: "Matutino", students: 20, regApp: "luarla", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
-      { id: 51, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano D", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "amanda", pcdCount: 1, pcdApps: ["leda"], dates: ["25/11"], needsExtraPcd: true },
-      { id: 52, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano E", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "luarla", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
-      { id: 53, school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano F", is2ndYear: false, shift: "Vespertino", students: 17, regApp: "fabiones", pcdCount: 1, pcdApps: [], dates: ["25/11"], needsExtraPcd: true }
+      { id: 48, municipality: "Canarana", school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: 25, regApp: "amanda", pcdCount: 2, pcdApps: ["alexia"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 49, municipality: "Canarana", school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: 26, regApp: "fabiones", pcdCount: 1, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 50, municipality: "Canarana", school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano C", is2ndYear: false, shift: "Matutino", students: 20, regApp: "luarla", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 51, municipality: "Canarana", school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano D", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "amanda", pcdCount: 1, pcdApps: ["leda"], dates: ["25/11"], needsExtraPcd: true },
+      { id: 52, municipality: "Canarana", school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano E", is2ndYear: false, shift: "Vespertino", students: 20, regApp: "luarla", pcdCount: 2, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+      { id: 53, municipality: "Canarana", school: "Grupo Escolar José Martins Filho", inep: "29060451", locality: "Canarana-BA SEDE", distance: "Sede", grade: "5º Ano F", is2ndYear: false, shift: "Vespertino", students: 17, regApp: "fabiones", pcdCount: 1, pcdApps: [], dates: ["25/11"], needsExtraPcd: true },
+
+      // =========================================================================
+      // PRESIDENTE DUTRA-BA (18 TURMAS • AGENDA 1ª SEMANA: 24 E 25/11/2026)
+      // =========================================================================
+      { id: 54, municipality: "Presidente Dutra", school: "Escola Valter Barreto", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "9º Ano A", is2ndYear: false, shift: "Matutino", students: "-", regApp: "raniele", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 55, municipality: "Presidente Dutra", school: "Escola Valter Barreto", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "9º Ano B", is2ndYear: false, shift: "Matutino", students: "-", regApp: "jhonatan", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 56, municipality: "Presidente Dutra", school: "Escola Valter Barreto", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "13:00", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "cassilandia_pd", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 57, municipality: "Presidente Dutra", school: "Escola Valter Barreto", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "13:00", grade: "9º Ano D", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "jhonatan", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 58, municipality: "Presidente Dutra", school: "Colégio Estadual Leila Janaina", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "3º Ano A (EM)", is2ndYear: false, shift: "Matutino", students: "-", regApp: "geane_carla", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 59, municipality: "Presidente Dutra", school: "Colégio Estadual Leila Janaina", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "3º Ano B (EM)", is2ndYear: false, shift: "Matutino", students: "-", regApp: "cassilandia_pd", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 60, municipality: "Presidente Dutra", school: "Colégio Estadual Leila Janaina", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "3º Ano C (EM)", is2ndYear: false, shift: "Matutino", students: "-", regApp: "suzana", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 61, municipality: "Presidente Dutra", school: "Escola Ricarte João Machado", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "13:00", grade: "9º Ano Única", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "geane_carla", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 62, municipality: "Presidente Dutra", school: "Escola Licínio Barreto", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "9º Ano Única", is2ndYear: false, shift: "Matutino", students: "-", regApp: "maria_claudia", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 63, municipality: "Presidente Dutra", school: "Escola Eurico Alves", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "13:00", grade: "9º Ano Única", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "raniele", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 64, municipality: "Presidente Dutra", school: "Escola Ricarte João Machado", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "5º Ano", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 65, municipality: "Presidente Dutra", school: "Escola Eurico Alves", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "13:00", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 66, municipality: "Presidente Dutra", school: "Escola Dr. Djalma Bessa", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 67, municipality: "Presidente Dutra", school: "Escola Dr. Djalma Bessa", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "5º Ano B", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 68, municipality: "Presidente Dutra", school: "Escola Dr. Manoel Novais", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 69, municipality: "Presidente Dutra", school: "Escola Rui Barcelar", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "5º Ano", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 70, municipality: "Presidente Dutra", school: "Escola Paulo Machado", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "08:00", grade: "5º Ano", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+      { id: 71, municipality: "Presidente Dutra", school: "Escola Virgínio de Carvalho", inep: "P. Dutra", locality: "Presidente Dutra-BA", distance: "13:00", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["25/11"], needsExtraPcd: false },
+
+      // =========================================================================
+      // LAPÃO-BA (51 ALOCAÇÕES • 15 INSTITUIÇÕES • 1º DIA [23/11] E 2º DIA [24/11])
+      // =========================================================================
+      { id: 72, municipality: "Lapão", school: "Escola Alto B. Vista", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano", is2ndYear: true, shift: "Matutino", students: "-", regApp: "rosileny_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 73, municipality: "Lapão", school: "Escola Alto B. Vista", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "rosileny_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+
+      { id: 74, municipality: "Lapão", school: "Escola Antônia Gaspar", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "2º Ano A", is2ndYear: false, shift: "Matutino", students: "-", regApp: "rodrigo_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 75, municipality: "Lapão", school: "Escola Antônia Gaspar", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "2º Ano B", is2ndYear: false, shift: "Matutino", students: "-", regApp: "vanessa_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 76, municipality: "Lapão", school: "Escola Antônia Gaspar", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "rodrigo_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 77, municipality: "Lapão", school: "Escola Antônia Gaspar", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "9º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "vanessa_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 78, municipality: "Lapão", school: "Escola Antônia Gaspar", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "2º Ano A (2º Dia)", is2ndYear: false, shift: "Matutino", students: "-", regApp: "gerlane_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 79, municipality: "Lapão", school: "Escola Antônia Gaspar", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "2º Ano B (2º Dia)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "gerlane_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 80, municipality: "Lapão", school: "Escola Deraldo J. Souza", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano", is2ndYear: true, shift: "Matutino", students: "-", regApp: "iani_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 81, municipality: "Lapão", school: "Escola Deraldo J. Souza", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "iani_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 82, municipality: "Lapão", school: "Escola Deraldo J. Souza", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "9º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "marina_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+
+      { id: 83, municipality: "Lapão", school: "Escola José Carlito Carneiro", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano", is2ndYear: true, shift: "Matutino", students: "-", regApp: "marina_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+
+      { id: 84, municipality: "Lapão", school: "Escola Osório José Alves", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia (Falta)", grade: "2º Ano (1º Dia • Falta)", is2ndYear: true, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 85, municipality: "Lapão", school: "Escola Osório José Alves", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "2º Ano (2º Dia)", is2ndYear: false, shift: "Matutino", students: "-", regApp: "mariane_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 86, municipality: "Lapão", school: "Escola Osório José Alves", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "mariane_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 87, municipality: "Lapão", school: "Escola Antônio Marculino", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: "-", regApp: "jude_clara_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 88, municipality: "Lapão", school: "Escola Antônio Marculino", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano B", is2ndYear: true, shift: "Matutino", students: "-", regApp: "natieli_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 89, municipality: "Lapão", school: "Escola Antônio Marculino", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "5º Ano A", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "jude_clara_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 90, municipality: "Lapão", school: "Escola Antônio Marculino", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "5º Ano B", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "natieli_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 91, municipality: "Lapão", school: "Escola Antônio Marculino", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "5º Ano C", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "iani_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 92, municipality: "Lapão", school: "Escola Honorato Gaspar", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: "-", regApp: "joao_antonio_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 93, municipality: "Lapão", school: "Escola Honorato Gaspar", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano B", is2ndYear: true, shift: "Vespertino", students: "-", regApp: "joao_antonio_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 94, municipality: "Lapão", school: "Escola Honorato Gaspar", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "5º Ano", is2ndYear: false, shift: "Matutino", students: "-", regApp: "gerlane_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 95, municipality: "Lapão", school: "Escola Honorato Gaspar", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "9º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "gerlane_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+
+      { id: 96, municipality: "Lapão", school: "Escola Valentina O. Matos", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano", is2ndYear: true, shift: "Matutino", students: "-", regApp: "gilmaria_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 97, municipality: "Lapão", school: "Escola Valentina O. Matos", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "gilmaria_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 98, municipality: "Lapão", school: "Escola Valentina O. Matos", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "9º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "gilmaria_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 99, municipality: "Lapão", school: "Escola Manoel A. Dourado", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano", is2ndYear: true, shift: "Matutino", students: "-", regApp: "fred_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 100, municipality: "Lapão", school: "Escola Manoel A. Dourado", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "9º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "fred_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 101, municipality: "Lapão", school: "Escola Manoel A. Dourado", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "fred_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 102, municipality: "Lapão", school: "Escola Tiradentes", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano", is2ndYear: true, shift: "Matutino", students: "-", regApp: "jader_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 103, municipality: "Lapão", school: "Escola Tiradentes", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "jader_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 104, municipality: "Lapão", school: "Escola Tiradentes", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "9º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "jader_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 105, municipality: "Lapão", school: "Escola Ineny Nunes Dourado", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: "-", regApp: "isabela_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 106, municipality: "Lapão", school: "Escola Ineny Nunes Dourado", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "2º Ano B (1º Dia)", is2ndYear: false, shift: "Matutino", students: "-", regApp: "mariane_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 107, municipality: "Lapão", school: "Escola Ineny Nunes Dourado", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "5º Ano A", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "isabela_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 108, municipality: "Lapão", school: "Escola Ineny Nunes Dourado", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "5º Ano B", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "mariane_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 109, municipality: "Lapão", school: "Escola Ineny Nunes Dourado", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "5º Ano C", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "jessica_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 110, municipality: "Lapão", school: "Escola Zenália D. Lopes", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano", is2ndYear: true, shift: "Matutino", students: "-", regApp: "tais_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 111, municipality: "Lapão", school: "Escola Zenália D. Lopes", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "tais_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+
+      { id: 112, municipality: "Lapão", school: "Escola Oscarino Rosendo", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano A", is2ndYear: true, shift: "Matutino", students: "-", regApp: "joara_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 113, municipality: "Lapão", school: "Escola Oscarino Rosendo", inep: "Lapão", locality: "Lapão-BA", distance: "1º e 2º Dia", grade: "2º Ano B", is2ndYear: true, shift: "Vespertino", students: "-", regApp: "joara_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: false },
+      { id: 114, municipality: "Lapão", school: "Escola Oscarino Rosendo", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "5º Ano A", is2ndYear: false, shift: "Matutino", students: "-", regApp: "jessica_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 115, municipality: "Lapão", school: "Escola Oscarino Rosendo", inep: "Lapão", locality: "Lapão-BA", distance: "1º Dia", grade: "5º Ano B", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "jessica_lapao", pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+
+      { id: 116, municipality: "Lapão", school: "Colégio Elzita Ribeiro", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "9º Ano A", is2ndYear: false, shift: "Matutino", students: "-", regApp: "rodrigo_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 117, municipality: "Lapão", school: "Colégio Elzita Ribeiro", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "9º Ano B", is2ndYear: false, shift: "Matutino", students: "-", regApp: "vanessa_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 118, municipality: "Lapão", school: "Colégio Elzita Ribeiro", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "9º Ano C", is2ndYear: false, shift: "Matutino", students: "-", regApp: "jessica_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      { id: 119, municipality: "Lapão", school: "Escola Lucas Cardoso Costa", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "marina_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 120, municipality: "Lapão", school: "Escola Lucas Cardoso Costa", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "9º Ano B", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "rodrigo_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 121, municipality: "Lapão", school: "Escola Lucas Cardoso Costa", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "vanessa_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 122, municipality: "Lapão", school: "Escola Lucas Cardoso Costa", inep: "Lapão", locality: "Lapão-BA", distance: "2º Dia", grade: "9º Ano D", is2ndYear: false, shift: "Vespertino", students: "-", regApp: "tais_lapao", pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+
+      // =========================================================================
+      // UIBAÍ-BA (20 TURMAS • 8 ESCOLAS • 23 E 24/11/2026)
+      // =========================================================================
+      { id: 123, municipality: "Uibaí", school: "GEJA", inep: "Uibaí", locality: "Uibaí-BA", distance: "Integral (2 dias)", grade: "2º Ano A (Integral)", is2ndYear: true, shift: "Integral", students: "-", regApp: null, pcdCount: 2, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 124, municipality: "Uibaí", school: "Escola Dom Pedro II", inep: "Uibaí", locality: "Uibaí-BA", distance: "Vespertino (2 dias)", grade: "2º Ano (Vespertino)", is2ndYear: true, shift: "Vespertino", students: "-", regApp: null, pcdCount: 2, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 125, municipality: "Uibaí", school: "E.M. Manoel da Nóbrega", inep: "Uibaí", locality: "Uibaí-BA", distance: "Integral • 1 Baixa Visão", grade: "2º Ano (Integral)", is2ndYear: true, shift: "Integral", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 126, municipality: "Uibaí", school: "GEJA", inep: "Uibaí", locality: "Uibaí-BA", distance: "Integral (2 dias)", grade: "2º Ano B (Integral)", is2ndYear: true, shift: "Integral", students: "-", regApp: null, pcdCount: 2, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 127, municipality: "Uibaí", school: "Escola ACM", inep: "Uibaí", locality: "Uibaí-BA", distance: "Integral", grade: "3º Ano A (Integral)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 6, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 128, municipality: "Uibaí", school: "Escola ACM", inep: "Uibaí", locality: "Uibaí-BA", distance: "Integral", grade: "3º Ano B (Integral)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 2, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 129, municipality: "Uibaí", school: "E.M. Manoel da Nóbrega", inep: "Uibaí", locality: "Uibaí-BA", distance: "Integral", grade: "3º Ano (Integral)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 130, municipality: "Uibaí", school: "Escola Dom Pedro II", inep: "Uibaí", locality: "Uibaí-BA", distance: "Vespertino", grade: "3º Ano (Vespertino)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 2, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 131, municipality: "Uibaí", school: "E.M. José de Anchieta", inep: "Uibaí", locality: "Uibaí-BA", distance: "Vespertino", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 2, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 132, municipality: "Uibaí", school: "E.M. Gildécio Pereira Matos", inep: "Uibaí", locality: "Uibaí-BA", distance: "Vespertino", grade: "5º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 133, municipality: "Uibaí", school: "Escola CERA", inep: "Uibaí", locality: "Uibaí-BA", distance: "Matutino", grade: "5º Ano", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 134, municipality: "Uibaí", school: "Escola ACM", inep: "Uibaí", locality: "Uibaí-BA", distance: "Integral", grade: "5º Ano A (Integral)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 135, municipality: "Uibaí", school: "Escola ACM", inep: "Uibaí", locality: "Uibaí-BA", distance: "Integral", grade: "5º Ano B (Integral)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 136, municipality: "Uibaí", school: "E.M. Gildécio Pereira Matos", inep: "Uibaí", locality: "Uibaí-BA", distance: "Vespertino", grade: "9º Ano", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 137, municipality: "Uibaí", school: "Escola CERA", inep: "Uibaí", locality: "Uibaí-BA", distance: "Vespertino", grade: "9º Ano A", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 138, municipality: "Uibaí", school: "Escola CERA", inep: "Uibaí", locality: "Uibaí-BA", distance: "Vespertino", grade: "9º Ano B", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 139, municipality: "Uibaí", school: "Escola Dom Pedro II", inep: "Uibaí", locality: "Uibaí-BA", distance: "Matutino", grade: "9º Ano", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["23/11"], needsExtraPcd: false },
+      { id: 140, municipality: "Uibaí", school: "Escola Valtenci Rocha Levi", inep: "Uibaí", locality: "Uibaí-BA", distance: "Matutino", grade: "9º Ano A", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 141, municipality: "Uibaí", school: "Escola Valtenci Rocha Levi", inep: "Uibaí", locality: "Uibaí-BA", distance: "Matutino", grade: "9º Ano B", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+      { id: 142, municipality: "Uibaí", school: "Escola Valtenci Rocha Levi", inep: "Uibaí", locality: "Uibaí-BA", distance: "Vespertino", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+
+      // =========================================================================
+      // IRECÊ-BA (POLO IRECÊ 02 • 4 ESCOLAS • 10 TURMAS • 45 ATENDIMENTOS PCD)
+      // =========================================================================
+      { id: 143, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "2º Ano • Ledor/Transcrição/Fonte 18", grade: "2º Ano (INF II ANO II A)", is2ndYear: true, shift: "Matutino", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 144, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "2º Ano • Baixa Visão/Fonte 18", grade: "2º Ano (INF II ANO II B)", is2ndYear: true, shift: "Matutino", students: "-", regApp: null, pcdCount: 8, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 145, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "5º Ano • Ledor/Transcrição", grade: "5º Ano (PA ANO II A)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 146, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "5º Ano • Ledor/Transcrição", grade: "5º Ano (PA ANO II B)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 4, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+
+      { id: 147, municipality: "Irecê", school: "CEMIT de Irecê (Anexo 1818)", inep: "29459141", locality: "Irecê-BA (Urbana • Estadual)", distance: "3ª Série EM • Ledor/Tempo Adic.", grade: "3ª Série EM (EMITVEST3A-ANX1818)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+
+      { id: 148, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "3ª Série EM • Ledor/Tempo Adic.", grade: "3ª Série EM (NUTRMAT3SC)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+
+      { id: 149, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "Integral • Ledor/Transcrição/Tempo Adic.", grade: "3ª Série EM (PIINT7T3A)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 9, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 150, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "Integral • Ledor/Transcrição/Tempo Adic.", grade: "3ª Série EM (PIINT7T3B)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 5, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 151, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "Integral • Ledor/Transcrição/Tempo Adic.", grade: "3ª Série EM (PIINT7T3C)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 5, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 152, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "Integral • Ledor/Transcrição/Tempo Adic.", grade: "3ª Série EM (PIINT7T3D)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 6, pcdApps: [], dates: ["24/11"], needsExtraPcd: true }
     ];
 
-    var STORAGE_KEY = "sabe2026_canarana_alloc_state_v1";
+    var STORAGE_KEY = "sabe2026_polo02_alloc_state_v6";
+    var CUSTOM_APPS_KEY = "sabe2026_polo02_custom_apps_v6";
     var classesState = [];
+    var customApplicators = [];
     var currentTab = "demos";
     var demoFilter = "all";
+    var currentMunicipality = "all";
     var toastTimer = null;
+
+    function rebuildApplicatorsList() {
+      APPLICATORS_MASTER = BASE_APPLICATORS.concat(customApplicators);
+    }
+
+    function getClassMunicipality(cls) {
+      return cls.municipality || "Canarana";
+    }
+
+    function getFilteredClassesByMunicipality() {
+      if (currentMunicipality === "all") return classesState;
+      return classesState.filter(function (c) {
+        return getClassMunicipality(c) === currentMunicipality;
+      });
+    }
 
     function cloneInitialClasses() {
       return JSON.parse(JSON.stringify(INITIAL_CLASSES));
@@ -357,7 +706,7 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(function () {
         el.classList.add("hidden");
-      }, 3200);
+      }, 3800);
     }
 
     function getAppById(id) {
@@ -371,15 +720,19 @@
     // 2. MOTOR MATEMÁTICO ANTI-CONFLITO ("ELE NÃO ERRA!")
     // =========================================================================
     function getRequiredSlotsForClass(cls) {
-      // Para 2º Ano, garante sempre os 2 dias consecutivos no turno
       var dates = cls.dates.slice();
       if (cls.is2ndYear && dates.length === 1) {
         if (dates[0] === "23/11") dates = ["23/11", "24/11"];
         if (dates[0] === "25/11") dates = ["25/11", "26/11"];
       }
-      return dates.map(function (d) {
-        return d + "|" + cls.shift;
+      var shifts = cls.shift === "Integral" ? ["Matutino", "Vespertino"] : [cls.shift];
+      var result = [];
+      dates.forEach(function (d) {
+        shifts.forEach(function (s) {
+          result.push(d + "|" + s);
+        });
       });
+      return result;
     }
 
     function getApplicatorSchedule(appId, excludeClassId) {
@@ -419,7 +772,6 @@
       var sched = getApplicatorSchedule(appId, excludeCurrentIfSame ? targetClass.id : null);
       var neededSlots = getRequiredSlotsForClass(targetClass);
 
-      // 1. Verifica sobreposição exata de Data + Turno (inclui bloqueio de 2 dias do 2º Ano)
       var conflicts = [];
       neededSlots.forEach(function (slot) {
         if (sched.occupiedSlots[slot]) {
@@ -444,23 +796,24 @@
         };
       }
 
-      // 2. Se não há conflito, classifica a qualidade logística da multi-aplicação
       var sameSchoolSameDay = false;
       var diffSchoolSameDay = false;
       var sameSchoolOtherDay = false;
       var otherLocalityName = "";
+      var sameMuni = (app.municipality || "Canarana") === getClassMunicipality(targetClass);
+      var muniPenalty = sameMuni ? 0 : 100;
 
       sched.assignments.forEach(function (a) {
         var sharesDate = a.cls.dates.some(function (d) {
           return targetClass.dates.indexOf(d) !== -1;
         });
         if (sharesDate) {
-          if (a.cls.inep === targetClass.inep) sameSchoolSameDay = true;
+          if (a.cls.school === targetClass.school) sameSchoolSameDay = true;
           else {
             diffSchoolSameDay = true;
             otherLocalityName = a.cls.school + " (" + a.cls.locality + ")";
           }
-        } else if (a.cls.inep === targetClass.inep) {
+        } else if (a.cls.school === targetClass.school) {
           sameSchoolOtherDay = true;
         }
       });
@@ -469,9 +822,10 @@
         return {
           allowed: true,
           category: "free",
-          priority: 2,
-          badge: "🟢 100% Livre (Reserva)",
-          reason: app.name + " não possui nenhuma alocação ainda e está livre nos dias " + targetClass.dates.join(" e ") + " (" + targetClass.shift + ")."
+          priority: 2 + muniPenalty,
+          sameMuni: sameMuni,
+          badge: sameMuni ? "🟢 100% Livre (Reserva)" : "🟣 Livre (Outro Município)",
+          reason: app.name + " (" + (app.municipality || "Canarana") + ") não possui nenhuma alocação ainda e está livre nos dias " + targetClass.dates.join(" e ") + " (" + targetClass.shift + ")."
         };
       }
 
@@ -479,7 +833,8 @@
         return {
           allowed: true,
           category: "ideal_same_school",
-          priority: 1,
+          priority: 1 + muniPenalty,
+          sameMuni: sameMuni,
           badge: "⭐ Ideal • Mesma Escola (Turno Oposto)",
           reason: "Excelente! " + app.name + " já estará na " + targetClass.school + " no mesmo dia em turno oposto (zero deslocamento no intervalo)."
         };
@@ -489,7 +844,8 @@
         return {
           allowed: true,
           category: "same_day_travel",
-          priority: 4,
+          priority: 4 + muniPenalty,
+          sameMuni: sameMuni,
           badge: "🟡 Mesmo Dia • Turno Oposto (Com Deslocamento)",
           reason: "Permitido (turnos opostos sem conflito), mas exige deslocamento entre " + otherLocalityName + " e " + targetClass.school + " (" + targetClass.locality + ") no intervalo entre turnos."
         };
@@ -499,7 +855,8 @@
         return {
           allowed: true,
           category: "other_day_same_school",
-          priority: 2,
+          priority: 2 + muniPenalty,
+          sameMuni: sameMuni,
           badge: "🟢 Outro Dia • Mesma Escola",
           reason: "Sem conflito! " + app.name + " já conhece a " + targetClass.school + " e está totalmente livre em " + targetClass.dates.join(" e ") + " (" + targetClass.shift + ")."
         };
@@ -508,16 +865,29 @@
       return {
         allowed: true,
         category: "other_day",
-        priority: 3,
-        badge: "🟢 Outro Dia • Livre no Turno",
+        priority: 3 + muniPenalty,
+        sameMuni: sameMuni,
+        badge: sameMuni ? "🟢 Outro Dia • Livre no Turno" : "🟣 Outro Dia • Outro Município",
         reason: "Sem conflito! " + app.name + " está totalmente livre em " + targetClass.dates.join(" e ") + " (" + targetClass.shift + ")."
       };
     }
 
-    function getOpenPcdClasses() {
-      return classesState.filter(function (c) {
-        return c.needsExtraPcd && (!c.pcdApps || c.pcdApps.length === 0);
+    function getOpenVacancies(muniOverride) {
+      var list = [];
+      var targetMuni = muniOverride || currentMunicipality;
+      var source = targetMuni === "all"
+        ? classesState
+        : classesState.filter(function (c) { return getClassMunicipality(c) === targetMuni; });
+
+      source.forEach(function (c) {
+        if (!c.regApp) {
+          list.push({ cls: c, slotType: "reg" });
+        }
+        if (c.needsExtraPcd && (!c.pcdApps || c.pcdApps.length === 0)) {
+          list.push({ cls: c, slotType: "pcd" });
+        }
       });
+      return list;
     }
 
     function countGlobalConflicts() {
@@ -539,39 +909,47 @@
       if (!container) return;
 
       var query = (document.getElementById("demoSearchInput").value || "").toLowerCase().trim();
-      var openPcd = getOpenPcdClasses();
+      var openVacancies = getOpenVacancies();
       var multiCount = 0;
+      var visibleApplicators = 0;
 
       var cardsHtml = [];
 
       APPLICATORS_MASTER.forEach(function (app) {
+        var appMuni = app.municipality || "Canarana";
         var sched = getApplicatorSchedule(app.id, null);
+        var hasClassInMuni = sched.assignments.some(function (a) {
+          return getClassMunicipality(a.cls) === currentMunicipality;
+        });
+
+        if (currentMunicipality !== "all" && appMuni !== currentMunicipality && !hasClassInMuni) {
+          return;
+        }
+
+        visibleApplicators++;
         if (sched.assignments.length >= 2) multiCount++;
 
         var has2ndYear = sched.assignments.some(function (a) { return a.cls.is2ndYear; });
 
-        // Descobre todas as vagas PCD abertas onde este aplicador PODE entrar sem conflito
         var validOpportunities = [];
-        openPcd.forEach(function (vCls) {
-          var check = evaluateAssignment(app.id, vCls, false);
+        openVacancies.forEach(function (vItem) {
+          var check = evaluateAssignment(app.id, vItem.cls, false);
           if (check.allowed) {
-            validOpportunities.push({ cls: vCls, check: check });
+            validOpportunities.push({ cls: vItem.cls, slotType: vItem.slotType, check: check });
           }
         });
         validOpportunities.sort(function (a, b) { return a.check.priority - b.check.priority; });
 
-        // Filtros da aba
         if (demoFilter === "2ano" && !has2ndYear) return;
         if (demoFilter === "canAddMore" && validOpportunities.length === 0) return;
 
         if (query) {
-          var hay = (app.name + " " + app.phone + " " + sched.assignments.map(function (a) {
+          var hay = (appMuni + " " + app.name + " " + app.phone + " " + sched.assignments.map(function (a) {
             return a.cls.school + " " + a.cls.locality + " " + a.cls.grade;
           }).join(" ")).toLowerCase();
           if (hay.indexOf(query) === -1) return;
         }
 
-        // Linha do tempo visual dos 8 turnos (23M a 26V)
         var timelineHtml = TIME_SLOTS.map(function (ts) {
           var hits = sched.occupiedSlots[ts.key] || [];
           if (hits.length === 0) {
@@ -590,13 +968,12 @@
             '</div>';
         }).join("");
 
-        // Lista de alocações atuais
         var currentListHtml = sched.assignments.length === 0
-          ? '<p class="text-xs text-slate-500 italic bg-slate-50 rounded-xl p-2.5 border border-slate-200">Nenhuma turma atribuída ainda (100% disponível para cobrir vagas PCD).</p>'
+          ? '<p class="text-xs text-slate-500 italic bg-slate-50 rounded-xl p-2.5 border border-slate-200">Nenhuma turma atribuída ainda (100% disponível para assumir turmas em aberto).</p>'
           : sched.assignments.map(function (a) {
               return '<div class="flex items-start justify-between gap-2 text-xs bg-slate-50 rounded-xl p-2.5 border border-slate-200/80">' +
                 '<div>' +
-                '<p class="font-bold text-slate-900">' + a.cls.school + ' <span class="text-slate-500 font-medium">(' + a.cls.locality + ')</span></p>' +
+                '<p class="font-bold text-slate-900"><span class="text-[10px] uppercase font-extrabold text-orange-700">[' + getClassMunicipality(a.cls) + ']</span> ' + a.cls.school + '</p>' +
                 '<p class="text-[11px] text-slate-600 mt-0.5"><strong>' + a.cls.grade + '</strong> • ' + a.cls.shift + ' • Dias: <strong>' + a.cls.dates.join(' e ') + '</strong></p>' +
                 '</div>' +
                 '<span class="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-extrabold ' +
@@ -606,17 +983,17 @@
                 '</div>';
             }).join("");
 
-        // Demonstração de onde PODE entrar ainda
         var oppHtml = validOpportunities.length === 0
           ? '<p class="text-[11px] text-slate-400">Todas as vagas compatíveis já estão preenchidas ou seus turnos coincidem.</p>'
           : '<div class="space-y-1.5 max-h-44 overflow-y-auto pr-1">' +
             validOpportunities.slice(0, 6).map(function (op) {
+              var roleTag = op.slotType === "reg" ? "Titular" : "PCD";
               return '<div class="flex items-center justify-between gap-2 bg-emerald-50/60 border border-emerald-200/80 rounded-xl px-2.5 py-2 text-[11px]">' +
                 '<div class="min-w-0">' +
-                '<p class="font-bold text-slate-900 truncate">' + op.cls.school + ' • ' + op.cls.grade + '</p>' +
+                '<p class="font-bold text-slate-900 truncate">[' + roleTag + '] ' + op.cls.school + ' • ' + op.cls.grade + '</p>' +
                 '<p class="text-[10px] text-emerald-800 font-semibold truncate">' + op.check.badge + ' • ' + op.cls.dates.join(' e ') + ' (' + op.cls.shift + ')</p>' +
                 '</div>' +
-                '<button type="button" data-quickassign="' + op.cls.id + '|' + app.id + '" class="shrink-0 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[10px] transition">+ Alocar</button>' +
+                '<button type="button" data-quickassign="' + op.cls.id + '|' + op.slotType + '|' + app.id + '" class="shrink-0 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[10px] transition">+ Alocar</button>' +
                 '</div>';
             }).join("") +
             (validOpportunities.length > 6 ? '<p class="text-[10px] text-center text-slate-500 font-semibold pt-1">+ ' + (validOpportunities.length - 6) + ' outras possibilidades compatíveis</p>' : '') +
@@ -626,8 +1003,11 @@
           '<div class="space-y-3">' +
           '<div class="flex items-start justify-between gap-2">' +
           '<div>' +
+          '<div class="flex items-center gap-1.5 flex-wrap">' +
+          '<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase bg-slate-100 text-slate-700">' + appMuni + '</span>' +
           '<h3 class="font-extrabold text-sm sm:text-base text-slate-900">' + app.name + '</h3>' +
-          '<p class="text-[11px] text-slate-500">' + app.phone + '</p>' +
+          '</div>' +
+          '<p class="text-[11px] text-slate-500 mt-0.5">' + app.phone + '</p>' +
           '</div>' +
           '<div class="flex flex-col items-end gap-1">' +
           '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ' +
@@ -658,32 +1038,38 @@
         cardsHtml.push(card);
       });
 
+      document.getElementById("badgeDemoCount").textContent = visibleApplicators;
+      var demoFilterAllEl = document.getElementById("demoFilterAllCount");
+      if (demoFilterAllEl) demoFilterAllEl.textContent = visibleApplicators;
       document.getElementById("kpiMultiApp").textContent = multiCount;
+
       container.innerHTML = cardsHtml.length > 0
         ? cardsHtml.join("")
         : '<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">Nenhum aplicador encontrado com esse filtro.</div>';
     }
 
     // =========================================================================
-    // 4. RENDERIZAÇÃO DA ABA 2: VAGAS PCD EM ABERTO
+    // 4. RENDERIZAÇÃO DA ABA 2: VAGAS EM ABERTO (REGULAR + PCD)
     // =========================================================================
     function renderVacanciesTab() {
       var container = document.getElementById("vacanciesContainer");
       if (!container) return;
 
-      var openPcd = getOpenPcdClasses();
-      document.getElementById("badgeVacancyCount").textContent = openPcd.length;
-      document.getElementById("kpiOpenPcd").textContent = openPcd.length;
+      var openList = getOpenVacancies();
+      document.getElementById("badgeVacancyCount").textContent = openList.length;
+      document.getElementById("kpiOpenPcd").textContent = openList.length;
 
-      if (openPcd.length === 0) {
+      if (openList.length === 0) {
         container.innerHTML = '<div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-8 text-center space-y-2">' +
-          '<p class="text-lg font-extrabold text-emerald-900">🎉 Todas as vagas de Aplicador Extra (PCD) foram preenchidas sem conflitos!</p>' +
-          '<p class="text-xs text-emerald-700">Você já pode clicar em "Exportar Planilha (CSV)" no topo para baixar o cronograma completo.</p>' +
+          '<p class="text-lg font-extrabold text-emerald-900">🎉 Todas as vagas em aberto foram preenchidas sem conflitos!</p>' +
+          '<p class="text-xs text-emerald-700">Você já pode clicar em "📄 Lista Oficial por Cidade" ou "📥 Exportar CSV" no topo para baixar o cronograma completo.</p>' +
           '</div>';
         return;
       }
 
-      container.innerHTML = openPcd.map(function (cls) {
+      container.innerHTML = openList.map(function (vItem) {
+        var cls = vItem.cls;
+        var slotType = vItem.slotType;
         var candidates = [];
         APPLICATORS_MASTER.forEach(function (app) {
           var res = evaluateAssignment(app.id, cls, false);
@@ -696,25 +1082,40 @@
             ? "bg-emerald-600 hover:bg-emerald-700 text-white"
             : c.res.priority <= 3
               ? "bg-slate-800 hover:bg-slate-900 text-white"
-              : "bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300";
+              : c.res.priority < 100
+                ? "bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300"
+                : "bg-purple-100 hover:bg-purple-200 text-purple-900 border border-purple-300";
 
-          return '<button type="button" data-quickassign="' + cls.id + '|' + c.app.id + '" class="px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ' + colorCls + '">' +
+          var tagLabel = !c.res.sameMuni
+            ? (c.app.municipality || "Polo 02")
+            : (c.res.priority === 1 ? "Mesma Escola" : c.res.priority === 2 ? "Livre" : c.res.priority === 3 ? "Outro Dia" : "Desloc.");
+
+          return '<button type="button" data-quickassign="' + cls.id + '|' + slotType + '|' + c.app.id + '" class="px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ' + colorCls + '">' +
             '<span>+ ' + c.app.name + '</span>' +
-            '<span class="text-[10px] opacity-80">(' + (c.res.priority === 1 ? 'Mesma Escola' : c.res.priority === 2 ? 'Livre' : c.res.priority === 3 ? 'Outro Dia' : 'Desloc.') + ')</span>' +
+            '<span class="text-[10px] opacity-80">(' + tagLabel + ')</span>' +
             '</button>';
         }).join("");
+
+        var badgeText = slotType === "reg"
+          ? "⚠️ Aplicador Titular em Aberto"
+          : "⚠️ Vaga PCD Aberta (" + cls.pcdCount + " aluno" + (cls.pcdCount > 1 ? "s" : "") + " PCD)";
+
+        var subInfo = slotType === "reg"
+          ? "Data: <strong>" + cls.dates.join(" e ") + "/11/2026</strong> • Turno: <strong>" + cls.shift + "</strong> (" + cls.distance + ")"
+          : "Data: <strong>" + cls.dates.join(" e ") + "/11/2026</strong> • Turno: <strong>" + cls.shift + "</strong> • Aplicador Regular da Sala: <strong>" + (getAppById(cls.regApp) ? getAppById(cls.regApp).name : "Em aberto") + "</strong>";
 
         return '<div class="bg-white rounded-2xl border border-amber-200 shadow-2xs p-4 space-y-3">' +
           '<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">' +
           '<div>' +
           '<div class="flex flex-wrap items-center gap-2">' +
-          '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-900">⚠️ Vaga PCD Aberta (' + cls.pcdCount + ' aluno' + (cls.pcdCount > 1 ? 's' : '') + ' PCD)</span>' +
-          '<span class="text-xs font-bold text-slate-500">' + cls.locality + ' (' + cls.distance + ')</span>' +
+          '<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase bg-orange-100 text-orange-800">' + getClassMunicipality(cls) + '</span>' +
+          '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-900">' + badgeText + '</span>' +
+          '<span class="text-xs font-bold text-slate-500">' + cls.locality + '</span>' +
           '</div>' +
           '<h3 class="text-base font-extrabold text-slate-900 mt-1">' + cls.school + ' • ' + cls.grade + '</h3>' +
-          '<p class="text-xs text-slate-600">Data: <strong>' + cls.dates.join(' e ') + '/11/2026</strong> • Turno: <strong>' + cls.shift + '</strong> • Aplicador Regular da Sala: <strong>' + (getAppById(cls.regApp) ? getAppById(cls.regApp).name : '-') + '</strong></p>' +
+          '<p class="text-xs text-slate-600">' + subInfo + '</p>' +
           '</div>' +
-          '<button type="button" data-openmodal="' + cls.id + '|pcd" class="shrink-0 px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-extrabold text-slate-800">' +
+          '<button type="button" data-openmodal="' + cls.id + '|' + slotType + '" class="shrink-0 px-3.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-extrabold text-slate-800">' +
           'Ver Todos os ' + candidates.length + ' Elegíveis' +
           '</button>' +
           '</div>' +
@@ -735,17 +1136,19 @@
       var clsSel = document.getElementById("simClassSelect");
       if (!appSel || !clsSel) return;
 
+      var prevApp = appSel.value || "jilvanice_uibai";
+      var prevCls = clsSel.value || "133";
+
       appSel.innerHTML = APPLICATORS_MASTER.map(function (a) {
-        return '<option value="' + a.id + '">' + a.name + ' (' + a.phone + ')</option>';
+        return '<option value="' + a.id + '">[' + (a.municipality || 'Canarana') + '] ' + a.name + ' (' + a.phone + ')</option>';
       }).join("");
 
       clsSel.innerHTML = classesState.map(function (c) {
-        return '<option value="' + c.id + '">' + c.school + ' — ' + c.grade + ' (' + c.dates.join(' e ') + ' • ' + c.shift + ')</option>';
+        return '<option value="' + c.id + '">[' + getClassMunicipality(c) + '] ' + c.school + ' — ' + c.grade + ' (' + c.dates.join(' e ') + ' • ' + c.shift + ')</option>';
       }).join("");
 
-      // Pré-seleciona um caso clássico de bloqueio de 2º Ano para demonstração imediata
-      appSel.value = "gabriela";
-      clsSel.value = "5"; // Escola Isaias Lemos 5º Ano A Matutino 24/11 (conflito com 2º Ano 23 e 24/11!)
+      appSel.value = prevApp;
+      clsSel.value = prevCls;
       renderSimulatorResult();
     }
 
@@ -770,7 +1173,7 @@
       var scheduleSummary = sched.assignments.length === 0
         ? "Nenhuma turma alocada ainda."
         : sched.assignments.map(function (a) {
-            return "• " + a.cls.school + " — " + a.cls.grade + " (" + a.cls.dates.join(" e ") + " • " + a.cls.shift + ") [" + a.role + "]";
+            return "• [" + getClassMunicipality(a.cls) + "] " + a.cls.school + " — " + a.cls.grade + " (" + a.cls.dates.join(" e ") + " • " + a.cls.shift + ") [" + a.role + "]";
           }).join("<br>");
 
       if (!result.allowed) {
@@ -788,6 +1191,8 @@
           '</div>';
       } else {
         box.className = "rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-4 sm:p-5 space-y-3";
+        var simSlotType = !targetCls.regApp ? "reg" : "pcd";
+        var simBtnLabel = !targetCls.regApp ? "Alocar como Titular Agora" : "Alocar como Extra PCD Agora";
         box.innerHTML = '<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">' +
           '<div class="flex items-start gap-2.5">' +
           '<span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-extrabold text-base shrink-0">✅</span>' +
@@ -796,8 +1201,8 @@
           '<p class="text-xs font-semibold text-emerald-800 mt-0.5">' + result.reason + '</p>' +
           '</div>' +
           '</div>' +
-          '<button type="button" data-quickassign="' + targetCls.id + '|' + appId + '" class="shrink-0 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-sm">' +
-          'Alocar Nesta Turma Agora' +
+          '<button type="button" data-quickassign="' + targetCls.id + '|' + simSlotType + '|' + appId + '" class="shrink-0 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-sm">' +
+          simBtnLabel +
           '</button>' +
           '</div>' +
           '<div class="bg-white/80 rounded-xl p-3 border border-emerald-200 text-xs text-slate-700">' +
@@ -817,68 +1222,97 @@
       var query = (document.getElementById("schoolSearchInput").value || "").toLowerCase().trim();
       var dateFilter = document.getElementById("schoolDateFilter").value;
 
-      // Agrupa por escola mantendo a ordem original
       var schoolGroups = [];
       var map = {};
-      classesState.forEach(function (cls) {
+      getFilteredClassesByMunicipality().forEach(function (cls) {
         if (dateFilter !== "all" && cls.dates.indexOf(dateFilter) === -1) return;
         if (query) {
           var regName = getAppById(cls.regApp) ? getAppById(cls.regApp).name : "";
           var pcdNames = (cls.pcdApps || []).map(function (id) { return getAppById(id) ? getAppById(id).name : ""; }).join(" ");
-          var hay = (cls.school + " " + cls.locality + " " + cls.grade + " " + regName + " " + pcdNames).toLowerCase();
+          var hay = (getClassMunicipality(cls) + " " + cls.school + " " + cls.locality + " " + cls.grade + " " + regName + " " + pcdNames).toLowerCase();
           if (hay.indexOf(query) === -1) return;
         }
-        if (!map[cls.school]) {
-          map[cls.school] = {
+        var groupKey = getClassMunicipality(cls) + "|" + cls.school;
+        if (!map[groupKey]) {
+          map[groupKey] = {
+            municipality: getClassMunicipality(cls),
             school: cls.school,
             inep: cls.inep,
             locality: cls.locality,
             distance: cls.distance,
             items: []
           };
-          schoolGroups.push(map[cls.school]);
+          schoolGroups.push(map[groupKey]);
         }
-        map[cls.school].items.push(cls);
+        map[groupKey].items.push(cls);
       });
+
+      if (schoolGroups.length === 0) {
+        container.innerHTML = '<div class="bg-white rounded-2xl border border-slate-200 p-8 text-center space-y-2">' +
+          '<p class="text-base font-extrabold text-slate-900">Nenhuma escola encontrada' + (currentMunicipality !== "all" ? " para " + currentMunicipality : "") + '</p>' +
+          '<p class="text-xs text-slate-500">Tente limpar a busca ou selecionar outro município no filtro acima.</p>' +
+          '</div>';
+        return;
+      }
 
       container.innerHTML = schoolGroups.map(function (grp) {
         var rowsHtml = grp.items.map(function (cls) {
           var regObj = getAppById(cls.regApp);
           var pcdObjs = (cls.pcdApps || []).map(getAppById).filter(Boolean);
-          var isMissingPcd = cls.needsExtraPcd && pcdObjs.length === 0;
 
-          return '<div class="p-3.5 border-t border-slate-100 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 ' + (isMissingPcd ? 'bg-amber-50/40' : '') + '">' +
+          var regHtml = regObj
+            ? '<span class="font-bold text-slate-900">' + regObj.name + '</span>'
+            : '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-100 text-rose-800">⚠️ Titular em aberto</span>';
+
+          var pcdBadgeHtml = "";
+          if (cls.needsExtraPcd) {
+            if (pcdObjs.length > 0) {
+              pcdBadgeHtml = '<div class="mt-1 flex flex-wrap items-center gap-1.5">' +
+                '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">PCD: ' + pcdObjs.map(function (p) { return p.name; }).join(" + ") + '</span>' +
+                '<button type="button" data-openmodal="' + cls.id + '|pcd" class="text-[11px] font-bold text-slate-500 underline hover:text-slate-800">Trocar PCD</button>' +
+                '</div>';
+            } else {
+              pcdBadgeHtml = '<div class="mt-1 flex items-center gap-2">' +
+                '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800">⚠️ Falta Aplicador PCD (' + cls.pcdCount + ')</span>' +
+                '<button type="button" data-openmodal="' + cls.id + '|pcd" class="text-[11px] font-extrabold text-orange-600 underline hover:text-orange-800">+ Alocar PCD</button>' +
+                '</div>';
+            }
+          }
+
+          var shiftBadgeClass = cls.shift === "Matutino"
+            ? "bg-sky-100 text-sky-800"
+            : cls.shift === "Integral"
+              ? "bg-purple-100 text-purple-800"
+              : "bg-indigo-100 text-indigo-800";
+
+          return '<div class="p-3.5 sm:p-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">' +
             '<div class="space-y-1">' +
             '<div class="flex flex-wrap items-center gap-2">' +
             '<span class="font-extrabold text-sm text-slate-900">' + cls.grade + '</span>' +
-            '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold ' + (cls.shift === 'Matutino' ? 'bg-sky-100 text-sky-800' : 'bg-indigo-100 text-indigo-800') + '">' + cls.shift + '</span>' +
-            '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold ' + (cls.is2ndYear ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-700') + '">' + cls.dates.join(' e ') + '/11</span>' +
-            '<span class="text-[11px] text-slate-500">' + cls.students + ' estudantes' + (cls.pcdCount > 0 ? ' • <strong>' + cls.pcdCount + ' PCD</strong>' : '') + '</span>' +
+            '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold ' + shiftBadgeClass + '">' + cls.shift + '</span>' +
+            '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold ' + (cls.is2ndYear ? "bg-rose-100 text-rose-800" : "bg-slate-100 text-slate-700") + '">' + cls.dates.join(" e ") + '/11' + (cls.is2ndYear ? " 🔒" : "") + '</span>' +
+            (cls.students && cls.students !== "-" ? '<span class="text-xs text-slate-500">' + cls.students + ' alunos</span>' : '') +
             '</div>' +
-
-            '<div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">' +
-            '<p class="text-slate-700">Aplicador(a): <strong class="text-slate-900">' + (regObj ? regObj.name : 'Não definido') + '</strong></p>' +
-            (cls.needsExtraPcd || pcdObjs.length > 0
-              ? '<p class="' + (isMissingPcd ? 'text-amber-800 font-bold' : 'text-emerald-800') + '">Apoio PCD: <strong>' + (pcdObjs.length > 0 ? pcdObjs.map(function (p) { return p.name; }).join(' + ') : '⚠️ VAGA EM ABERTO') + '</strong></p>'
-              : '<p class="text-slate-400">Sem aplicador extra PCD</p>') +
+            '<p class="text-xs text-slate-600">Aplicador Titular: ' + regHtml + '</p>' +
+            pcdBadgeHtml +
             '</div>' +
-            '</div>' +
-
             '<div class="flex items-center gap-2 shrink-0">' +
-            '<button type="button" data-openmodal="' + cls.id + '|reg" class="px-2.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-[11px] font-bold text-slate-700">Trocar Regular</button>' +
-            '<button type="button" data-openmodal="' + cls.id + '|pcd" class="px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold ' +
-            (isMissingPcd ? 'bg-amber-500 hover:bg-amber-600 text-white' : 'border border-slate-200 hover:bg-slate-50 text-slate-700') + '">' +
-            (isMissingPcd ? '+ Alocar PCD' : 'Apoio PCD') +
+            '<button type="button" data-openmodal="' + cls.id + '|reg" class="px-3 py-1.5 rounded-xl border ' + (!regObj ? 'border-orange-300 bg-orange-50 text-orange-800' : 'border-slate-200 text-slate-700') + ' hover:bg-slate-100 text-xs font-bold">' +
+            (!regObj ? '+ Alocar Titular' : 'Trocar Titular') +
             '</button>' +
             '</div>' +
             '</div>';
         }).join("");
 
+        var showInep = grp.inep && grp.inep !== "P. Dutra" && grp.inep !== "Lapão" && grp.inep !== "Uibaí";
         return '<div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">' +
           '<div class="bg-slate-50 px-4 py-3 flex flex-wrap items-center justify-between gap-2">' +
           '<div>' +
-          '<h3 class="font-extrabold text-sm sm:text-base text-slate-900">' + grp.school + ' <span class="text-xs font-medium text-slate-400">INEP ' + grp.inep + '</span></h3>' +
-          '<p class="text-xs text-slate-600">' + grp.locality + ' • Distância: <strong>' + grp.distance + '</strong></p>' +
+          '<div class="flex items-center gap-2 flex-wrap">' +
+          '<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase bg-orange-100 text-orange-800">' + grp.municipality + '</span>' +
+          '<h3 class="font-extrabold text-sm sm:text-base text-slate-900">' + grp.school + (showInep ? ' <span class="text-xs font-medium text-slate-400">INEP ' + grp.inep + '</span>' : '') + '</h3>' +
+          '</div>' +
+          '<p class="text-xs text-slate-600 mt-0.5">' + grp.locality + ' • Detalhe: <strong>' + grp.distance + '</strong></p>' +
           '</div>' +
           '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-white border border-slate-200 text-slate-700">' + grp.items.length + ' turma(s)</span>' +
           '</div>' +
@@ -888,9 +1322,173 @@
     }
 
     // =========================================================================
-    // 7. MODAL DE ALOCAÇÃO MANUAL COM VALIDAÇÃO ANTI-CONFLITO
+    // 7. RELATÓRIO OFICIAL DE ESCOLAS POR CIDADE (PDF / WHATSAPP)
     // =========================================================================
-    function openAllocModal(classId, targetType) {
+    function buildReportData(muniFilter) {
+      var list = muniFilter === "all"
+        ? classesState
+        : classesState.filter(function (c) { return getClassMunicipality(c) === muniFilter; });
+
+      var byMuni = {};
+      var muniOrder = [];
+      list.forEach(function (cls) {
+        var m = getClassMunicipality(cls);
+        if (!byMuni[m]) {
+          byMuni[m] = { municipality: m, schools: [], schoolMap: {}, totalClasses: 0, allocatedReg: 0 };
+          muniOrder.push(m);
+        }
+        var mObj = byMuni[m];
+        mObj.totalClasses++;
+        if (cls.regApp) mObj.allocatedReg++;
+
+        if (!mObj.schoolMap[cls.school]) {
+          mObj.schoolMap[cls.school] = {
+            school: cls.school,
+            inep: cls.inep,
+            locality: cls.locality,
+            classes: []
+          };
+          mObj.schools.push(mObj.schoolMap[cls.school]);
+        }
+        mObj.schoolMap[cls.school].classes.push(cls);
+      });
+
+      return muniOrder.map(function (m) { return byMuni[m]; });
+    }
+
+    function renderOfficialReportModal() {
+      var sel = document.getElementById("reportMuniSelect");
+      var muniFilter = sel ? sel.value : "all";
+      var groups = buildReportData(muniFilter);
+
+      var totalSchools = 0;
+      var totalClasses = 0;
+      var totalRegOk = 0;
+      groups.forEach(function (g) {
+        totalSchools += g.schools.length;
+        totalClasses += g.totalClasses;
+        totalRegOk += g.allocatedReg;
+      });
+
+      document.getElementById("reportDocTitle").textContent = muniFilter === "all"
+        ? "Relação Oficial de Escolas e Aplicadores Alocados — Polo Irecê 02 (Todos os Municípios)"
+        : "Relação Oficial de Escolas e Aplicadores Alocados — " + muniFilter + "-BA";
+      document.getElementById("reportDocSubtitle").textContent =
+        totalSchools + " unidade(s) escolar(es) • " + totalClasses + " turma(s) avaliada(s) • " + totalRegOk + " aplicador(es) titular(es) alocado(s)";
+      document.getElementById("reportTimestamp").textContent = "Gerado em " + new Date().toLocaleString("pt-BR");
+
+      var container = document.getElementById("reportContentContainer");
+      container.innerHTML = groups.map(function (mGroup) {
+        var schoolsHtml = mGroup.schools.map(function (sch) {
+          var showInep = sch.inep && sch.inep !== "P. Dutra" && sch.inep !== "Lapão" && sch.inep !== "Uibaí";
+          var rows = sch.classes.map(function (c) {
+            var regObj = getAppById(c.regApp);
+            var pcdObjs = (c.pcdApps || []).map(getAppById).filter(Boolean);
+
+            var regCell = regObj
+              ? '<span class="font-bold text-slate-900">' + regObj.name + '</span>'
+              : '<span class="text-rose-700 font-bold">⚠️ Pendente</span>';
+
+            var pcdCell = "—";
+            if (c.needsExtraPcd) {
+              pcdCell = pcdObjs.length > 0
+                ? '<span class="font-bold text-emerald-800">' + pcdObjs.map(function (p) { return p.name; }).join(" / ") + '</span>'
+                : '<span class="text-amber-700 font-bold">⚠️ Falta PCD (' + c.pcdCount + ')</span>';
+            } else if (pcdObjs.length > 0) {
+              pcdCell = '<span class="font-bold text-emerald-800">' + pcdObjs.map(function (p) { return p.name; }).join(" / ") + '</span>';
+            }
+
+            return '<tr class="border-t border-slate-200 text-xs">' +
+              '<td class="py-2 px-2.5 font-bold text-slate-900">' + c.grade + '</td>' +
+              '<td class="py-2 px-2.5 text-slate-700">' + c.dates.join(" e ") + '/11 • ' + c.shift + '</td>' +
+              '<td class="py-2 px-2.5">' + regCell + '</td>' +
+              '<td class="py-2 px-2.5">' + pcdCell + '</td>' +
+              '</tr>';
+          }).join("");
+
+          return '<div class="border border-slate-300 rounded-xl overflow-hidden break-inside-avoid">' +
+            '<div class="bg-slate-100 px-3 py-2 flex flex-wrap items-center justify-between gap-2">' +
+            '<p class="font-extrabold text-xs sm:text-sm text-slate-900">🏫 ' + sch.school + (showInep ? ' <span class="font-normal text-slate-500">(INEP ' + sch.inep + ')</span>' : '') + '</p>' +
+            '<p class="text-[11px] font-semibold text-slate-600">' + sch.locality + '</p>' +
+            '</div>' +
+            '<div class="overflow-x-auto">' +
+            '<table class="w-full text-left border-collapse">' +
+            '<thead>' +
+            '<tr class="bg-slate-50 text-[10px] font-extrabold uppercase tracking-wider text-slate-500 border-t border-slate-200">' +
+            '<th class="py-1.5 px-2.5">Turma</th>' +
+            '<th class="py-1.5 px-2.5">Data / Turno</th>' +
+            '<th class="py-1.5 px-2.5">Aplicador Titular</th>' +
+            '<th class="py-1.5 px-2.5">Aplicador Extra (PCD)</th>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody>' + rows + '</tbody>' +
+            '</table>' +
+            '</div>' +
+            '</div>';
+        }).join("");
+
+        return '<section class="space-y-3">' +
+          '<div class="bg-slate-900 text-white px-3.5 py-2 rounded-xl flex items-center justify-between">' +
+          '<h4 class="font-extrabold text-sm uppercase tracking-wide">📍 Município: ' + mGroup.municipality + '-BA</h4>' +
+          '<span class="text-xs font-bold text-orange-300">' + mGroup.schools.length + ' escola(s) • ' + mGroup.totalClasses + ' turma(s)</span>' +
+          '</div>' +
+          '<div class="space-y-3">' + schoolsHtml + '</div>' +
+          '</section>';
+      }).join("");
+    }
+
+    function copyWhatsAppOfficialList() {
+      var sel = document.getElementById("reportMuniSelect");
+      var muniFilter = sel ? sel.value : "all";
+      var groups = buildReportData(muniFilter);
+
+      var textLines = [
+        "*SABE 2026 • RELAÇÃO OFICIAL DE ESCOLAS E APLICADORES (POLO IRECÊ 02)*",
+        ""
+      ];
+
+      groups.forEach(function (mGroup) {
+        textLines.push("📍 *MUNICÍPIO: " + mGroup.municipality.toUpperCase() + "-BA* (" + mGroup.schools.length + " escolas)");
+        mGroup.schools.forEach(function (sch) {
+          textLines.push("🏫 *" + sch.school + "* (" + sch.locality + ")");
+          sch.classes.forEach(function (c) {
+            var regObj = getAppById(c.regApp);
+            var pcdObjs = (c.pcdApps || []).map(getAppById).filter(Boolean);
+            var regStr = regObj ? regObj.name : "⚠️ Pendente";
+            var pcdStr = "";
+            if (pcdObjs.length > 0) {
+              pcdStr = " | PCD: " + pcdObjs.map(function (p) { return p.name; }).join(" / ");
+            } else if (c.needsExtraPcd) {
+              pcdStr = " | PCD: ⚠️ Falta (" + c.pcdCount + ")";
+            }
+            textLines.push("  • " + c.grade + " (" + c.dates.join(" e ") + "/11 • " + c.shift + ") — Titular: " + regStr + pcdStr);
+          });
+          textLines.push("");
+        });
+      });
+
+      var finalText = textLines.join("\n").trim();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(finalText).then(function () {
+          showToast("📋 Lista oficial copiada! Agora é só colar no WhatsApp.");
+        }).catch(function () {
+          showToast("⚠️ Não foi possível copiar automaticamente. Use Imprimir / PDF.");
+        });
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = finalText;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        showToast("📋 Lista oficial copiada! Agora é só colar no WhatsApp.");
+      }
+    }
+
+    // =========================================================================
+    // 8. MODAL DE ALOCAÇÃO, CADASTRO EM LOTE E EXPORTAÇÃO CSV
+    // =========================================================================
+    function openAllocModal(classId, slotType) {
       var cls = null;
       for (var i = 0; i < classesState.length; i++) {
         if (classesState[i].id === classId) {
@@ -900,42 +1498,38 @@
       }
       if (!cls) return;
 
-      document.getElementById("allocModalBadge").textContent = targetType === "pcd" ? "Apoio Estudante PCD" : "Aplicador Regular da Sala";
+      document.getElementById("allocModalBadge").textContent = slotType === "pcd"
+        ? "Alocar Aplicador Extra (PCD) • " + getClassMunicipality(cls)
+        : "Alocar / Trocar Aplicador Titular • " + getClassMunicipality(cls);
       document.getElementById("allocModalTitle").textContent = cls.school + " • " + cls.grade;
-      document.getElementById("allocModalSub").textContent = cls.locality + " • Dias: " + cls.dates.join(" e ") + "/11 • Turno: " + cls.shift;
+      document.getElementById("allocModalSub").textContent = "Data: " + cls.dates.join(" e ") + "/11/2026 • Turno: " + cls.shift + " • " + cls.locality;
 
       var evaluated = APPLICATORS_MASTER.map(function (app) {
-        return {
-          app: app,
-          res: evaluateAssignment(app.id, cls, true)
-        };
+        return { app: app, res: evaluateAssignment(app.id, cls, true) };
       });
-
       evaluated.sort(function (a, b) {
         if (a.res.allowed !== b.res.allowed) return a.res.allowed ? -1 : 1;
-        return (a.res.priority || 99) - (b.res.priority || 99);
+        return (a.res.priority || 999) - (b.res.priority || 999);
       });
 
-      var listEl = document.getElementById("allocCandidatesList");
-      listEl.innerHTML = evaluated.map(function (item) {
+      document.getElementById("allocCandidatesList").innerHTML = evaluated.map(function (item) {
         if (!item.res.allowed) {
-          return '<div class="p-3 rounded-xl border border-rose-200 bg-rose-50/70 opacity-85">' +
+          return '<div class="p-3 rounded-xl border border-rose-200 bg-rose-50/70 opacity-80">' +
             '<div class="flex items-center justify-between gap-2">' +
-            '<p class="font-bold text-xs text-rose-950">' + item.app.name + '</p>' +
-            '<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-rose-200 text-rose-900">' + item.res.badge + '</span>' +
+            '<p class="font-bold text-xs text-rose-950">' + item.app.name + ' <span class="font-normal text-rose-700">(' + (item.app.municipality || 'Canarana') + ')</span></p>' +
+            '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-200 text-rose-900">' + item.res.badge + '</span>' +
             '</div>' +
             '<p class="text-[11px] text-rose-800 mt-1">' + item.res.reason + '</p>' +
             '</div>';
         }
-
         return '<div class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/50 flex items-center justify-between gap-3">' +
           '<div class="min-w-0">' +
-          '<p class="font-extrabold text-xs text-slate-900">' + item.app.name + '</p>' +
-          '<p class="text-[10px] font-bold text-emerald-700 mt-0.5">' + item.res.badge + '</p>' +
-          '<p class="text-[11px] text-slate-600 mt-0.5">' + item.res.reason + '</p>' +
+          '<p class="font-extrabold text-xs text-slate-900">' + item.app.name + ' <span class="font-semibold text-slate-500">(' + (item.app.municipality || 'Canarana') + ')</span></p>' +
+          '<p class="text-[11px] text-emerald-800 font-semibold mt-0.5">' + item.res.badge + '</p>' +
+          '<p class="text-[10px] text-slate-600 mt-0.5">' + item.res.reason + '</p>' +
           '</div>' +
-          '<button type="button" data-confirmalloc="' + cls.id + '|' + targetType + '|' + item.app.id + '" class="shrink-0 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs">' +
-          'Selecionar' +
+          '<button type="button" data-confirmalloc="' + cls.id + '|' + slotType + '|' + item.app.id + '" class="shrink-0 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs">' +
+          'Escolher' +
           '</button>' +
           '</div>';
       }).join("");
@@ -943,7 +1537,7 @@
       document.getElementById("allocModal").classList.remove("hidden");
     }
 
-    function applyAllocation(classId, targetType, appId) {
+    function applyAllocation(classId, slotType, appId) {
       var cls = null;
       for (var i = 0; i < classesState.length; i++) {
         if (classesState[i].id === classId) {
@@ -959,13 +1553,10 @@
         return;
       }
 
-      if (targetType === "reg") {
-        cls.regApp = appId;
+      if (slotType === "pcd") {
+        cls.pcdApps = [appId];
       } else {
-        if (!cls.pcdApps) cls.pcdApps = [];
-        if (cls.pcdApps.indexOf(appId) === -1) {
-          cls.pcdApps.push(appId);
-        }
+        cls.regApp = appId;
       }
 
       saveState();
@@ -975,40 +1566,53 @@
       showToast("✅ " + (appObj ? appObj.name : "Aplicador") + " alocado(a) em " + cls.school + " (" + cls.grade + ")!");
     }
 
-    function autoFillAllVacancies() {
-      var openPcd = getOpenPcdClasses();
+    function autoFillAllVacancies(muniTarget, silent) {
+      var targetMuni = muniTarget || currentMunicipality;
+      var openList = getOpenVacancies(targetMuni);
+      openList.sort(function (a, b) {
+        if (a.slotType !== b.slotType) return a.slotType === "reg" ? -1 : 1;
+        return a.cls.id - b.cls.id;
+      });
+
       var filled = 0;
 
-      openPcd.forEach(function (cls) {
+      openList.forEach(function (vItem) {
+        var cls = vItem.cls;
+        var slotType = vItem.slotType;
         var candidates = [];
         APPLICATORS_MASTER.forEach(function (app) {
           var res = evaluateAssignment(app.id, cls, false);
-          if (res.allowed) {
-            // Evita sobrecarregar quem já tem 4 turmas
+          if (res.allowed && res.sameMuni) {
             var load = getApplicatorSchedule(app.id, null).assignments.length;
             if (load < 4) {
-              candidates.push({ app: app, score: res.priority * 10 + load });
+              var score = (load * 50) + res.priority;
+              candidates.push({ app: app, score: score });
             }
           }
         });
         candidates.sort(function (a, b) { return a.score - b.score; });
         if (candidates.length > 0) {
-          cls.pcdApps = [candidates[0].app.id];
+          if (slotType === "reg") cls.regApp = candidates[0].app.id;
+          else cls.pcdApps = [candidates[0].app.id];
           filled++;
         }
       });
 
       saveState();
       refreshAll();
-      showToast("⚡ " + filled + " vaga(s) PCD preenchida(s) automaticamente com zero conflitos!");
+      if (!silent) {
+        showToast("⚡ " + filled + " vaga(s) preenchida(s) automaticamente com zero conflitos!");
+      }
+      return filled;
     }
 
     function exportScheduleCsv() {
-      var lines = ["Escola;INEP;Localidade;Distancia;Turma;Turno;Data;Estudantes;Aplicador_Regular;Estudantes_PCD;Aplicador_PCD"];
-      classesState.forEach(function (c) {
+      var lines = ["Municipio;Escola;INEP;Localidade;Etapa_Horario;Turma;Turno;Data;Estudantes;Aplicador_Regular;Estudantes_PCD;Aplicador_PCD"];
+      getFilteredClassesByMunicipality().forEach(function (c) {
         var reg = getAppById(c.regApp);
         var pcds = (c.pcdApps || []).map(getAppById).filter(Boolean).map(function (p) { return p.name + " (" + p.phone + ")"; }).join(" / ");
         lines.push([
+          getClassMunicipality(c),
           c.school,
           c.inep,
           c.locality,
@@ -1027,7 +1631,7 @@
       var url = URL.createObjectURL(blob);
       var a = document.createElement("a");
       a.href = url;
-      a.download = "Cronograma_Alocado_SABE_2026_Canarana.csv";
+      a.download = "Cronograma_Alocado_SABE_2026_Polo_Irece_02.csv";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -1038,12 +1642,21 @@
     function saveState() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(classesState));
+        localStorage.setItem(CUSTOM_APPS_KEY, JSON.stringify(customApplicators));
       } catch (e) {
         console.error(e);
       }
     }
 
     function loadState() {
+      try {
+        var rawApps = localStorage.getItem(CUSTOM_APPS_KEY);
+        if (rawApps) customApplicators = JSON.parse(rawApps);
+      } catch (e) {
+        console.error(e);
+      }
+      rebuildApplicatorsList();
+
       try {
         var raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
@@ -1056,8 +1669,21 @@
       classesState = cloneInitialClasses();
     }
 
+    function setMunicipalityFilter(muni) {
+      currentMunicipality = muni;
+      document.querySelectorAll(".muni-btn").forEach(function (b) {
+        var active = b.getAttribute("data-muni") === currentMunicipality;
+        b.className = active
+          ? "muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-extrabold bg-orange-600 text-white transition"
+          : "muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+      });
+    }
+
     function refreshAll() {
-      document.getElementById("kpiTotalClasses").textContent = classesState.length;
+      var filteredClasses = getFilteredClassesByMunicipality();
+      document.getElementById("kpiTotalClasses").textContent = filteredClasses.length;
+      var badgeSchoolCountEl = document.getElementById("badgeSchoolClassesCount");
+      if (badgeSchoolCountEl) badgeSchoolCountEl.textContent = filteredClasses.length;
       document.getElementById("kpiConflicts").textContent = countGlobalConflicts();
       renderDemosTab();
       renderVacanciesTab();
@@ -1066,7 +1692,13 @@
     }
 
     function bindEvents() {
-      // Navegação entre abas
+      document.querySelectorAll(".muni-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setMunicipalityFilter(btn.getAttribute("data-muni"));
+          refreshAll();
+        });
+      });
+
       document.querySelectorAll(".tab-btn").forEach(function (btn) {
         btn.addEventListener("click", function () {
           currentTab = btn.getAttribute("data-tab");
@@ -1084,7 +1716,6 @@
         });
       });
 
-      // Filtros da Aba Demonstrações
       document.querySelectorAll(".demo-filter-btn").forEach(function (btn) {
         btn.addEventListener("click", function () {
           demoFilter = btn.getAttribute("data-demofilter");
@@ -1104,7 +1735,9 @@
       document.getElementById("simApplicatorSelect").addEventListener("change", renderSimulatorResult);
       document.getElementById("simClassSelect").addEventListener("change", renderSimulatorResult);
 
-      document.getElementById("btnAutoFillBest").addEventListener("click", autoFillAllVacancies);
+      document.getElementById("btnAutoFillBest").addEventListener("click", function () {
+        autoFillAllVacancies(currentMunicipality, false);
+      });
       document.getElementById("btnExportCsv").addEventListener("click", exportScheduleCsv);
       document.getElementById("btnResetDemo").addEventListener("click", function () {
         classesState = cloneInitialClasses();
@@ -1117,12 +1750,92 @@
         document.getElementById("allocModal").classList.add("hidden");
       });
 
-      // Delegação global para botões dinâmicos
+      document.getElementById("btnOpenNewAppModal").addEventListener("click", function () {
+        if (currentMunicipality !== "all") {
+          document.getElementById("newAppMuni").value = currentMunicipality;
+        }
+        document.getElementById("newAppModal").classList.remove("hidden");
+      });
+
+      document.getElementById("btnCloseNewAppModal").addEventListener("click", function () {
+        document.getElementById("newAppModal").classList.add("hidden");
+      });
+
+      // Eventos do Modal de Relatório / Lista Oficial por Cidade
+      document.getElementById("btnOpenReportModal").addEventListener("click", function () {
+        document.getElementById("reportMuniSelect").value = currentMunicipality;
+        renderOfficialReportModal();
+        document.getElementById("reportModal").classList.remove("hidden");
+      });
+
+      document.getElementById("btnCloseReportModal").addEventListener("click", function () {
+        document.getElementById("reportModal").classList.add("hidden");
+      });
+
+      document.getElementById("reportMuniSelect").addEventListener("change", renderOfficialReportModal);
+      document.getElementById("btnCopyWhatsAppReport").addEventListener("click", copyWhatsAppOfficialList);
+      document.getElementById("btnPrintReport").addEventListener("click", function () {
+        window.print();
+      });
+
+      document.getElementById("newAppForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var rawText = document.getElementById("newAppNamesList").value || "";
+        var muni = document.getElementById("newAppMuni").value || "Uibaí";
+        var phone = (document.getElementById("newAppPhone").value || "").trim() || ("Equipe " + muni);
+        var shouldAutoAlloc = document.getElementById("chkAutoAllocateBatch").checked;
+
+        var lines = rawText.split(/\r?\n/);
+        var addedCount = 0;
+        var baseTime = Date.now();
+
+        lines.forEach(function (line, idx) {
+          var cleanName = line.replace(/^\s*\d+\s*[-–.)]\s*/, "").trim();
+          if (!cleanName) return;
+
+          var normNew = cleanName.toLowerCase();
+          var exists = APPLICATORS_MASTER.some(function (a) {
+            return (a.municipality || "Canarana") === muni && a.name.toLowerCase() === normNew;
+          });
+          if (!exists) {
+            customApplicators.push({
+              id: "custom_" + baseTime + "_" + idx,
+              municipality: muni,
+              name: cleanName,
+              phone: phone,
+              role: "Equipe " + muni
+            });
+            rebuildApplicatorsList();
+            addedCount++;
+          }
+        });
+
+        setMunicipalityFilter(muni);
+        var allocatedCount = 0;
+        if (shouldAutoAlloc) {
+          allocatedCount = autoFillAllVacancies(muni, true);
+        } else {
+          saveState();
+          refreshAll();
+        }
+        initSimulatorSelects();
+
+        document.getElementById("newAppNamesList").value = "";
+        document.getElementById("newAppPhone").value = "";
+        document.getElementById("newAppModal").classList.add("hidden");
+
+        if (shouldAutoAlloc) {
+          showToast("✅ " + addedCount + " novo(s) aplicador(es) em " + muni + " e " + allocatedCount + " turma(s) alocada(s) sem conflito!");
+        } else {
+          showToast("✅ " + addedCount + " novo(s) aplicador(es) adicionado(s) à equipe de " + muni + "!");
+        }
+      });
+
       document.body.addEventListener("click", function (e) {
         var quickBtn = e.target.closest("[data-quickassign]");
         if (quickBtn) {
           var parts = quickBtn.getAttribute("data-quickassign").split("|");
-          applyAllocation(Number(parts[0]), "pcd", parts[1]);
+          applyAllocation(Number(parts[0]), parts[1], parts[2]);
           return;
         }
 
