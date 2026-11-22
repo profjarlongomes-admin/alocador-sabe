@@ -112,14 +112,14 @@
   <!-- Painel de Resumo / Regras -->
   <section class="max-w-6xl w-full mx-auto px-4 pt-4 space-y-3 no-print">
     <!-- Seletor de Municípios do Polo Irecê 02 -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs p-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-2xs px-4 py-4 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
       <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 px-2 shrink-0">Município:</span>
-      <button type="button" data-muni="all" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-extrabold bg-orange-600 text-white transition">Todos (Polo 02 • 152)</button>
-      <button type="button" data-muni="Canarana" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Canarana <span class="opacity-75">(53)</span></button>
-      <button type="button" data-muni="Presidente Dutra" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Presidente Dutra <span class="opacity-75">(18)</span></button>
-      <button type="button" data-muni="Lapão" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Lapão <span class="opacity-75">(51)</span></button>
-      <button type="button" data-muni="Uibaí" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Uibaí <span class="opacity-75">(20)</span></button>
-      <button type="button" data-muni="Irecê" class="muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Irecê <span class="opacity-75">(10)</span></button>
+      <button type="button" data-muni="all" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-extrabold bg-orange-600 text-white transition flex flex-col items-center justify-center leading-tight min-h-[52px]">Todos (Polo 02 • 152)</button>
+      <button type="button" data-muni="Canarana" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]"><span>Canarana</span><span class="opacity-75 mt-0.5">(53)</span></button>
+      <button type="button" data-muni="Presidente Dutra" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]"><span>Presidente Dutra</span><span class="opacity-75 mt-0.5">(18)</span></button>
+      <button type="button" data-muni="Lapão" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]"><span>Lapão</span><span class="opacity-75 mt-0.5">(51)</span></button>
+      <button type="button" data-muni="Uibaí" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]"><span>Uibaí</span><span class="opacity-75 mt-0.5">(20)</span></button>
+      <button type="button" data-muni="Irecê" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]"><span>Irecê</span><span class="opacity-75 mt-0.5">(10)</span></button>
     </div>
 
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-3.5 sm:p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
@@ -1674,192 +1674,10 @@
       document.querySelectorAll(".muni-btn").forEach(function (b) {
         var active = b.getAttribute("data-muni") === currentMunicipality;
         b.className = active
-          ? "muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-extrabold bg-orange-600 text-white transition"
-          : "muni-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+          ? "muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-extrabold bg-orange-600 text-white transition flex flex-col items-center justify-center leading-tight min-h-[52px]"
+          : "muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]";
       });
     }
 
     function refreshAll() {
-      var filteredClasses = getFilteredClassesByMunicipality();
-      document.getElementById("kpiTotalClasses").textContent = filteredClasses.length;
-      var badgeSchoolCountEl = document.getElementById("badgeSchoolClassesCount");
-      if (badgeSchoolCountEl) badgeSchoolCountEl.textContent = filteredClasses.length;
-      document.getElementById("kpiConflicts").textContent = countGlobalConflicts();
-      renderDemosTab();
-      renderVacanciesTab();
-      renderSchoolsTab();
-      renderSimulatorResult();
-    }
-
-    function bindEvents() {
-      document.querySelectorAll(".muni-btn").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          setMunicipalityFilter(btn.getAttribute("data-muni"));
-          refreshAll();
-        });
-      });
-
-      document.querySelectorAll(".tab-btn").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          currentTab = btn.getAttribute("data-tab");
-          document.querySelectorAll(".tab-btn").forEach(function (b) {
-            var active = b.getAttribute("data-tab") === currentTab;
-            b.className = active
-              ? "tab-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-orange-500 text-white shadow-sm"
-              : "tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20";
-          });
-          document.querySelectorAll(".tab-panel").forEach(function (p) {
-            p.classList.add("hidden");
-          });
-          var targetPanel = document.getElementById("tab-" + currentTab);
-          if (targetPanel) targetPanel.classList.remove("hidden");
-        });
-      });
-
-      document.querySelectorAll(".demo-filter-btn").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          demoFilter = btn.getAttribute("data-demofilter");
-          document.querySelectorAll(".demo-filter-btn").forEach(function (b) {
-            var active = b.getAttribute("data-demofilter") === demoFilter;
-            b.className = active
-              ? "demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white"
-              : "demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200";
-          });
-          renderDemosTab();
-        });
-      });
-
-      document.getElementById("demoSearchInput").addEventListener("input", renderDemosTab);
-      document.getElementById("schoolSearchInput").addEventListener("input", renderSchoolsTab);
-      document.getElementById("schoolDateFilter").addEventListener("change", renderSchoolsTab);
-      document.getElementById("simApplicatorSelect").addEventListener("change", renderSimulatorResult);
-      document.getElementById("simClassSelect").addEventListener("change", renderSimulatorResult);
-
-      document.getElementById("btnAutoFillBest").addEventListener("click", function () {
-        autoFillAllVacancies(currentMunicipality, false);
-      });
-      document.getElementById("btnExportCsv").addEventListener("click", exportScheduleCsv);
-      document.getElementById("btnResetDemo").addEventListener("click", function () {
-        classesState = cloneInitialClasses();
-        saveState();
-        refreshAll();
-        showToast("↺ Planilha restaurada para o estado original do documento.");
-      });
-
-      document.getElementById("btnCloseAllocModal").addEventListener("click", function () {
-        document.getElementById("allocModal").classList.add("hidden");
-      });
-
-      document.getElementById("btnOpenNewAppModal").addEventListener("click", function () {
-        if (currentMunicipality !== "all") {
-          document.getElementById("newAppMuni").value = currentMunicipality;
-        }
-        document.getElementById("newAppModal").classList.remove("hidden");
-      });
-
-      document.getElementById("btnCloseNewAppModal").addEventListener("click", function () {
-        document.getElementById("newAppModal").classList.add("hidden");
-      });
-
-      // Eventos do Modal de Relatório / Lista Oficial por Cidade
-      document.getElementById("btnOpenReportModal").addEventListener("click", function () {
-        document.getElementById("reportMuniSelect").value = currentMunicipality;
-        renderOfficialReportModal();
-        document.getElementById("reportModal").classList.remove("hidden");
-      });
-
-      document.getElementById("btnCloseReportModal").addEventListener("click", function () {
-        document.getElementById("reportModal").classList.add("hidden");
-      });
-
-      document.getElementById("reportMuniSelect").addEventListener("change", renderOfficialReportModal);
-      document.getElementById("btnCopyWhatsAppReport").addEventListener("click", copyWhatsAppOfficialList);
-      document.getElementById("btnPrintReport").addEventListener("click", function () {
-        window.print();
-      });
-
-      document.getElementById("newAppForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        var rawText = document.getElementById("newAppNamesList").value || "";
-        var muni = document.getElementById("newAppMuni").value || "Uibaí";
-        var phone = (document.getElementById("newAppPhone").value || "").trim() || ("Equipe " + muni);
-        var shouldAutoAlloc = document.getElementById("chkAutoAllocateBatch").checked;
-
-        var lines = rawText.split(/\r?\n/);
-        var addedCount = 0;
-        var baseTime = Date.now();
-
-        lines.forEach(function (line, idx) {
-          var cleanName = line.replace(/^\s*\d+\s*[-–.)]\s*/, "").trim();
-          if (!cleanName) return;
-
-          var normNew = cleanName.toLowerCase();
-          var exists = APPLICATORS_MASTER.some(function (a) {
-            return (a.municipality || "Canarana") === muni && a.name.toLowerCase() === normNew;
-          });
-          if (!exists) {
-            customApplicators.push({
-              id: "custom_" + baseTime + "_" + idx,
-              municipality: muni,
-              name: cleanName,
-              phone: phone,
-              role: "Equipe " + muni
-            });
-            rebuildApplicatorsList();
-            addedCount++;
-          }
-        });
-
-        setMunicipalityFilter(muni);
-        var allocatedCount = 0;
-        if (shouldAutoAlloc) {
-          allocatedCount = autoFillAllVacancies(muni, true);
-        } else {
-          saveState();
-          refreshAll();
-        }
-        initSimulatorSelects();
-
-        document.getElementById("newAppNamesList").value = "";
-        document.getElementById("newAppPhone").value = "";
-        document.getElementById("newAppModal").classList.add("hidden");
-
-        if (shouldAutoAlloc) {
-          showToast("✅ " + addedCount + " novo(s) aplicador(es) em " + muni + " e " + allocatedCount + " turma(s) alocada(s) sem conflito!");
-        } else {
-          showToast("✅ " + addedCount + " novo(s) aplicador(es) adicionado(s) à equipe de " + muni + "!");
-        }
-      });
-
-      document.body.addEventListener("click", function (e) {
-        var quickBtn = e.target.closest("[data-quickassign]");
-        if (quickBtn) {
-          var parts = quickBtn.getAttribute("data-quickassign").split("|");
-          applyAllocation(Number(parts[0]), parts[1], parts[2]);
-          return;
-        }
-
-        var modalBtn = e.target.closest("[data-openmodal]");
-        if (modalBtn) {
-          var mParts = modalBtn.getAttribute("data-openmodal").split("|");
-          openAllocModal(Number(mParts[0]), mParts[1]);
-          return;
-        }
-
-        var confirmBtn = e.target.closest("[data-confirmalloc]");
-        if (confirmBtn) {
-          var cParts = confirmBtn.getAttribute("data-confirmalloc").split("|");
-          applyAllocation(Number(cParts[0]), cParts[1], cParts[2]);
-        }
-      });
-    }
-
-    window.addEventListener("DOMContentLoaded", function () {
-      loadState();
-      initSimulatorSelects();
-      bindEvents();
-      refreshAll();
-    });
-  </script>
-</body>
-</html>
+// ... existing code ... -->
