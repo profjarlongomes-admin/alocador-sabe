@@ -89,19 +89,19 @@
 
       <div class="flex items-center gap-2 flex-wrap">
         <button type="button" id="btnOpenNewAppModal"
-          class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5">
+          class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5 cursor-pointer">
           <span>➕ Adicionar Aplicadores</span>
         </button>
         <button type="button" id="btnOpenReportModal"
-          class="px-3 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5">
+          class="px-3 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5 cursor-pointer">
           <span>📄 Lista Oficial por Cidade</span>
         </button>
         <button type="button" id="btnExportCsv"
-          class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/15 transition flex items-center gap-1.5">
+          class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/15 transition flex items-center gap-1.5 cursor-pointer">
           <span>📥 Exportar CSV</span>
         </button>
         <button type="button" id="btnResetDemo"
-          class="px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 text-xs font-bold border border-rose-400/20 transition">
+          class="px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 text-xs font-bold border border-rose-400/20 transition cursor-pointer">
           ↺ Restaurar
         </button>
       </div>
@@ -111,19 +111,19 @@
     <div class="max-w-6xl mx-auto px-4 pb-2 overflow-x-auto no-scrollbar">
       <nav class="flex gap-2 min-w-max" role="tablist">
         <button type="button" data-tab="demos"
-          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-orange-500 text-white shadow-sm">
+          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-orange-500 text-white shadow-sm cursor-pointer">
           🎯 Demonstrações Multi-Aplicação (<span id="badgeDemoCount">81</span>)
         </button>
         <button type="button" data-tab="vacancies"
-          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
-          🚨 Vagas em Aberto (<span id="badgeVacancyCount">55</span>)
+          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20 cursor-pointer">
+          🚨 Vagas em Aberto (<span id="badgeVacancyCount">89</span>)
         </button>
         <button type="button" data-tab="simulator"
-          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
+          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20 cursor-pointer">
           🧪 Simulador "Pode ou Não Pode?"
         </button>
         <button type="button" data-tab="schools"
-          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
+          class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20 cursor-pointer">
           🏫 Cronograma por Escola (<span id="badgeSchoolClassesCount">186</span> Turmas)
         </button>
       </nav>
@@ -135,12 +135,12 @@
     <!-- Seletor de Municípios do Polo Irecê 02 -->
     <div class="bg-white rounded-3xl border border-slate-200 shadow-2xs px-4 py-4 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
       <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 px-2 shrink-0">Município:</span>
-      <button type="button" data-muni="all" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-extrabold bg-orange-600 text-white transition flex flex-col items-center justify-center leading-tight min-h-[52px]">Todos (Polo 02 • 186)</button>
-      <button type="button" data-muni="Canarana" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]"><span>Canarana</span><span class="opacity-75 mt-0.5">(53)</span></button>
-      <button type="button" data-muni="Presidente Dutra" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]"><span>Presidente Dutra</span><span class="opacity-75 mt-0.5">(18)</span></button>
-      <button type="button" data-muni="Lapão" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]"><span>Lapão</span><span class="opacity-75 mt-0.5">(51)</span></button>
-      <button type="button" data-muni="Uibaí" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]"><span>Uibaí</span><span class="opacity-75 mt-0.5">(20)</span></button>
-      <button type="button" data-muni="Irecê" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px]"><span>Irecê</span><span class="opacity-75 mt-0.5">(44)</span></button>
+      <button type="button" data-muni="all" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-extrabold bg-orange-600 text-white transition flex flex-col items-center justify-center leading-tight min-h-[52px] cursor-pointer">Todos (Polo 02 • 186)</button>
+      <button type="button" data-muni="Canarana" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px] cursor-pointer"><span>Canarana</span><span class="opacity-75 mt-0.5">(53)</span></button>
+      <button type="button" data-muni="Presidente Dutra" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px] cursor-pointer"><span>Presidente Dutra</span><span class="opacity-75 mt-0.5">(18)</span></button>
+      <button type="button" data-muni="Lapão" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px] cursor-pointer"><span>Lapão</span><span class="opacity-75 mt-0.5">(51)</span></button>
+      <button type="button" data-muni="Uibaí" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px] cursor-pointer"><span>Uibaí</span><span class="opacity-75 mt-0.5">(20)</span></button>
+      <button type="button" data-muni="Irecê" class="muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px] cursor-pointer"><span>Irecê</span><span class="opacity-75 mt-0.5">(44)</span></button>
     </div>
 
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-3.5 sm:p-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
@@ -167,7 +167,7 @@
         </div>
         <div class="bg-amber-50 border border-amber-200 rounded-xl px-2.5 py-2 text-center">
           <p class="text-[10px] font-bold uppercase text-amber-600">Vagas Abertas</p>
-          <p class="text-sm sm:text-base font-extrabold text-amber-700" id="kpiOpenPcd">55</p>
+          <p class="text-sm sm:text-base font-extrabold text-amber-700" id="kpiOpenPcd">89</p>
         </div>
         <div class="bg-blue-50 border border-blue-200 rounded-xl px-2.5 py-2 text-center">
           <p class="text-[10px] font-bold uppercase text-blue-600">Multi-Prova</p>
@@ -188,9 +188,9 @@
             class="w-full pl-3.5 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white" />
         </div>
         <div class="flex gap-2 flex-wrap">
-          <button type="button" data-demofilter="all" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white">Todos (<span id="demoFilterAllCount">81</span>)</button>
-          <button type="button" data-demofilter="2ano" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-rose-50">🔒 Com 2º Ano (Bloqueio 2 dias)</button>
-          <button type="button" data-demofilter="canAddMore" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50">➕ Podem Assumir + Vagas</button>
+          <button type="button" data-demofilter="all" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white cursor-pointer">Todos (<span id="demoFilterAllCount">81</span>)</button>
+          <button type="button" data-demofilter="2ano" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-rose-50 cursor-pointer">🔒 Com 2º Ano (Bloqueio 2 dias)</button>
+          <button type="button" data-demofilter="canAddMore" class="demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-emerald-50 cursor-pointer">➕ Podem Assumir + Vagas</button>
         </div>
       </div>
 
@@ -205,7 +205,7 @@
           <p class="mt-0.5 leading-relaxed">Para cada turma abaixo, o motor prioriza aplicadores do mesmo município que estejam <strong>100% livres</strong> naquele(s) dia(s) e turno — respeitando o bloqueio de 2 dias seguidos do 2º Ano e turno Integral.</p>
         </div>
         <button type="button" id="btnAutoFillBest"
-          class="shrink-0 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-sm transition">
+          class="shrink-0 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-sm transition cursor-pointer">
           ⚡ Preencher Todas Automaticamente (Sem Conflito)
         </button>
       </div>
@@ -264,7 +264,7 @@
           <h3 id="allocModalTitle" class="text-base sm:text-lg font-extrabold text-slate-900 mt-1"></h3>
           <p id="allocModalSub" class="text-xs text-slate-500 mt-0.5"></p>
         </div>
-        <button type="button" id="btnCloseAllocModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">✕</button>
+        <button type="button" id="btnCloseAllocModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer">✕</button>
       </div>
 
       <div id="allocCandidatesList" class="space-y-2"></div>
@@ -280,15 +280,15 @@
           <h3 class="text-base sm:text-lg font-extrabold text-slate-900 mt-1">Adicionar Aplicadores (1 ou Vários de Uma Vez)</h3>
           <p class="text-xs text-slate-500 mt-0.5">Cole uma lista (um nome por linha) e deixe o Alocador distribuir automaticamente sem conflitos.</p>
         </div>
-        <button type="button" id="btnCloseNewAppModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">✕</button>
+        <button type="button" id="btnCloseNewAppModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer">✕</button>
       </div>
 
       <form id="newAppForm" class="space-y-3">
         <div>
           <label for="newAppMuni" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">1. Município de Atuação *</label>
           <select id="newAppMuni" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500">
-            <option value="Uibaí">Uibaí</option>
             <option value="Irecê">Irecê</option>
+            <option value="Uibaí">Uibaí</option>
             <option value="Canarana">Canarana</option>
             <option value="Presidente Dutra">Presidente Dutra</option>
             <option value="Lapão">Lapão</option>
@@ -302,17 +302,17 @@
         </div>
         <div>
           <label for="newAppPhone" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Observação / Origem (Opcional)</label>
-          <input id="newAppPhone" type="text" placeholder="Ex: Equipe Municipal Uibaí"
+          <input id="newAppPhone" type="text" placeholder="Ex: Equipe Irecê / CEMIT"
             class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500" />
         </div>
         <label class="flex items-start gap-2.5 p-3 rounded-xl border border-emerald-200 bg-emerald-50/80 cursor-pointer">
           <input id="chkAutoAllocateBatch" type="checkbox" checked class="mt-0.5 rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4">
           <span class="text-xs text-emerald-950 leading-snug">
             <strong>⚡ Alocar automaticamente nas escolas/turmas livres deste município agora</strong><br />
-            <span class="text-[11px] text-emerald-800">Distribui a equipe nos turnos disponíveis (incluindo dobras Manhã + Tarde) sem nenhum conflito.</span>
+            <span class="text-[11px] text-emerald-800">Distribui a equipe nos turnos disponíveis (incluindo dobras Manhã + Tarde + Noite) sem nenhum conflito.</span>
           </span>
         </label>
-        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-sm transition">
+        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-sm transition cursor-pointer">
           Salvar e Alocar Sem Erros
         </button>
       </form>
@@ -342,16 +342,16 @@
           </select>
 
           <button type="button" id="btnCopyWhatsAppReport"
-            class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5">
+            class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5 cursor-pointer">
             <span>📋 Copiar p/ WhatsApp</span>
           </button>
 
           <button type="button" id="btnPrintReport"
-            class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5">
+            class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold shadow-xs transition flex items-center gap-1.5 cursor-pointer">
             <span>🖨️ Imprimir / PDF</span>
           </button>
 
-          <button type="button" id="btnCloseReportModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 font-bold">✕</button>
+          <button type="button" id="btnCloseReportModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 font-bold cursor-pointer">✕</button>
         </div>
       </div>
 
@@ -377,13 +377,14 @@
 
   <script>
     // =========================================================================
-    // 1. DADOS CONSOLIDADOS DO POLO IRECÊ 02 (5 MUNICÍPIOS • 152 TURMAS)
+    // 1. DADOS CONSOLIDADOS DO POLO IRECÊ 02 (5 MUNICÍPIOS • 186 TURMAS)
     // =========================================================================
     var TIME_SLOTS = [
       { key: "23/11|Matutino", short: "23M", label: "23/11 Manhã" },
       { key: "23/11|Vespertino", short: "23V", label: "23/11 Tarde" },
       { key: "24/11|Matutino", short: "24M", label: "24/11 Manhã" },
       { key: "24/11|Vespertino", short: "24V", label: "24/11 Tarde" },
+      { key: "24/11|Noturno", short: "24N", label: "24/11 Noite" },
       { key: "25/11|Matutino", short: "25M", label: "25/11 Manhã" },
       { key: "25/11|Vespertino", short: "25V", label: "25/11 Tarde" },
       { key: "26/11|Matutino", short: "26M", label: "26/11 Manhã" },
@@ -674,25 +675,63 @@
       { id: 142, municipality: "Uibaí", school: "Escola Valtenci Rocha Levi", inep: "Uibaí", locality: "Uibaí-BA", distance: "Vespertino", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
 
       // =========================================================================
-      // IRECÊ-BA (POLO IRECÊ 02 • 4 ESCOLAS • 10 TURMAS • 45 ATENDIMENTOS PCD)
+      // IRECÊ-BA (POLO IRECÊ 02 • 4 ESCOLAS • 44 TURMAS • LANÇADAS SEM ALOCAÇÃO)
       // =========================================================================
-      { id: 143, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "2º Ano • Ledor/Transcrição/Fonte 18", grade: "2º Ano (INF II ANO II A)", is2ndYear: true, shift: "Matutino", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
-      { id: 144, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "2º Ano • Baixa Visão/Fonte 18", grade: "2º Ano (INF II ANO II B)", is2ndYear: true, shift: "Matutino", students: "-", regApp: null, pcdCount: 8, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
-      { id: 145, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "5º Ano • Ledor/Transcrição", grade: "5º Ano (PA ANO II A)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 146, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "5º Ano • Ledor/Transcrição", grade: "5º Ano (PA ANO II B)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 4, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      // 1. CETEP DE IRECÊ (11 TURMAS)
+      { id: 143, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114021 • Pendente Orion", grade: "3ª Série EM (ADMVESADMA)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 144, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114022 • Pendente Orion", grade: "3ª Série EM (ADMVESADMB)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 145, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114023 • Pendente Orion", grade: "3ª Série EM (AGRPMAT3SA)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 146, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114024 • Pendente Orion", grade: "3ª Série EM (AGRPMAT3SB)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 147, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114025 • Pendente Orion", grade: "3ª Série EM (ANACMAT3SA)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 148, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114026 • Pendente Orion", grade: "3ª Série EM (NUTRMAT3SA)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 149, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114027 • Pendente Orion", grade: "3ª Série EM (NUTRMAT3SB)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 150, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114028 • Pendente Orion", grade: "3ª Série EM (SERVVES3SA)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 151, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114029 • Pendente Orion", grade: "3ª Série EM (SERVVES3SB)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 152, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114050 • Pendente Orion", grade: "3ª Série EM (ADMVESADMC)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 153, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114051 • Pendente Orion • 1 PCD", grade: "3ª Série EM (NUTRMAT3SC)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
 
-      { id: 147, municipality: "Irecê", school: "CEMIT de Irecê (Anexo 1818)", inep: "29459141", locality: "Irecê-BA (Urbana • Estadual)", distance: "3ª Série EM • Ledor/Tempo Adic.", grade: "3ª Série EM (EMITVEST3A-ANX1818)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      // 2. CEMIT DE IRECÊ (22 TURMAS)
+      { id: 154, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1111)", distance: "ID 40114457 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX1111)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 155, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1313)", distance: "ID 40114460 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX1313)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 156, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 44)", distance: "ID 40114463 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX44)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 157, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2323)", distance: "ID 40114468 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX2323)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 158, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3131)", distance: "ID 40114471 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3131)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 159, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2929)", distance: "ID 40114474 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX2929)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 160, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 22)", distance: "ID 40114477 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX22)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 161, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2727)", distance: "ID 40114480 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX2727)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 162, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3636)", distance: "ID 40114483 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3636)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 163, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1919)", distance: "ID 40114486 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX1919)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 164, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3030)", distance: "ID 40114489 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3030)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 165, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2828)", distance: "ID 40114492 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX2828)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 166, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 77)", distance: "ID 40114495 • Pendente Orion", grade: "3ª Série EM (EMITMATT3A-ANX77)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 167, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2626)", distance: "ID 40114498 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX2626)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 168, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1818)", distance: "ID 40114501 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX1818)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 169, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 66)", distance: "ID 40114504 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX66)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 170, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1515)", distance: "ID 40114507 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX1515)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 171, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3232)", distance: "ID 40114510 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3232)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 172, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3434)", distance: "ID 40114513 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3434)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 173, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3333)", distance: "ID 40114516 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3333)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 174, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1818 • 1 PCD)", distance: "ID 40114519 • Pendente Orion", grade: "3ª Série EM (EMITVEST3A-ANX1818)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 175, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2323)", distance: "ID 40114520 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3B-ANX2323)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
 
-      { id: 148, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "3ª Série EM • Ledor/Tempo Adic.", grade: "3ª Série EM (NUTRMAT3SC)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      // 3. C.E.T.I. PROFESSORA DARIA DOURADO LOPES (7 TURMAS)
+      { id: 176, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40113965 • Pendente Orion • 9 PCD", grade: "3ª Série EM (PIINT7T3A)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 9, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 177, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40113966 • Pendente Orion • 5 PCD", grade: "3ª Série EM (PIINT7T3B)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 5, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 178, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40113967 • Pendente Orion • 5 PCD", grade: "3ª Série EM (PIINT7T3C)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 5, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 179, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40113968 • Pendente Orion • 6 PCD", grade: "3ª Série EM (PIINT7T3D)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 6, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 180, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 629519413 • Confirmada Orion", grade: "3ª Série EM (TFS3NOTTFE7A)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 181, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 629519414 • Confirmada Orion", grade: "3ª Série EM (TFS3NOTTFE7B)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      { id: 182, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 629519415 • Confirmada Orion", grade: "3ª Série EM (EJAJ3NOTJ3E7A)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
 
-      { id: 149, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "Integral • Ledor/Transcrição/Tempo Adic.", grade: "3ª Série EM (PIINT7T3A)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 9, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 150, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "Integral • Ledor/Transcrição/Tempo Adic.", grade: "3ª Série EM (PIINT7T3B)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 5, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 151, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "Integral • Ledor/Transcrição/Tempo Adic.", grade: "3ª Série EM (PIINT7T3C)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 5, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 152, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "Integral • Ledor/Transcrição/Tempo Adic.", grade: "3ª Série EM (PIINT7T3D)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 6, pcdApps: [], dates: ["24/11"], needsExtraPcd: true }
+      // 4. ESCOLA MUNICIPAL PROFESSORA CARMOSINA SANTOS LOPES (4 TURMAS)
+      { id: 183, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "ID 38813875 • Pendente Orion • 8 PCD", grade: "2º Ano (INF II ANO II B)", is2ndYear: true, shift: "Matutino", students: "-", regApp: null, pcdCount: 8, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 184, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "ID 38813876 • Pendente Orion • 4 PCD", grade: "5º Ano (PA ANO II B)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 4, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+      { id: 185, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "ID 38813882 • Pendente Orion • 3 PCD", grade: "2º Ano (INF II ANO II A)", is2ndYear: true, shift: "Matutino", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
+      { id: 186, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "ID 38813883 • Pendente Orion • 3 PCD", grade: "5º Ano (PA ANO II A)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["24/11"], needsExtraPcd: true }
     ];
 
-    var STORAGE_KEY = "sabe2026_polo02_alloc_state_v7";
-    var CUSTOM_APPS_KEY = "sabe2026_polo02_custom_apps_v7";
+    var STORAGE_KEY = "sabe2026_polo02_alloc_state_v9";
+    var CUSTOM_APPS_KEY = "sabe2026_polo02_custom_apps_v9";
     var classesState = [];
     var customApplicators = [];
     var currentTab = "demos";
@@ -986,7 +1025,6 @@
 
     function autoDistributeMunicipality(targetMuni) {
       var openList = getOpenVacancies(targetMuni);
-      // Priorizar vagas titulares primeiro, depois PCD
       openList.sort(function (a, b) {
         if (a.slotType !== b.slotType) return a.slotType === "reg" ? -1 : 1;
         return a.cls.id - b.cls.id;
@@ -1008,7 +1046,6 @@
           }
         });
 
-        // Equilibrar carga primeiro (quem tem 0 turmas), depois melhor prioridade
         candidates.sort(function (a, b) {
           if (a.load !== b.load) return a.load - b.load;
           return a.check.priority - b.check.priority;
@@ -1104,7 +1141,7 @@
         var timelineHtml = TIME_SLOTS.map(function (ts) {
           var hits = sched.occupiedSlots[ts.key] || [];
           if (hits.length === 0) {
-            return '<div class="rounded-lg border border-emerald-200 bg-emerald-50/70 px-1.5 py-1 text-center">' +
+            return '<div class="rounded-lg border border-emerald-200 bg-emerald-50/70 px-1 py-1 text-center">' +
               '<p class="text-[10px] font-extrabold text-emerald-800">' + ts.short + '</p>' +
               '<p class="text-[9px] font-semibold text-emerald-600">Livre</p>' +
               '</div>';
@@ -1113,7 +1150,7 @@
           var is2 = hit.cls.is2ndYear;
           return '<div title="' + hit.cls.school + ' • ' + hit.cls.grade + '" class="rounded-lg border ' +
             (is2 ? 'border-rose-300 bg-rose-100/90' : 'border-slate-300 bg-slate-800 text-white') +
-            ' px-1.5 py-1 text-center">' +
+            ' px-1 py-1 text-center">' +
             '<p class="text-[10px] font-extrabold ' + (is2 ? 'text-rose-900' : 'text-white') + '">' + ts.short + '</p>' +
             '<p class="text-[9px] font-bold ' + (is2 ? 'text-rose-700' : 'text-orange-300') + '">' + (is2 ? '2º 🔒' : hit.cls.grade.split(' ')[0]) + '</p>' +
             '</div>';
@@ -1144,7 +1181,7 @@
                 '<p class="font-bold text-slate-900 truncate">[' + roleTag + '] ' + op.cls.school + ' • ' + op.cls.grade + '</p>' +
                 '<p class="text-[10px] text-emerald-800 font-semibold truncate">' + op.check.badge + ' • ' + op.cls.dates.join(' e ') + ' (' + op.cls.shift + ')</p>' +
                 '</div>' +
-                '<button type="button" data-quickassign="' + op.cls.id + '|' + op.slotType + '|' + app.id + '" class="shrink-0 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[10px] transition">+ Alocar</button>' +
+                '<button type="button" data-quickassign="' + op.cls.id + '|' + op.slotType + '|' + app.id + '" class="shrink-0 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[10px] transition cursor-pointer">+ Alocar</button>' +
                 '</div>';
             }).join("") +
             (validOpportunities.length > 6 ? '<p class="text-[10px] text-center text-slate-500 font-semibold pt-1">+ ' + (validOpportunities.length - 6) + ' outras possibilidades compatíveis</p>' : '') +
@@ -1171,7 +1208,7 @@
 
           '<div>' +
           '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Mapa de Turnos (23/11 a 26/11)</p>' +
-          '<div class="grid grid-cols-8 gap-1">' + timelineHtml + '</div>' +
+          '<div class="grid grid-cols-9 gap-1">' + timelineHtml + '</div>' +
           '</div>' +
 
           '<div>' +
@@ -1237,7 +1274,7 @@
             ? (c.app.municipality || "Polo 02")
             : (c.res.priority === 1 ? "Mesma Escola" : c.res.priority === 2 ? "Livre" : c.res.priority === 3 ? "Outro Dia" : "Desloc.");
 
-          return '<button type="button" data-quickassign="' + cls.id + '|' + slotType + '|' + c.app.id + '" class="px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ' + colorCls + '">' +
+          return '<button type="button" data-quickassign="' + cls.id + '|' + slotType + '|' + c.app.id + '" class="px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ' + colorCls + '">' +
             '<span>+ ' + c.app.name + '</span>' +
             '<span class="text-[10px] opacity-80">(' + tagLabel + ')</span>' +
             '</button>';
@@ -1262,7 +1299,7 @@
           '<h3 class="text-sm sm:text-base font-extrabold text-slate-900 mt-1">' + cls.school + ' • ' + cls.grade + '</h3>' +
           '<p class="text-xs text-slate-600 mt-0.5">' + subInfo + '</p>' +
           '</div>' +
-          '<button type="button" data-openalloc="' + cls.id + '|' + slotType + '" class="shrink-0 px-3.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-extrabold transition">Ver Todos (' + candidates.length + ')</button>' +
+          '<button type="button" data-openalloc="' + cls.id + '|' + slotType + '" class="shrink-0 px-3.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-extrabold transition cursor-pointer">Ver Todos (' + candidates.length + ')</button>' +
           '</div>' +
           '<div>' +
           '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Clique para alocar em 1 segundo (candidatos 100% sem conflito):</p>' +
@@ -1332,8 +1369,8 @@
           '<h3 class="text-base font-extrabold text-emerald-950 mt-2">' + app.name + ' → ' + cls.school + ' (' + cls.grade + ')</h3>' +
           '</div>' +
           '<div class="flex flex-wrap gap-2">' +
-          '<button type="button" data-quickassign="' + cls.id + '|reg|' + app.id + '" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-xs transition">Alocar como Titular</button>' +
-          '<button type="button" data-quickassign="' + cls.id + '|pcd|' + app.id + '" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold shadow-xs transition">Alocar como Apoio PCD</button>' +
+          '<button type="button" data-quickassign="' + cls.id + '|reg|' + app.id + '" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-xs transition cursor-pointer">Alocar como Titular</button>' +
+          '<button type="button" data-quickassign="' + cls.id + '|pcd|' + app.id + '" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold shadow-xs transition cursor-pointer">Alocar como Apoio PCD</button>' +
           '</div>' +
           '</div>' +
           '<p class="text-xs sm:text-sm text-emerald-900 leading-relaxed">' + check.reason + '</p>' +
@@ -1404,7 +1441,9 @@
             ? "bg-sky-100 text-sky-800"
             : cls.shift === "Vespertino"
               ? "bg-amber-100 text-amber-800"
-              : "bg-purple-100 text-purple-800";
+              : cls.shift === "Noturno"
+                ? "bg-indigo-100 text-indigo-800"
+                : "bg-purple-100 text-purple-800";
 
           var regHtml = regObj
             ? '<span class="font-bold text-slate-900">' + regObj.name + '</span>'
@@ -1429,7 +1468,7 @@
             '<span class="font-extrabold text-sm text-slate-900">' + cls.grade + '</span>' +
             '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold ' + shiftBadgeClass + '">' + cls.shift + '</span>' +
             '<span class="px-2 py-0.5 rounded-md text-[11px] font-bold ' + (cls.is2ndYear ? "bg-rose-100 text-rose-800" : "bg-slate-100 text-slate-700") + '">' + cls.dates.join(" e ") + (cls.is2ndYear ? " 🔒" : "") + '</span>' +
-            (cls.students && cls.students !== "-" ? '<span class="text-xs text-slate-500">• ' + cls.students + ' alunos</span>' : '') +
+            '<span class="text-[11px] text-slate-500">• ' + cls.locality + '</span>' +
             '</div>' +
             '<div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">' +
             '<span><strong>Titular:</strong> ' + regHtml + '</span>' +
@@ -1438,10 +1477,10 @@
             '</div>' +
 
             '<div class="flex items-center gap-2 shrink-0">' +
-            '<button type="button" data-openalloc="' + cls.id + '|reg" class="px-3 py-1.5 rounded-xl text-xs font-bold border ' + (regObj ? "border-slate-300 bg-white hover:bg-slate-100 text-slate-700" : "border-rose-300 bg-rose-600 hover:bg-rose-700 text-white") + ' transition">' +
+            '<button type="button" data-openalloc="' + cls.id + '|reg" class="px-3 py-1.5 rounded-xl text-xs font-bold border cursor-pointer ' + (regObj ? "border-slate-300 bg-white hover:bg-slate-100 text-slate-700" : "border-rose-300 bg-rose-600 hover:bg-rose-700 text-white") + ' transition">' +
             (regObj ? "Trocar Titular" : "+ Alocar Titular") +
             '</button>' +
-            '<button type="button" data-openalloc="' + cls.id + '|pcd" class="px-3 py-1.5 rounded-xl text-xs font-bold border ' + (cls.needsExtraPcd && (!cls.pcdApps || cls.pcdApps.length === 0) ? "border-amber-400 bg-amber-500 hover:bg-amber-600 text-white" : "border-slate-300 bg-white hover:bg-slate-100 text-slate-700") + ' transition">' +
+            '<button type="button" data-openalloc="' + cls.id + '|pcd" class="px-3 py-1.5 rounded-xl text-xs font-bold border cursor-pointer ' + (cls.needsExtraPcd && (!cls.pcdApps || cls.pcdApps.length === 0) ? "border-amber-400 bg-amber-500 hover:bg-amber-600 text-white" : "border-slate-300 bg-white hover:bg-slate-100 text-slate-700") + ' transition">' +
             (cls.pcdApps && cls.pcdApps.length > 0 ? "Trocar PCD" : "+ Apoio PCD") +
             '</button>' +
             '</div>' +
@@ -1496,7 +1535,7 @@
       var hasCurrent = slotType === "reg" ? Boolean(cls.regApp) : (cls.pcdApps && cls.pcdApps.length > 0);
       if (hasCurrent) {
         clearBtnHtml = '<div class="pb-2 border-b border-slate-200">' +
-          '<button type="button" data-clearalloc="' + cls.id + '|' + slotType + '" class="w-full py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-extrabold transition">' +
+          '<button type="button" data-clearalloc="' + cls.id + '|' + slotType + '" class="w-full py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-extrabold transition cursor-pointer">' +
           '🗑️ Remover Aplicador Atual (Deixar Vaga em Aberto)' +
           '</button>' +
           '</div>';
@@ -1515,7 +1554,7 @@
             '<p class="text-[11px] font-bold text-emerald-800 mt-0.5">' + res.badge + '</p>' +
             '<p class="text-[11px] text-slate-600 mt-0.5 leading-snug">' + res.reason + '</p>' +
             '</div>' +
-            '<button type="button" data-modalassign="' + cls.id + '|' + slotType + '|' + app.id + '" class="shrink-0 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold transition">Escolher</button>' +
+            '<button type="button" data-modalassign="' + cls.id + '|' + slotType + '|' + app.id + '" class="shrink-0 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold transition cursor-pointer">Escolher</button>' +
             '</div>';
         }
         return '<div class="p-3 rounded-xl border border-rose-200/80 bg-rose-50/40 opacity-85">' +
@@ -1688,20 +1727,8 @@
       });
 
       var finalText = textLines.join("\n");
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(finalText).then(function () {
-          showToast("📋 Lista oficial copiada! Cole direto no WhatsApp.");
-        }).catch(function () {
-          fallbackCopyText(finalText);
-        });
-      } else {
-        fallbackCopyText(finalText);
-      }
-    }
-
-    function fallbackCopyText(text) {
       var ta = document.createElement("textarea");
-      ta.value = text;
+      ta.value = finalText;
       ta.style.position = "fixed";
       ta.style.left = "-9999px";
       document.body.appendChild(ta);
@@ -1767,86 +1794,286 @@
     // =========================================================================
     // 11. ORQUESTRAÇÃO GERAL E EVENTOS
     // =========================================================================
-    // 1. DADOS CONSOLIDADOS DO POLO IRECÊ 02 (5 MUNICÍPIOS • 186 TURMAS)
-    // =========================================================================
-    var TIME_SLOTS = [
-      { key: "23/11|Matutino", short: "23M", label: "23/11 Manhã" },
-      { key: "23/11|Vespertino", short: "23V", label: "23/11 Tarde" },
-      { key: "24/11|Matutino", short: "24M", label: "24/11 Manhã" },
-      { key: "24/11|Vespertino", short: "24V", label: "24/11 Tarde" },
-      { key: "24/11|Noturno", short: "24N", label: "24/11 Noite" },
-      { key: "25/11|Matutino", short: "25M", label: "25/11 Manhã" },
-      { key: "25/11|Vespertino", short: "25V", label: "25/11 Tarde" },
-      { key: "26/11|Matutino", short: "26M", label: "26/11 Manhã" },
-      { key: "26/11|Vespertino", short: "26V", label: "26/11 Tarde" }
-    ];
+    function switchTab(tabId) {
+      currentTab = tabId;
+      document.querySelectorAll(".tab-btn").forEach(function (btn) {
+        var active = btn.getAttribute("data-tab") === tabId;
+        btn.className = active
+          ? "tab-btn px-3.5 py-2 rounded-xl text-xs font-extrabold transition bg-orange-500 text-white shadow-sm cursor-pointer"
+          : "tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white/10 text-slate-200 hover:bg-white/20 cursor-pointer";
+      });
+      document.querySelectorAll(".tab-panel").forEach(function (panel) {
+        if (panel.id === "tab-" + tabId) panel.classList.remove("hidden");
+        else panel.classList.add("hidden");
+      });
+      refreshAll();
+    }
 
-    var BASE_APPLICATORS = [
-// ... existing code ... -->
-      { id: 141, municipality: "Uibaí", school: "Escola Valtenci Rocha Levi", inep: "Uibaí", locality: "Uibaí-BA", distance: "Matutino", grade: "9º Ano B", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
-      { id: 142, municipality: "Uibaí", school: "Escola Valtenci Rocha Levi", inep: "Uibaí", locality: "Uibaí-BA", distance: "Vespertino", grade: "9º Ano C", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["23/11"], needsExtraPcd: true },
+    function selectMunicipality(muni) {
+      currentMunicipality = muni;
+      document.querySelectorAll(".muni-btn").forEach(function (btn) {
+        var active = btn.getAttribute("data-muni") === muni;
+        if (btn.getAttribute("data-muni") === "all") {
+          btn.className = active
+            ? "muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-extrabold bg-orange-600 text-white transition flex flex-col items-center justify-center leading-tight min-h-[52px] cursor-pointer"
+            : "muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px] cursor-pointer";
+        } else {
+          btn.className = active
+            ? "muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-extrabold bg-orange-600 text-white transition flex flex-col items-center justify-center leading-tight min-h-[52px] cursor-pointer"
+            : "muni-btn shrink-0 px-5 py-3 rounded-2xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition flex flex-col items-center justify-center leading-tight min-h-[52px] cursor-pointer";
+        }
+      });
+      refreshAll();
+    }
 
-      // =========================================================================
-      // IRECÊ-BA (POLO IRECÊ 02 • 4 ESCOLAS • 44 TURMAS • LANÇADAS SEM ALOCAÇÃO)
-      // =========================================================================
-      // 1. CETEP DE IRECÊ (11 TURMAS)
-      { id: 143, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114021 • Pendente Orion", grade: "3ª Série EM (ADMVESADMA)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 144, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114022 • Pendente Orion", grade: "3ª Série EM (ADMVESADMB)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 145, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114023 • Pendente Orion", grade: "3ª Série EM (AGRPMAT3SA)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 146, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114024 • Pendente Orion", grade: "3ª Série EM (AGRPMAT3SB)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 147, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114025 • Pendente Orion", grade: "3ª Série EM (ANACMAT3SA)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 148, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114026 • Pendente Orion", grade: "3ª Série EM (NUTRMAT3SA)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 149, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114027 • Pendente Orion", grade: "3ª Série EM (NUTRMAT3SB)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 150, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114028 • Pendente Orion", grade: "3ª Série EM (SERVVES3SA)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 151, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114029 • Pendente Orion", grade: "3ª Série EM (SERVVES3SB)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 152, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114050 • Pendente Orion", grade: "3ª Série EM (ADMVESADMC)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 153, municipality: "Irecê", school: "CETEP de Irecê", inep: "29064120", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40114051 • Pendente Orion • 1 PCD", grade: "3ª Série EM (NUTRMAT3SC)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
+    function refreshAll() {
+      refreshGlobalKpis();
+      renderDemosTab();
+      renderVacanciesTab();
+      populateSimulatorSelects();
+      renderSchoolsTab();
+    }
 
-      // 2. CEMIT DE IRECÊ (22 TURMAS)
-      { id: 154, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1111)", distance: "ID 40114457 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX1111)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 155, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1313)", distance: "ID 40114460 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX1313)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 156, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 44)", distance: "ID 40114463 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX44)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 157, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2323)", distance: "ID 40114468 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX2323)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 158, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3131)", distance: "ID 40114471 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3131)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 159, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2929)", distance: "ID 40114474 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX2929)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 160, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 22)", distance: "ID 40114477 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX22)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 161, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2727)", distance: "ID 40114480 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX2727)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 162, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3636)", distance: "ID 40114483 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3636)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 163, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1919)", distance: "ID 40114486 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX1919)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 164, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3030)", distance: "ID 40114489 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3030)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 165, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2828)", distance: "ID 40114492 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX2828)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 166, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 77)", distance: "ID 40114495 • Pendente Orion", grade: "3ª Série EM (EMITMATT3A-ANX77)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 167, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2626)", distance: "ID 40114498 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX2626)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 168, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1818)", distance: "ID 40114501 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX1818)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 169, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 66)", distance: "ID 40114504 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX66)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 170, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1515)", distance: "ID 40114507 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX1515)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 171, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3232)", distance: "ID 40114510 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3232)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 172, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3434)", distance: "ID 40114513 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3434)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 173, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 3333)", distance: "ID 40114516 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3A-ANX3333)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 174, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 1818 • 1 PCD)", distance: "ID 40114519 • Pendente Orion", grade: "3ª Série EM (EMITVEST3A-ANX1818)", is2ndYear: false, shift: "Vespertino", students: "-", regApp: null, pcdCount: 1, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 175, municipality: "Irecê", school: "CEMIT de Irecê", inep: "29459141", locality: "Irecê-BA (Anexo 2323)", distance: "ID 40114520 • Pendente Orion", grade: "3ª Série EM (EMITNOTT3B-ANX2323)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+    function initApp() {
+      try {
+        var savedCustom = localStorage.getItem(CUSTOM_APPS_KEY);
+        if (savedCustom) {
+          var parsedCustom = JSON.parse(savedCustom);
+          if (Array.isArray(parsedCustom)) customApplicators = parsedCustom;
+        }
+      } catch (e) {
+        customApplicators = [];
+      }
+      rebuildApplicatorsList();
 
-      // 3. C.E.T.I. PROFESSORA DARIA DOURADO LOPES (7 TURMAS)
-      { id: 176, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40113965 • Pendente Orion • 9 PCD", grade: "3ª Série EM (PIINT7T3A)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 9, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 177, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40113966 • Pendente Orion • 5 PCD", grade: "3ª Série EM (PIINT7T3B)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 5, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 178, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40113967 • Pendente Orion • 5 PCD", grade: "3ª Série EM (PIINT7T3C)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 5, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 179, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 40113968 • Pendente Orion • 6 PCD", grade: "3ª Série EM (PIINT7T3D)", is2ndYear: false, shift: "Integral", students: "-", regApp: null, pcdCount: 6, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 180, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 629519413 • Confirmada Orion", grade: "3ª Série EM (TFS3NOTTFE7A)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 181, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 629519414 • Confirmada Orion", grade: "3ª Série EM (TFS3NOTTFE7B)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
-      { id: 182, municipality: "Irecê", school: "C.E.T.I. Profª Daria Dourado Lopes", inep: "29064147", locality: "Irecê-BA (Urbana • Estadual)", distance: "ID 629519415 • Confirmada Orion", grade: "3ª Série EM (EJAJ3NOTJ3E7A)", is2ndYear: false, shift: "Noturno", students: "-", regApp: null, pcdCount: 0, pcdApps: [], dates: ["24/11"], needsExtraPcd: false },
+      try {
+        var savedClasses = localStorage.getItem(STORAGE_KEY);
+        if (savedClasses) {
+          var parsedClasses = JSON.parse(savedClasses);
+          if (Array.isArray(parsedClasses) && parsedClasses.length === INITIAL_CLASSES.length) {
+            classesState = parsedClasses;
+          } else {
+            classesState = cloneInitialClasses();
+          }
+        } else {
+          classesState = cloneInitialClasses();
+        }
+      } catch (e) {
+        classesState = cloneInitialClasses();
+      }
 
-      // 4. ESCOLA MUNICIPAL PROFESSORA CARMOSINA SANTOS LOPES (4 TURMAS)
-      { id: 183, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "ID 38813875 • Pendente Orion • 8 PCD", grade: "2º Ano (INF II ANO II B)", is2ndYear: true, shift: "Matutino", students: "-", regApp: null, pcdCount: 8, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
-      { id: 184, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "ID 38813876 • Pendente Orion • 4 PCD", grade: "5º Ano (PA ANO II B)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 4, pcdApps: [], dates: ["24/11"], needsExtraPcd: true },
-      { id: 185, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "ID 38813882 • Pendente Orion • 3 PCD", grade: "2º Ano (INF II ANO II A)", is2ndYear: true, shift: "Matutino", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["23/11", "24/11"], needsExtraPcd: true },
-      { id: 186, municipality: "Irecê", school: "E.M. Profª Carmosina Santos Lopes", inep: "29064058", locality: "Irecê-BA (Urbana • Municipal)", distance: "ID 38813883 • Pendente Orion • 3 PCD", grade: "5º Ano (PA ANO II A)", is2ndYear: false, shift: "Matutino", students: "-", regApp: null, pcdCount: 3, pcdApps: [], dates: ["24/11"], needsExtraPcd: true }
-    ];
+      // Navegação por abas
+      document.querySelectorAll(".tab-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          switchTab(btn.getAttribute("data-tab"));
+        });
+      });
 
-    var STORAGE_KEY = "sabe2026_polo02_alloc_state_v8";
-    var CUSTOM_APPS_KEY = "sabe2026_polo02_custom_apps_v8";
-// ... existing code ... -->
-          '<div>' +
-          '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Mapa de Turnos (23/11 a 26/11)</p>' +
-          '<div class="grid grid-cols-9 gap-1">' + timelineHtml + '</div>' +
-          '</div>' +
-// ... existing code ... -->
+      // Filtro de municípios
+      document.querySelectorAll(".muni-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          selectMunicipality(btn.getAttribute("data-muni"));
+        });
+      });
+
+      // Filtros rápidos da Aba 1
+      document.querySelectorAll(".demo-filter-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          demoFilter = btn.getAttribute("data-demofilter") || "all";
+          document.querySelectorAll(".demo-filter-btn").forEach(function (b) {
+            var active = b.getAttribute("data-demofilter") === demoFilter;
+            b.className = active
+              ? "demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white cursor-pointer"
+              : "demo-filter-btn px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer";
+          });
+          renderDemosTab();
+        });
+      });
+
+      // Buscas e filtros
+      document.getElementById("demoSearchInput").addEventListener("input", renderDemosTab);
+      document.getElementById("schoolSearchInput").addEventListener("input", renderSchoolsTab);
+      document.getElementById("schoolDateFilter").addEventListener("change", renderSchoolsTab);
+
+      // Simulador
+      document.getElementById("simApplicatorSelect").addEventListener("change", renderSimulatorResult);
+      document.getElementById("simClassSelect").addEventListener("change", renderSimulatorResult);
+
+      // Delegação global de cliques dinâmicos
+      document.body.addEventListener("click", function (e) {
+        var quickBtn = e.target.closest("[data-quickassign]");
+        if (quickBtn) {
+          var parts = quickBtn.getAttribute("data-quickassign").split("|");
+          if (assignApplicatorToSlot(Number(parts[0]), parts[1], parts[2], false)) {
+            refreshAll();
+          }
+          return;
+        }
+
+        var openAllocBtn = e.target.closest("[data-openalloc]");
+        if (openAllocBtn) {
+          var p = openAllocBtn.getAttribute("data-openalloc").split("|");
+          openAllocModal(Number(p[0]), p[1]);
+          return;
+        }
+
+        var modalAssignBtn = e.target.closest("[data-modalassign]");
+        if (modalAssignBtn) {
+          var mp = modalAssignBtn.getAttribute("data-modalassign").split("|");
+          if (assignApplicatorToSlot(Number(mp[0]), mp[1], mp[2], false)) {
+            document.getElementById("allocModal").classList.add("hidden");
+            refreshAll();
+          }
+          return;
+        }
+
+        var clearAllocBtn = e.target.closest("[data-clearalloc]");
+        if (clearAllocBtn) {
+          var cp = clearAllocBtn.getAttribute("data-clearalloc").split("|");
+          var cls = getClassById(Number(cp[0]));
+          if (cls) {
+            if (cp[1] === "reg") cls.regApp = null;
+            else cls.pcdApps = [];
+            saveAllState();
+            document.getElementById("allocModal").classList.add("hidden");
+            refreshAll();
+            showToast("🗑️ Aplicador removido da turma.");
+          }
+          return;
+        }
+      });
+
+      // Preencher todas as vagas automaticamente
+      document.getElementById("btnAutoFillBest").addEventListener("click", function () {
+        var filled = autoDistributeMunicipality(currentMunicipality);
+        refreshAll();
+        if (filled > 0) {
+          showToast("⚡ " + filled + " vaga(s) preenchida(s) automaticamente sem conflitos!");
+        } else {
+          showToast("ℹ️ Nenhuma vaga adicional pôde ser preenchida com os aplicadores livres atuais.");
+        }
+      });
+
+      // Modal: Adicionar Aplicadores em Lote
+      document.getElementById("btnOpenNewAppModal").addEventListener("click", function () {
+        if (currentMunicipality !== "all") {
+          document.getElementById("newAppMuni").value = currentMunicipality;
+        }
+        document.getElementById("newAppNamesList").value = "";
+        document.getElementById("newAppModal").classList.remove("hidden");
+      });
+
+      document.getElementById("btnCloseNewAppModal").addEventListener("click", function () {
+        document.getElementById("newAppModal").classList.add("hidden");
+      });
+
+      document.getElementById("newAppForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var muni = document.getElementById("newAppMuni").value;
+        var rawText = document.getElementById("newAppNamesList").value || "";
+        var origin = (document.getElementById("newAppPhone").value || "").trim() || ("Equipe " + muni);
+        var autoAlloc = document.getElementById("chkAutoAllocateBatch").checked;
+
+        var lines = rawText.split(/\r?\n/).map(function (line) {
+          return line.replace(/^\s*\d+\s*[-–.)]\s*/, "").trim();
+        }).filter(Boolean);
+
+        if (lines.length === 0) {
+          showToast("⚠️ Digite ou cole pelo menos um nome.");
+          return;
+        }
+
+        var addedCount = 0;
+        lines.forEach(function (name, idx) {
+          var normNew = normalizeStr(name);
+          var exists = APPLICATORS_MASTER.some(function (a) {
+            return (a.municipality || "Canarana") === muni && normalizeStr(a.name) === normNew;
+          });
+          if (!exists) {
+            customApplicators.push({
+              id: "custom_" + Date.now() + "_" + idx,
+              municipality: muni,
+              name: name,
+              phone: origin,
+              role: "Equipe " + muni
+            });
+            addedCount++;
+          }
+        });
+
+        rebuildApplicatorsList();
+        var allocatedCount = 0;
+        if (autoAlloc) {
+          allocatedCount = autoDistributeMunicipality(muni);
+        }
+        saveAllState();
+        document.getElementById("newAppModal").classList.add("hidden");
+        refreshAll();
+        showToast("✅ " + addedCount + " aplicador(es) incluído(s) em " + muni + (autoAlloc ? " e " + allocatedCount + " turma(s) alocada(s)!" : "!"));
+      });
+
+      // Modal: Lista Oficial por Cidade
+      document.getElementById("btnOpenReportModal").addEventListener("click", function () {
+        var sel = document.getElementById("reportMuniSelect");
+        sel.value = currentMunicipality;
+        renderOfficialReport(sel.value);
+        document.getElementById("reportModal").classList.remove("hidden");
+      });
+
+      document.getElementById("reportMuniSelect").addEventListener("change", function () {
+        renderOfficialReport(this.value);
+      });
+
+      document.getElementById("btnCopyWhatsAppReport").addEventListener("click", copyOfficialReportToWhatsApp);
+      document.getElementById("btnPrintReport").addEventListener("click", function () {
+        window.print();
+      });
+
+      document.getElementById("btnCloseReportModal").addEventListener("click", function () {
+        document.getElementById("reportModal").classList.add("hidden");
+      });
+
+      // Fechar modal de alocação
+      document.getElementById("btnCloseAllocModal").addEventListener("click", function () {
+        document.getElementById("allocModal").classList.add("hidden");
+      });
+
+      // Exportar CSV
+      document.getElementById("btnExportCsv").addEventListener("click", exportScheduleCsv);
+
+      // Restaurar base original (confirmação em 2 cliques sem usar confirm())
+      document.getElementById("btnResetDemo").addEventListener("click", function () {
+        var btn = this;
+        if (!resetConfirmStep) {
+          resetConfirmStep = true;
+          btn.textContent = "⚠️ Confirmar Restauração?";
+          clearTimeout(resetConfirmTimer);
+          resetConfirmTimer = setTimeout(function () {
+            resetConfirmStep = false;
+            btn.textContent = "↺ Restaurar";
+          }, 4000);
+          return;
+        }
+        resetConfirmStep = false;
+        btn.textContent = "↺ Restaurar";
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(CUSTOM_APPS_KEY);
+        customApplicators = [];
+        rebuildApplicatorsList();
+        classesState = cloneInitialClasses();
+        refreshAll();
+        showToast("↺ Base original de 186 turmas restaurada!");
+      });
+
+      // Renderização inicial completa
+      refreshAll();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</body>
+</html>
